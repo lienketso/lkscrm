@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('entity_type')->nullable();
             $table->string('event')->nullable();
-            $table->text('condition_type')->default('and');
+            $table->string('condition_type')->default('and');
             $table->text('conditions')->nullable();
             $table->text('actions')->nullable();
             $table->timestamps();
