@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('web_forms', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('form_id')->unique();
+            $table->string('form_id')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('submit_button_label');
