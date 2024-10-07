@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('workflows', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('description')->nullable();
-            $table->string('entity_type');
-            $table->string('event');
+            $table->string('entity_type')->nullable();
+            $table->string('event')->nullable();
             $table->text('condition_type')->default('and');
             $table->text('conditions')->nullable();
             $table->text('actions')->nullable();

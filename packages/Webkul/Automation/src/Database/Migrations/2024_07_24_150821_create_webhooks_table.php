@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('webhooks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('entity_type');
+            $table->string('name')->nullable();
+            $table->string('entity_type')->nullable();
             $table->string('description')->nullable();
-            $table->string('method');
-            $table->string('end_point');
+            $table->string('method')->nullable();
+            $table->string('end_point')->nullable();
             $table->text('query_params')->nullable();
             $table->text('headers')->nullable();
-            $table->string('payload_type');
-            $table->string('raw_payload_type');
+            $table->string('payload_type')->nullable();
+            $table->string('raw_payload_type')->nullable();
             $table->text('payload')->nullable();
             $table->timestamps();
         });
