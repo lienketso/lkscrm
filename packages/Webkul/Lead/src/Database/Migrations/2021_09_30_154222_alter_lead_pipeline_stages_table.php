@@ -31,9 +31,6 @@ return new class extends Migration
         Schema::table('lead_pipeline_stages', function (Blueprint $table) use ($tablePrefix) {
             $table->dropForeign($tablePrefix.'lead_pipeline_stages_lead_stage_id_foreign');
             $table->dropColumn('lead_stage_id');
-
-            $table->unique(['code', 'lead_pipeline_id']);
-            $table->unique(['name', 'lead_pipeline_id']);
         });
     }
 
