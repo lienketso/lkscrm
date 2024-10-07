@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('subject');
             $table->string('description')->nullable();
 
-            $table->json('billing_address')->nullable();
-            $table->json('shipping_address')->nullable();
+            $table->text('billing_address')->nullable();
+            $table->text('shipping_address')->nullable();
 
             $table->decimal('discount_percent', 12, 4)->default(0)->nullable();
             $table->decimal('discount_amount', 12, 4)->nullable();

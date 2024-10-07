@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('method');
             $table->string('end_point');
-            $table->json('query_params')->nullable();
-            $table->json('headers')->nullable();
+            $table->text('query_params')->nullable();
+            $table->text('headers')->nullable();
             $table->string('payload_type');
             $table->string('raw_payload_type');
-            $table->json('payload')->nullable();
+            $table->text('payload')->nullable();
             $table->timestamps();
         });
     }

@@ -18,8 +18,6 @@ return new class extends Migration
             $table->integer('warehouse_id')->unsigned();
             $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('cascade');
 
-            $table->unique(['warehouse_id', 'name']);
-
             $table->timestamps();
         });
     }

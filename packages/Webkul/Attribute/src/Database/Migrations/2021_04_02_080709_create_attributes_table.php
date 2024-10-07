@@ -26,7 +26,6 @@ return new class extends Migration
             $table->boolean('is_unique')->default(0);
             $table->boolean('quick_add')->default(0);
             $table->boolean('is_user_defined')->default(1);
-            $table->unique(['code', 'entity_type']);
             $table->timestamps();
         });
     }

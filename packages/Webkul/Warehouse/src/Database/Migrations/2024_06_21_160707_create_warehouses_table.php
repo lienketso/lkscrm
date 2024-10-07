@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('contact_name');
-            $table->json('contact_emails');
-            $table->json('contact_numbers');
-            $table->json('contact_address');
+            $table->text('contact_emails');
+            $table->text('contact_numbers');
+            $table->text('contact_address');
             $table->timestamps();
         });
     }

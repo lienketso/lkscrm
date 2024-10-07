@@ -21,15 +21,15 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->text('reply')->nullable();
             $table->boolean('is_read')->default(0);
-            $table->json('folders')->nullable();
-            $table->json('from')->nullable();
-            $table->json('sender')->nullable();
-            $table->json('reply_to')->nullable();
-            $table->json('cc')->nullable();
-            $table->json('bcc')->nullable();
+            $table->text('folders')->nullable();
+            $table->text('from')->nullable();
+            $table->text('sender')->nullable();
+            $table->text('reply_to')->nullable();
+            $table->text('cc')->nullable();
+            $table->text('bcc')->nullable();
             $table->string('unique_id')->nullable()->unique();
             $table->string('message_id')->unique();
-            $table->json('reference_ids')->nullable();
+            $table->text('reference_ids')->nullable();
 
             $table->integer('person_id')->unsigned()->nullable();
             $table->foreign('person_id')->references('id')->on('persons')->onDelete('set null');

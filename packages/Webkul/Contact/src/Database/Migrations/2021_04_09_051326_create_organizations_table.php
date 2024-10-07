@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('organizations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->json('address')->nullable();
+            $table->text('address')->nullable();
 
             $table->timestamps();
         });
