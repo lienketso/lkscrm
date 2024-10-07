@@ -27,8 +27,8 @@ return new class extends Migration
             $table->text('reply_to')->nullable();
             $table->text('cc')->nullable();
             $table->text('bcc')->nullable();
-            $table->string('unique_id')->nullable()->unique();
-            $table->string('message_id')->unique();
+            $table->string('unique_id')->nullable();
+            $table->string('message_id')->nullable();
             $table->text('reference_ids')->nullable();
 
             $table->integer('person_id')->unsigned()->nullable();
