@@ -24,6 +24,17 @@ return [
     ],
 
     /**
+     * Customers.
+     */
+    [
+        'key'        => 'customers',
+        'name'       => 'admin::app.layouts.leads',
+        'route'      => 'admin.leads.customers',
+        'sort'       => 10,
+        'icon-class' => 'icon-leads',
+    ],
+
+    /**
      * Quotes.
      */
     [

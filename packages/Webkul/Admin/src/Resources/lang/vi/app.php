@@ -4,6 +4,8 @@ return [
     'acl' => [
         'leads'           => 'Khách hàng tiềm năng',
         'lead'            => 'Khách hàng tiềm năng',
+        'customers'           => 'Khách hàng hiện hữu',
+        'customer'            => 'Khách hàng hiện hữu',
         'quotes'          => 'Báo giá',
         'mail'            => 'Thư',
         'inbox'           => 'Hộp thư đến',
@@ -1664,6 +1666,7 @@ return [
 
         'index' => [
             'title'      => 'Khách hàng tiềm năng',
+            'customer'   => 'Khách hàng hiện hữu',
             'create-btn' => 'Tạo khách hàng tiềm năng',
 
             'datagrid' => [
@@ -1920,6 +1923,7 @@ return [
         'app-version'          => 'Phiên bản : :version',
         'dashboard'            => 'Bảng điều khiển',
         'leads'                => 'Khách hàng tiềm năng',
+        'customers'            => 'Khách hàng hiện hữu',
         'quotes'               => 'Báo giá',
         'quote'                => 'Báo giá',
         'mail'                 => [

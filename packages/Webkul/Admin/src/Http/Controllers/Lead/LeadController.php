@@ -627,4 +627,25 @@ class LeadController extends Controller
             ],
         ];
     }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function customers(): View|JsonResponse
+    {
+        if (request()->ajax()) {
+            return datagrid(LeadDataGrid::class)->process();
+        }
+
+        if (request('pipeline_id')) {
+            $pipeline = $this->pipelineRepository->find(request('pipeline_id'));
+        } else {
+            $pipeline = $this->pipelineRepository->getDefaultPipeline();
+        }
+
+        return view('admin::leads.customer', [
+            'pipeline' => $pipeline,
+            'columns'  => $this->getKanbanColumns(),
+        ]);
+    }
 }

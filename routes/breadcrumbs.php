@@ -14,6 +14,12 @@ Breadcrumbs::for('leads', function (BreadcrumbTrail $trail) {
     $trail->push(trans('admin::app.layouts.leads'), route('admin.leads.index'));
 });
 
+// Dashboard > Customers
+Breadcrumbs::for('customers', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push(trans('admin::app.layouts.customers'), route('admin.leads.customers'));
+});
+
 // Dashboard > Leads > Create
 Breadcrumbs::for('leads.create', function (BreadcrumbTrail $trail) {
     $trail->parent('leads');
