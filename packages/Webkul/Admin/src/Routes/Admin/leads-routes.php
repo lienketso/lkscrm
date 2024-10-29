@@ -9,7 +9,7 @@ use Webkul\Admin\Http\Controllers\Lead\TagController;
 
 Route::controller(LeadController::class)->prefix('leads')->group(function () {
     Route::get('', 'index')->name('admin.leads.index');
-
+    
     Route::get('create', 'create')->name('admin.leads.create');
 
     Route::post('create', 'store')->name('admin.leads.store');
