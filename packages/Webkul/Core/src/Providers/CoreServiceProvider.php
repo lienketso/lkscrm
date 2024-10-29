@@ -6,6 +6,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Webkul\Core\Acl;
 use Webkul\Core\Console\Commands\Version;
+use Webkul\Core\Console\Commands\TmpCustomer;
 use Webkul\Core\Core;
 use Webkul\Core\Facades\Acl as AclFacade;
 use Webkul\Core\Facades\Core as CoreFacade;
@@ -86,6 +87,7 @@ class CoreServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Version::class,
+                TmpCustomer::class,
             ]);
         }
     }
