@@ -28,9 +28,9 @@ return [
      */
     [
         'key'        => 'customers',
-        'name'       => 'admin::app.layouts.leads',
-        'route'      => 'admin.leads.customers',
-        'sort'       => 10,
+        'name'       => 'admin::app.layouts.customers',
+        'route'      => 'admin.customers.index',
+        'sort'       => 2,
         'icon-class' => 'icon-leads',
     ],
 

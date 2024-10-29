@@ -20,6 +20,7 @@ class LeadDataGrid extends DataGrid
      * @var \Webkul\Contract\Repositories\Pipeline
      */
     protected $pipeline;
+    protected $isCustomer;
 
     /**
      * Create data grid instance.
@@ -38,6 +39,11 @@ class LeadDataGrid extends DataGrid
             $this->pipeline = $this->pipelineRepository->find(request('pipeline_id'));
         } else {
             $this->pipeline = $this->pipelineRepository->getDefaultPipeline();
+        }
+        if (request('is_customer')) {
+            $this->isCustomer = 1;
+        } else {
+            $this->isCustomer = 0;
         }
     }
 
@@ -78,7 +84,8 @@ class LeadDataGrid extends DataGrid
             ->leftJoin('lead_tags', 'leads.id', '=', 'lead_tags.lead_id')
             ->leftJoin('tags', 'tags.id', '=', 'lead_tags.tag_id')
             ->groupBy('leads.id')
-            ->where('leads.lead_pipeline_id', $this->pipeline->id);
+            ->where('leads.lead_pipeline_id', $this->pipeline->id)
+            ->where('leads.is_customer', $this->isCustomer);
 
         if ($userIds = bouncer()->getAuthorizedUserIds()) {
             $queryBuilder->whereIn('leads.user_id', $userIds);

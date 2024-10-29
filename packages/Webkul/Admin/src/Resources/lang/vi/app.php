@@ -1837,6 +1837,185 @@ return [
         ],
     ],
 
+    'customers' => [
+        'create-success'    => 'Khách hàng hiện hữu đã được tạo thành công.',
+        'update-success'    => 'Khách hàng hiện hữu đã được cập nhật thành công.',
+        'destroy-success'   => 'Khách hàng hiện hữu đã được xóa thành công.',
+        'destroy-failed'    => 'Khách hàng hiện hữu không thể bị xóa.',
+
+        'index' => [
+            'title'      => 'Khách hàng hiện hữu',
+            'customer'   => 'Khách hàng hiện hữu',
+            'create-btn' => 'Tạo khách hàng hiện hữu',
+
+            'datagrid' => [
+                'id'                  => 'ID',
+                'sales-person'        => 'Nhân viên bán hàng',
+                'subject'             => 'Chủ đề',
+                'source'              => 'Nguồn',
+                'lead-value'          => 'Giá trị khách hàng hiện hữu',
+                'lead-type'           => 'Loại khách hàng hiện hữu',
+                'tag-name'            => 'Tên thẻ',
+                'contact-person'      => 'Người liên hệ',
+                'stage'               => 'Giai đoạn',
+                'rotten-lead'         => 'Khách hàng hiện hữu đã hỏng',
+                'expected-close-date' => 'Ngày đóng dự kiến',
+                'created-at'          => 'Ngày tạo',
+                'no'                  => 'Không',
+                'yes'                 => 'Có',
+                'delete'              => 'Xóa',
+                'mass-delete'         => 'Xóa hàng loạt',
+                'mass-update'         => 'Cập nhật hàng loạt',
+            ],
+
+            'kanban' => [
+                'rotten-days'            => 'Khách hàng hiện hữu đã hỏng trong :days ngày',
+                'empty-list'             => 'Danh sách khách hàng hiện hữu của bạn trống',
+                'empty-list-description' => 'Tạo một khách hàng hiện hữu để tổ chức các mục tiêu của bạn.',
+                'create-lead-btn'        => 'Tạo khách hàng hiện hữu',
+
+                'columns' => [
+                    'contact-person'      => 'Người liên hệ',
+                    'id'                  => 'ID',
+                    'lead-type'           => 'Loại khách hàng hiện hữu',
+                    'lead-value'          => 'Giá trị khách hàng hiện hữu',
+                    'sales-person'        => 'Nhân viên bán hàng',
+                    'source'              => 'Nguồn',
+                    'title'               => 'Tiêu đề',
+                    'tags'                => 'Thẻ',
+                    'expected-close-date' => 'Ngày đóng dự kiến',
+                    'created-at'          => 'Ngày tạo',
+                ],
+
+                'toolbar' => [
+                    'search' => [
+                        'title' => 'Tìm kiếm',
+                    ],
+
+                    'filters' => [
+                        'apply-filters' => 'Áp dụng bộ lọc',
+                        'clear-all'     => 'Xóa tất cả',
+                        'filter'        => 'Bộ lọc',
+                        'filters'       => 'Các bộ lọc',
+                        'select'        => 'Chọn',
+                    ],
+                ],
+            ],
+
+            'view-switcher' => [
+                'all-pipelines'       => 'Tất cả các đường ống',
+                'create-new-pipeline' => 'Tạo đường ống mới',
+            ],
+        ],
+
+        'create' => [
+            'title'          => 'Tạo khách hàng hiện hữu',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của khách hàng hiện hữu',
+            'contact-person' => 'Người liên hệ',
+            'contact-info'   => 'Thông tin về người liên hệ',
+            'products'       => 'Sản phẩm',
+            'products-info'  => 'Thông tin về sản phẩm',
+        ],
+
+        'edit' => [
+            'title'          => 'Chỉnh sửa khách hàng hiện hữu',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của khách hàng hiện hữu',
+            'contact-person' => 'Người liên hệ',
+            'contact-info'   => 'Thông tin về người liên hệ',
+            'products'       => 'Sản phẩm',
+            'products-info'  => 'Thông tin về sản phẩm',
+        ],
+
+        'common' => [
+            'contact' => [
+                'name'           => 'Tên',
+                'email'          => 'Email',
+                'contact-number' => 'Số điện thoại',
+                'organization'   => 'Tổ chức',
+            ],
+
+            'products' => [
+                'product-name' => 'Tên sản phẩm',
+                'quantity'     => 'Số lượng',
+                'price'        => 'Giá',
+                'amount'       => 'Số tiền',
+                'action'       => 'Hành động',
+                'add-more'     => 'Thêm nhiều',
+                'total'        => 'Tổng',
+            ],
+        ],
+
+        'view' => [
+            'title'       => 'Khách hàng hiện hữu: :title',
+            'rotten-days' => ':days Ngày',
+
+            'tabs'        => [
+                'description' => 'Mô tả',
+                'products'    => 'Sản phẩm',
+                'quotes'      => 'Báo giá',
+            ],
+
+            'attributes' => [
+                'title' => 'Thông tin về khách hàng hiện hữu',
+            ],
+
+            'quotes'=> [
+                'subject'         => 'Chủ đề',
+                'expired-at'      => 'Hết hạn vào',
+                'sub-total'       => 'Tổng phụ',
+                'discount'        => 'Giảm giá',
+                'tax'             => 'Thuế',
+                'adjustment'      => 'Điều chỉnh',
+                'grand-total'     => 'Tổng cộng',
+                'delete'          => 'Xóa',
+                'edit'            => 'Chỉnh sửa',
+                'download'        => 'Tải xuống',
+                'destroy-success' => 'Báo giá đã được xóa thành công.',
+                'empty-title'     => 'Không tìm thấy báo giá',
+                'empty-info'      => 'Không tìm thấy báo giá cho khách hàng hiện hữu này',
+                'add-btn'         => 'Thêm báo giá',
+            ],
+
+            'products' => [
+                'product-name' => 'Tên sản phẩm',
+                'quantity'     => 'Số lượng',
+                'price'        => 'Giá',
+                'amount'       => 'Số tiền',
+                'action'       => 'Hành động',
+                'add-more'     => 'Thêm nhiều',
+                'total'        => 'Tổng',
+                'empty-title'  => 'Không tìm thấy sản phẩm',
+                'empty-info'   => 'Không tìm thấy sản phẩm cho khách hàng hiện hữu này',
+                'add-product'  => 'Thêm sản phẩm',
+            ],
+
+            'persons' => [
+                'title'     => 'Thông tin về người liên hệ',
+                'job-title' => ':job_title tại :organization',
+            ],
+
+            'stages' => [
+                'won-lost'       => 'Thắng/Thua',
+                'won'            => 'Thắng',
+                'lost'           => 'Thua',
+                'need-more-info' => 'Cần thêm thông tin',
+                'closed-at'      => 'Đóng vào',
+                'won-value'      => 'Giá trị thắng',
+                'lost-reason'    => 'Lý do thua',
+                'save-btn'       => 'Lưu',
+            ],
+
+            'tags' => [
+                'create-success'  => 'Thẻ đã được tạo thành công.',
+                'destroy-success' => 'Thẻ đã được xóa thành công.',
+            ],
+        ],
+    ],
+
     'configuration' => [
         'index' => [
             'back'         => 'Quay lại',

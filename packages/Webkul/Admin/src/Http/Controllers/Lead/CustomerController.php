@@ -28,7 +28,7 @@ use Webkul\Lead\Repositories\TypeRepository;
 use Webkul\Tag\Repositories\TagRepository;
 use Webkul\User\Repositories\UserRepository;
 
-class LeadController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -46,8 +46,8 @@ class LeadController extends Controller
         protected ProductRepository $productRepository,
     ) {
         request()->request->add(['entity_type' => 'leads']);
-        request()->request->add(['is_customer' => '0']);
-        request()->query->add(['is_customer' => '0']);
+        request()->request->add(['is_customer' => '1']);
+        request()->query->add(['is_customer' => '1']);
     }
 
     /**
@@ -65,7 +65,7 @@ class LeadController extends Controller
             $pipeline = $this->pipelineRepository->getDefaultPipeline();
         }
 
-        return view('admin::leads.index', [
+        return view('admin::customers.index', [
             'pipeline' => $pipeline,
             'columns'  => $this->getKanbanColumns(),
         ]);
@@ -98,7 +98,7 @@ class LeadController extends Controller
                 ->where([
                     'lead_pipeline_id'       => $pipeline->id,
                     'lead_pipeline_stage_id' => $stage->id,
-                    'is_customer' => 0,
+                    'is_customer' => 1,
                 ]);
 
             if ($userIds = bouncer()->getAuthorizedUserIds()) {
@@ -142,7 +142,7 @@ class LeadController extends Controller
      */
     public function create(): View
     {
-        return view('admin::leads.create');
+        return view('admin::customers.create');
     }
 
     /**
@@ -155,7 +155,7 @@ class LeadController extends Controller
         $data = $request->all();
 
         $data['status'] = 1;
-        $data['is_customer'] = 0;
+        $data['is_customer'] = 1;
 
         if (request()->input('lead_pipeline_stage_id')) {
             $stage = $this->stageRepository->findOrFail($data['lead_pipeline_stage_id']);
