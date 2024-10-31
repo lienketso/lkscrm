@@ -1,8 +1,8 @@
-{!! view_render_event('admin.leads.create.contact_person.form_controls.before') !!}
+{!! view_render_event('admin.customers.create.contact_person.form_controls.before') !!}
 
 <v-contact-component :data="person"></v-contact-component>
 
-{!! view_render_event('admin.leads.create.contact_person.form_controls.after') !!}
+{!! view_render_event('admin.customers.create.contact_person.form_controls.after') !!}
 
 @pushOnce('scripts')
     <script 
@@ -12,7 +12,7 @@
         <!-- Person Search lookup -->
         <x-admin::form.control-group>
             <x-admin::form.control-group.label class="required">
-                @lang('admin::app.leads.common.contact.name')
+                @lang('admin::app.customers.common.contact.name')
             </x-admin::form.control-group.label>
             
             <x-admin::lookup
@@ -20,7 +20,7 @@
                 name="person[id]"
                 ::params="params"
                 @on-selected="addPerson"
-                :placeholder="trans('admin::app.leads.common.contact.name')"
+                :placeholder="trans('admin::app.customers.common.contact.name')"
                 ::value="{id: person.id, name: person.name}"
                 :can-add-new="true"
             />
@@ -39,7 +39,7 @@
         <!-- Person Email -->
         <x-admin::form.control-group>
             <x-admin::form.control-group.label class="required">
-                @lang('admin::app.leads.common.contact.email')
+                @lang('admin::app.customers.common.contact.email')
             </x-admin::form.control-group.label>
 
             <x-admin::attributes.edit.email />
@@ -55,7 +55,7 @@
         <!-- Person Contact Numbers -->
         <x-admin::form.control-group>
             <x-admin::form.control-group.label>
-                @lang('admin::app.leads.common.contact.contact-number')
+                @lang('admin::app.customers.common.contact.contact-number')
             </x-admin::form.control-group.label>
 
             <x-admin::attributes.edit.phone />
@@ -69,7 +69,7 @@
         <!-- Person Organization -->
         <x-admin::form.control-group>
             <x-admin::form.control-group.label>
-                @lang('admin::app.leads.common.contact.organization')
+                @lang('admin::app.customers.common.contact.organization')
             </x-admin::form.control-group.label>
             
             @php

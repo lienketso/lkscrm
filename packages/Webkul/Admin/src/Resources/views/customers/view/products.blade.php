@@ -1,8 +1,8 @@
-{!! view_render_event('admin.leads.view.products.before', ['lead' => $lead]) !!}
+{!! view_render_event('admin.customers.view.products.before', ['lead' => $lead]) !!}
 
 <v-lead-products></v-lead-products>
 
-{!! view_render_event('admin.leads.view.products.after', ['lead' => $lead]) !!}
+{!! view_render_event('admin.customers.view.products.after', ['lead' => $lead]) !!}
 
 @pushOnce('scripts')
     <script
@@ -10,40 +10,40 @@
         id="v-lead-products-template"
     >
         <div v-if="products.length" class="flex flex-col gap-4 p-3">
-            {!! view_render_event('admin.leads.view.products.table.before', ['lead' => $lead]) !!}
+            {!! view_render_event('admin.customers.view.products.table.before', ['lead' => $lead]) !!}
 
             <!-- Table -->
             <x-admin::table>
-                {!! view_render_event('admin.leads.view.products.table.table_head.before', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.products.table.table_head.before', ['lead' => $lead]) !!}
 
                 <!-- Table Head -->
                 <x-admin::table.thead>
                     <x-admin::table.thead.tr>
                         <x-admin::table.th>
-                            @lang('admin::app.leads.view.products.product-name')
+                            @lang('admin::app.customers.view.products.product-name')
                         </x-admin::table.th>
 
                         <x-admin::table.th class="ltr:text-left rtl:text-right">
-                            @lang('admin::app.leads.view.products.quantity')
+                            @lang('admin::app.customers.view.products.quantity')
                         </x-admin::table.th>
 
                         <x-admin::table.th class="ltr:text-left rtl:text-right">
-                            @lang('admin::app.leads.view.products.price')
+                            @lang('admin::app.customers.view.products.price')
                         </x-admin::table.th>
 
                         <x-admin::table.th class="ltr:text-left rtl:text-right">
-                            @lang('admin::app.leads.view.products.amount')
+                            @lang('admin::app.customers.view.products.amount')
                         </x-admin::table.th>
 
                         <x-admin::table.th class="ltr:text-right rtl:text-left">
-                            @lang('admin::app.leads.view.products.action')
+                            @lang('admin::app.customers.view.products.action')
                         </x-admin::table.th>
                     </x-admin::table.thead.tr>
                 </x-admin::table.thead>
 
-                {!! view_render_event('admin.leads.view.products.table.table_head.after', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.products.table.table_head.after', ['lead' => $lead]) !!}
 
-                {!! view_render_event('admin.leads.view.products.table.table_body.before', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.products.table.table_body.before', ['lead' => $lead]) !!}
 
                 <!-- Table Body -->
                 <x-admin::table.tbody>
@@ -56,12 +56,12 @@
                         @onRemoveProduct="removeProduct($event)"
                     ></v-product-item>
                 </x-admin::table.tbody>
-                {!! view_render_event('admin.leads.view.products.table.table_body.after', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.products.table.table_body.after', ['lead' => $lead]) !!}
             </x-admin::table>
 
-            {!! view_render_event('admin.leads.view.products.table.after', ['lead' => $lead]) !!}
+            {!! view_render_event('admin.customers.view.products.table.after', ['lead' => $lead]) !!}
 
-            {!! view_render_event('admin.leads.view.products.table.add_more.before', ['lead' => $lead]) !!}
+            {!! view_render_event('admin.customers.view.products.table.add_more.before', ['lead' => $lead]) !!}
 
             <!-- Add New Product Item -->
             <div>
@@ -72,11 +72,11 @@
                 >
                     <i class="icon-add text-md !text-brandColor"></i>
 
-                    @lang('admin::app.leads.view.products.add-more')
+                    @lang('admin::app.customers.view.products.add-more')
                 </button>
             </div>
 
-            {!! view_render_event('admin.leads.view.products.table.add_more.after', ['lead' => $lead]) !!}
+            {!! view_render_event('admin.customers.view.products.table.add_more.after', ['lead' => $lead]) !!}
         </div>
 
         <div v-else>
@@ -88,11 +88,11 @@
 
                 <div class="flex flex-col items-center gap-2">
                     <p class="text-xl font-semibold dark:text-white">
-                        @lang('admin::app.leads.view.products.empty-title')
+                        @lang('admin::app.customers.view.products.empty-title')
                     </p>
 
                     <p class="text-gray-400 dark:text-gray-400">
-                        @lang('admin::app.leads.view.products.empty-info')
+                        @lang('admin::app.customers.view.products.empty-info')
                     </p>
                 </div>
 
@@ -100,7 +100,7 @@
                     class="secondary-button"
                     @click="addProduct"
                 >
-                     @lang('admin::app.leads.view.products.add-product')
+                     @lang('admin::app.customers.view.products.add-product')
                 </div>
             </div>
         </div>
@@ -119,7 +119,7 @@
                             ::src="src"
                             name="name"
                             ::params="params"
-                            :placeholder="trans('admin::app.leads.view.products.product-name')"
+                            :placeholder="trans('admin::app.customers.view.products.product-name')"
                             @on-selected="(product) => addProduct(product)"
                             ::value="{ id: product.product_id, name: product.name }"
                         />
@@ -129,8 +129,8 @@
                             name="product_id"
                             v-model="product.product_id"
                             rules="required"
-                            :label="trans('admin::app.leads.view.products.product-name')"
-                            :placeholder="trans('admin::app.leads.view.products.product-name')"
+                            :label="trans('admin::app.customers.view.products.product-name')"
+                            :placeholder="trans('admin::app.customers.view.products.product-name')"
                             ::url="url(product)"
                         />
                 
@@ -148,8 +148,8 @@
                             ::name="'quantity'"
                             ::value="product.quantity"
                             rules="required|decimal:4"
-                            :label="trans('admin::app.leads.view.products.quantity')"
-                            :placeholder="trans('admin::app.leads.view.products.quantity')"
+                            :label="trans('admin::app.customers.view.products.quantity')"
+                            :placeholder="trans('admin::app.customers.view.products.quantity')"
                             @on-change="(event) => product.quantity = event.value"
                             ::url="url(product)"
                             ::params="{product_id: product.product_id}"
@@ -169,8 +169,8 @@
                             ::name="'price'"
                             ::value="product.price"
                             rules="required|decimal:4"
-                            :label="trans('admin::app.leads.view.products.price')"
-                            :placeholder="trans('admin::app.leads.view.products.price')"
+                            :label="trans('admin::app.customers.view.products.price')"
+                            :placeholder="trans('admin::app.customers.view.products.price')"
                             @on-change="(event) => product.price = event.value"
                             ::url="url(product)"
                             ::params="{product_id: product.product_id}"
@@ -191,8 +191,8 @@
                             ::name="'amount'"
                             ::value="product.price * product.quantity"
                             rules="required|decimal:4"
-                            :label="trans('admin::app.leads.view.products.total')"
-                            :placeholder="trans('admin::app.leads.view.products.total')"
+                            :label="trans('admin::app.customers.view.products.total')"
+                            :placeholder="trans('admin::app.customers.view.products.total')"
                             ::allowEdit="false"
                             ::url="url(product)"
                             position="left"
@@ -322,7 +322,7 @@
                  * @return {void}
                  */
                 attachProduct(product) {
-                    this.$axios.post('{{ route('admin.leads.product.add', $lead->id) }}', {
+                    this.$axios.post('{{ route('admin.customers.product.add', $lead->id) }}', {
                         _method: 'PUT',
                         ...product,
                     })
@@ -342,7 +342,7 @@
                 removeProduct() {
                     this.$emitter.emit('open-confirm-modal', {
                         agree: () => {
-                            this.$axios.post('{{ route('admin.leads.product.remove', $lead->id) }}', {
+                            this.$axios.post('{{ route('admin.customers.product.remove', $lead->id) }}', {
                                 _method: 'DELETE',
                                 product_id: this.product.product_id,
                             })
@@ -368,7 +368,7 @@
                         return;
                     }
 
-                    return '{{ route('admin.leads.product.add', $lead->id) }}';
+                    return '{{ route('admin.customers.product.add', $lead->id) }}';
                 }
             }
         });
