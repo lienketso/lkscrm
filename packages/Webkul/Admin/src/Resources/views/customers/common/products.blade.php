@@ -1,8 +1,8 @@
-{!! view_render_event('admin.leads.create.products.form_controls.before') !!}
+{!! view_render_event('admin.customers.create.products.form_controls.before') !!}
 
 <v-product-list :data="products"></v-product-list>
 
-{!! view_render_event('admin.leads.create.products.form_controls.after') !!}
+{!! view_render_event('admin.customers.create.products.form_controls.after') !!}
 
 @pushOnce('scripts')
     <script 
@@ -10,44 +10,44 @@
         id="v-product-list-template"
     >
         <div class="flex flex-col gap-4">
-            {!! view_render_event('admin.leads.create.products.form_controls.table.before') !!}
+            {!! view_render_event('admin.customers.create.products.form_controls.table.before') !!}
 
             <!-- Table -->
             <x-admin::table>
-                {!! view_render_event('admin.leads.create.products.form_controls.table.head.before') !!}
+                {!! view_render_event('admin.customers.create.products.form_controls.table.head.before') !!}
 
                 <!-- Table Head -->
                 <x-admin::table.thead>
                     <x-admin::table.thead.tr>
                         <x-admin::table.th>
-                            @lang('admin::app.leads.common.products.product-name')
+                            @lang('admin::app.customers.common.products.product-name')
                         </x-admin::table.th>
             
                         <x-admin::table.th class="text-center">
-                            @lang('admin::app.leads.common.products.quantity')
+                            @lang('admin::app.customers.common.products.quantity')
                         </x-admin::table.th>
             
                         <x-admin::table.th class="text-center">
-                            @lang('admin::app.leads.common.products.price')
+                            @lang('admin::app.customers.common.products.price')
                         </x-admin::table.th>
             
                         <x-admin::table.th class="text-center">
-                            @lang('admin::app.leads.common.products.amount')
+                            @lang('admin::app.customers.common.products.amount')
                         </x-admin::table.th>
 
                         <x-admin::table.th class="text-right">
-                            @lang('admin::app.leads.common.products.action')
+                            @lang('admin::app.customers.common.products.action')
                         </x-admin::table.th>
                     </x-admin::table.thead.tr>
                 </x-admin::table.thead>
 
-                {!! view_render_event('admin.leads.create.products.form_controls.table.head.after') !!}
+                {!! view_render_event('admin.customers.create.products.form_controls.table.head.after') !!}
 
-                {!! view_render_event('admin.leads.create.products.form_controls.table.body.before') !!}
+                {!! view_render_event('admin.customers.create.products.form_controls.table.body.before') !!}
 
                 <!-- Table Body -->
                 <x-admin::table.tbody>
-                    {!! view_render_event('admin.leads.create.products.form_controls.table.body.product_item.before') !!}
+                    {!! view_render_event('admin.customers.create.products.form_controls.table.body.product_item.before') !!}
 
                     <!-- Product Item Vue Component -->
                     <v-product-item
@@ -58,13 +58,13 @@
                         @onRemoveProduct="removeProduct($event)"
                     ></v-product-item>
 
-                    {!! view_render_event('admin.leads.create.products.form_controls.table.body.product_item.after') !!}
+                    {!! view_render_event('admin.customers.create.products.form_controls.table.body.product_item.after') !!}
                 </x-admin::table.tbody>
 
-                {!! view_render_event('admin.leads.create.products.form_controls.table.body.after') !!}
+                {!! view_render_event('admin.customers.create.products.form_controls.table.body.after') !!}
             </x-admin::table>
 
-            {!! view_render_event('admin.leads.create.products.form_controls.table.after') !!}
+            {!! view_render_event('admin.customers.create.products.form_controls.table.after') !!}
 
             <!-- Add New Product Item -->
             <button
@@ -74,7 +74,7 @@
             >
                 <i class="icon-add text-md !text-brandColor"></i>
 
-                @lang('admin::app.leads.common.products.add-more')
+                @lang('admin::app.customers.common.products.add-more')
             </button>
         </div>
     </script>
@@ -91,7 +91,7 @@
                         ::src="src"
                         ::name="`${inputName}[name]`"
                         ::params="params"
-                        :placeholder="trans('admin::app.leads.common.products.product-name')"
+                        :placeholder="trans('admin::app.customers.common.products.product-name')"
                         @on-selected="(product) => addProduct(product)"
                         ::value="{ id: product.product_id, name: product.name }"
                     />
@@ -101,8 +101,8 @@
                         ::name="`${inputName}[product_id]`"
                         v-model="product.product_id"
                         rules="required"
-                        :label="trans('admin::app.leads.common.products.product-name')"
-                        :placeholder="trans('admin::app.leads.common.products.product-name')"
+                        :label="trans('admin::app.customers.common.products.product-name')"
+                        :placeholder="trans('admin::app.customers.common.products.product-name')"
                     />
             
                     <x-admin::form.control-group.error ::name="`${inputName}[product_id]`" />
@@ -117,8 +117,8 @@
                         ::name="`${inputName}[quantity]`"
                         ::value="product.quantity"
                         rules="required|decimal:4"
-                        :label="trans('admin::app.leads.common.products.quantity')"
-                        :placeholder="trans('admin::app.leads.common.products.quantity')"
+                        :label="trans('admin::app.customers.common.products.quantity')"
+                        :placeholder="trans('admin::app.customers.common.products.quantity')"
                         @on-change="(event) => product.quantity = event.value"
                         position="center"
                     />
@@ -133,8 +133,8 @@
                         ::name="`${inputName}[price]`"
                         ::value="product.price"
                         rules="required|decimal:4"
-                        :label="trans('admin::app.leads.common.products.price')"
-                        :placeholder="trans('admin::app.leads.common.products.price')"
+                        :label="trans('admin::app.customers.common.products.price')"
+                        :placeholder="trans('admin::app.customers.common.products.price')"
                         @on-change="(event) => product.price = event.value"
                         ::value-label="$admin.formatPrice(product.price)"
                         position="center"
@@ -150,8 +150,8 @@
                         ::name="`${inputName}[amount]`"
                         ::value="product.price * product.quantity"
                         rules="required|decimal:4"
-                        :label="trans('admin::app.leads.common.products.total')"
-                        :placeholder="trans('admin::app.leads.common.products.total')"
+                        :label="trans('admin::app.customers.common.products.total')"
+                        :placeholder="trans('admin::app.customers.common.products.total')"
                         ::allowEdit="false"
                         position="center"
                     />

@@ -3,15 +3,15 @@
         @lang('admin::app.customers.create.title')
     </x-slot>
 
-    {!! view_render_event('admin.leads.create.form.before') !!}
+    {!! view_render_event('admin.customers.create.form.before') !!}
 
     <!-- Create Lead Form -->
-    <x-admin::form :action="route('admin.leads.store')">
+    <x-admin::form :action="route('admin.customers.store')">
         <div class="flex flex-col gap-4">
             <div class="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">
                 <div class="flex flex-col gap-2">
                     <div class="flex cursor-pointer items-center">
-                        <x-admin::breadcrumbs name="leads.create" />
+                        <x-admin::breadcrumbs name="customers.create" />
                     </div>
 
                     <div class="text-xl font-bold dark:text-white">
@@ -19,25 +19,25 @@
                     </div>
                 </div>
 
-                {!! view_render_event('admin.leads.create.save_button.before') !!}
+                {!! view_render_event('admin.customers.create.save_button.before') !!}
 
                 <div class="flex items-center gap-x-2.5">
                     <!-- Save button for person -->
                     <div class="flex items-center gap-x-2.5">
-                        {!! view_render_event('admin.leads.create.form_buttons.before') !!}
+                        {!! view_render_event('admin.customers.create.form_buttons.before') !!}
 
                         <button
                             type="submit"
                             class="primary-button"
                         >
-                            @lang('admin::app.leads.create.save-btn')
+                            @lang('admin::app.customers.create.save-btn')
                         </button>
 
-                        {!! view_render_event('admin.leads.create.form_buttons.after') !!}
+                        {!! view_render_event('admin.customers.create.form_buttons.after') !!}
                     </div>
                 </div>
 
-                {!! view_render_event('admin.leads.create.save_button.after') !!}
+                {!! view_render_event('admin.customers.create.save_button.after') !!}
             </div>
 
             @if (request('stage_id'))
@@ -54,7 +54,7 @@
         </div>
     </x-admin::form>
 
-    {!! view_render_event('admin.leads.create.form.after') !!}
+    {!! view_render_event('admin.customers.create.form.after') !!}
 
     @pushOnce('scripts')
         <script 
@@ -62,12 +62,12 @@
             id="v-lead-create-template"
         >
             <div class="box-shadow flex flex-col gap-4 rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 max-xl:flex-wrap">
-                {!! view_render_event('admin.leads.edit.form_controls.before') !!}
+                {!! view_render_event('admin.customers.edit.form_controls.before') !!}
                 
                 <div class="flex gap-2 border-b border-gray-200 dark:border-gray-800">
                     <!-- Tabs -->
                     <template v-for="tab in tabs" :key="tab.id">
-                        {!! view_render_event('admin.leads.create.tabs.before') !!}
+                        {!! view_render_event('admin.customers.create.tabs.before') !!}
 
                         <a
                             :href="'#' + tab.id"
@@ -81,12 +81,12 @@
                             :text="tab.label"
                         ></a>
 
-                        {!! view_render_event('admin.leads.create.tabs.after') !!}
+                        {!! view_render_event('admin.customers.create.tabs.after') !!}
                     </template>
                 </div>
 
                 <div class="flex flex-col gap-4 px-4 py-2">
-                    {!! view_render_event('admin.leads.create.details.before') !!}
+                    {!! view_render_event('admin.customers.create.details.before') !!}
 
                     <!-- Details section -->
                     <div 
@@ -95,16 +95,16 @@
                     >
                         <div class="flex flex-col gap-1">
                             <p class="text-base font-semibold dark:text-white">
-                                @lang('admin::app.leads.create.details')
+                                @lang('admin::app.customers.create.details')
                             </p>
 
                             <p class="text-gray-600 dark:text-white">
-                                @lang('admin::app.leads.create.details-info')
+                                @lang('admin::app.customers.create.details-info')
                             </p>
                         </div>
 
                         <div class="w-1/2">
-                            {!! view_render_event('admin.leads.create.details.attributes.before') !!}
+                            {!! view_render_event('admin.customers.create.details.attributes.before') !!}
 
                             <!-- Lead Details Title and Description -->
                             <x-admin::attributes
@@ -156,13 +156,13 @@
                                 </div>
                             </div>
 
-                            {!! view_render_event('admin.leads.create.details.attributes.after') !!}
+                            {!! view_render_event('admin.customers.create.details.attributes.after') !!}
                         </div>
                     </div>
 
-                    {!! view_render_event('admin.leads.create.details.after') !!}
+                    {!! view_render_event('admin.customers.create.details.after') !!}
 
-                    {!! view_render_event('admin.leads.create.contact_person.before') !!}
+                    {!! view_render_event('admin.customers.create.contact_person.before') !!}
 
                     <!-- Contact Person -->
                     <div 
@@ -171,21 +171,21 @@
                     >
                         <div class="flex flex-col gap-1">
                             <p class="text-base font-semibold dark:text-white">
-                                @lang('admin::app.leads.create.contact-person')
+                                @lang('admin::app.customers.create.contact-person')
                             </p>
 
                             <p class="text-gray-600 dark:text-white">
-                                @lang('admin::app.leads.create.contact-info')
+                                @lang('admin::app.customers.create.contact-info')
                             </p>
                         </div>
 
                         <div class="w-1/2">
                             <!-- Contact Person Component -->
-                            @include('admin::leads.common.contact')
+                            @include('admin::customers.common.contact')
                         </div>
                     </div>
 
-                    {!! view_render_event('admin.leads.create.contact_person.after') !!}
+                    {!! view_render_event('admin.customers.create.contact_person.after') !!}
 
                     <!-- Product Section -->
                     <div 
@@ -194,22 +194,22 @@
                     >
                         <div class="flex flex-col gap-1">
                             <p class="text-base font-semibold dark:text-white">
-                                @lang('admin::app.leads.create.products')
+                                @lang('admin::app.customers.create.products')
                             </p>
 
                             <p class="text-gray-600 dark:text-white">
-                                @lang('admin::app.leads.create.products-info')
+                                @lang('admin::app.customers.create.products-info')
                             </p>
                         </div>
 
                         <div>
                             <!-- Product Component -->
-                            @include('admin::leads.common.products')
+                            @include('admin::customers.common.products')
                         </div>
                     </div>
                 </div>
                 
-                {!! view_render_event('admin.leads.form_controls.after') !!}
+                {!! view_render_event('admin.customers.form_controls.after') !!}
             </div>
         </script>
 
@@ -222,9 +222,9 @@
                         activeTab: 'lead-details',
 
                         tabs: [
-                            { id: 'lead-details', label: '@lang('admin::app.leads.create.details')' },
-                            { id: 'contact-person', label: '@lang('admin::app.leads.create.contact-person')' },
-                            { id: 'products', label: '@lang('admin::app.leads.create.products')' }
+                            { id: 'lead-details', label: '@lang('admin::app.customers.create.details')' },
+                            { id: 'contact-person', label: '@lang('admin::app.customers.create.contact-person')' },
+                            { id: 'products', label: '@lang('admin::app.customers.create.products')' }
                         ],
                     };
                 },

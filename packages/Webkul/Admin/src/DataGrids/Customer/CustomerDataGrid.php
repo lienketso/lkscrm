@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\Admin\DataGrids\Lead;
+namespace Webkul\Admin\DataGrids\Customer;
 
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +12,7 @@ use Webkul\Lead\Repositories\TypeRepository;
 use Webkul\Tag\Repositories\TagRepository;
 use Webkul\User\Repositories\UserRepository;
 
-class LeadDataGrid extends DataGrid
+class CustomerDataGrid extends DataGrid
 {
     /**
      * Pipeline instance.
@@ -40,7 +40,7 @@ class LeadDataGrid extends DataGrid
         } else {
             $this->pipeline = $this->pipelineRepository->getDefaultPipeline();
         }
-        $this->isCustomer = 0;
+        $this->isCustomer = 1;
     }
 
     /**
@@ -114,7 +114,7 @@ class LeadDataGrid extends DataGrid
     {
         $this->addColumn([
             'index'      => 'id',
-            'label'      => trans('admin::app.leads.index.datagrid.id'),
+            'label'      => trans('admin::app.customers.index.datagrid.id'),
             'type'       => 'integer',
             'sortable'   => true,
             'filterable' => true,
@@ -122,7 +122,7 @@ class LeadDataGrid extends DataGrid
 
         $this->addColumn([
             'index'              => 'sales_person',
-            'label'              => trans('admin::app.leads.index.datagrid.sales-person'),
+            'label'              => trans('admin::app.customers.index.datagrid.sales-person'),
             'type'               => 'string',
             'searchable'         => false,
             'sortable'           => true,
@@ -139,7 +139,7 @@ class LeadDataGrid extends DataGrid
 
         $this->addColumn([
             'index'      => 'title',
-            'label'      => trans('admin::app.leads.index.datagrid.subject'),
+            'label'      => trans('admin::app.customers.index.datagrid.subject'),
             'type'       => 'string',
             'searchable' => true,
             'sortable'   => true,
@@ -147,7 +147,7 @@ class LeadDataGrid extends DataGrid
 
         $this->addColumn([
             'index'              => 'lead_source_name',
-            'label'              => trans('admin::app.leads.index.datagrid.source'),
+            'label'              => trans('admin::app.customers.index.datagrid.source'),
             'type'               => 'string',
             'searchable'         => false,
             'sortable'           => true,
@@ -158,7 +158,7 @@ class LeadDataGrid extends DataGrid
 
         $this->addColumn([
             'index'      => 'lead_value',
-            'label'      => trans('admin::app.leads.index.datagrid.lead-value'),
+            'label'      => trans('admin::app.customers.index.datagrid.lead-value'),
             'type'       => 'string',
             'sortable'   => true,
             'searchable' => false,
@@ -168,7 +168,7 @@ class LeadDataGrid extends DataGrid
 
         $this->addColumn([
             'index'              => 'lead_type_name',
-            'label'              => trans('admin::app.leads.index.datagrid.lead-type'),
+            'label'              => trans('admin::app.customers.index.datagrid.lead-type'),
             'type'               => 'string',
             'searchable'         => false,
             'sortable'           => true,
@@ -179,7 +179,7 @@ class LeadDataGrid extends DataGrid
 
         $this->addColumn([
             'index'              => 'tag_name',
-            'label'              => trans('admin::app.leads.index.datagrid.tag-name'),
+            'label'              => trans('admin::app.customers.index.datagrid.tag-name'),
             'type'               => 'string',
             'searchable'         => false,
             'sortable'           => true,
@@ -197,7 +197,7 @@ class LeadDataGrid extends DataGrid
 
         $this->addColumn([
             'index'              => 'person_name',
-            'label'              => trans('admin::app.leads.index.datagrid.contact-person'),
+            'label'              => trans('admin::app.customers.index.datagrid.contact-person'),
             'type'               => 'string',
             'searchable'         => false,
             'sortable'           => true,
@@ -219,7 +219,7 @@ class LeadDataGrid extends DataGrid
 
         $this->addColumn([
             'index'              => 'stage',
-            'label'              => trans('admin::app.leads.index.datagrid.stage'),
+            'label'              => trans('admin::app.customers.index.datagrid.stage'),
             'type'               => 'string',
             'searchable'         => false,
             'sortable'           => true,
@@ -235,26 +235,26 @@ class LeadDataGrid extends DataGrid
 
         $this->addColumn([
             'index'      => 'rotten_lead',
-            'label'      => trans('admin::app.leads.index.datagrid.rotten-lead'),
+            'label'      => trans('admin::app.customers.index.datagrid.rotten-lead'),
             'type'       => 'string',
             'sortable'   => true,
             'searchable' => false,
             'closure'    => function ($row) {
                 if (! $row->rotten_lead) {
-                    return trans('admin::app.leads.index.datagrid.no');
+                    return trans('admin::app.customers.index.datagrid.no');
                 }
 
                 if (in_array($row->stage_code, ['won', 'lost'])) {
-                    return trans('admin::app.leads.index.datagrid.no');
+                    return trans('admin::app.customers.index.datagrid.no');
                 }
 
-                return trans('admin::app.leads.index.datagrid.yes');
+                return trans('admin::app.customers.index.datagrid.yes');
             },
         ]);
 
         $this->addColumn([
             'index'           => 'expected_close_date',
-            'label'           => trans('admin::app.leads.index.datagrid.expected-close-date'),
+            'label'           => trans('admin::app.customers.index.datagrid.expected-close-date'),
             'type'            => 'date',
             'searchable'      => false,
             'sortable'        => true,
@@ -271,7 +271,7 @@ class LeadDataGrid extends DataGrid
 
         $this->addColumn([
             'index'           => 'created_at',
-            'label'           => trans('admin::app.leads.index.datagrid.created-at'),
+            'label'           => trans('admin::app.customers.index.datagrid.created-at'),
             'type'            => 'date',
             'searchable'      => false,
             'sortable'        => true,
@@ -288,18 +288,18 @@ class LeadDataGrid extends DataGrid
         if (bouncer()->hasPermission('leads.view')) {
             $this->addAction([
                 'icon'   => 'icon-eye',
-                'title'  => trans('admin::app.leads.index.datagrid.view'),
+                'title'  => trans('admin::app.customers.index.datagrid.view'),
                 'method' => 'GET',
-                'url'    => fn ($row) => route('admin.leads.view', $row->id),
+                'url'    => fn ($row) => route('admin.customers.view', $row->id),
             ]);
         }
 
         if (bouncer()->hasPermission('leads.delete')) {
             $this->addAction([
                 'icon'   => 'icon-delete',
-                'title'  => trans('admin::app.leads.index.datagrid.delete'),
+                'title'  => trans('admin::app.customers.index.datagrid.delete'),
                 'method' => 'delete',
-                'url'    => fn ($row) => route('admin.leads.delete', $row->id),
+                'url'    => fn ($row) => route('admin.customers.delete', $row->id),
             ]);
         }
     }
@@ -311,14 +311,14 @@ class LeadDataGrid extends DataGrid
     {
         $this->addMassAction([
             'icon'   => 'icon-delete',
-            'title'  => trans('admin::app.leads.index.datagrid.mass-delete'),
+            'title'  => trans('admin::app.customers.index.datagrid.mass-delete'),
             'method' => 'POST',
-            'url'    => route('admin.leads.mass_delete'),
+            'url'    => route('admin.customers.mass_delete'),
         ]);
 
         $this->addMassAction([
-            'title'   => trans('admin::app.leads.index.datagrid.mass-update'),
-            'url'     => route('admin.leads.mass_update'),
+            'title'   => trans('admin::app.customers.index.datagrid.mass-update'),
+            'url'     => route('admin.customers.mass_update'),
             'method'  => 'POST',
             'options' => $this->pipeline->stages->map(fn ($stage) => [
                 'label' => $stage->name,
