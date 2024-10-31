@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\View\View;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Webkul\Admin\DataGrids\Lead\LeadDataGrid;
+use Webkul\Admin\DataGrids\Customer\CustomerDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Admin\Http\Requests\LeadForm;
 use Webkul\Admin\Http\Requests\MassDestroyRequest;
@@ -56,7 +57,7 @@ class CustomerController extends Controller
     public function index(): View|JsonResponse
     {
         if (request()->ajax()) {
-            return datagrid(LeadDataGrid::class)->process();
+            return datagrid(CustomerDataGrid::class)->process();
         }
 
         if (request('pipeline_id')) {
@@ -181,9 +182,9 @@ class CustomerController extends Controller
 
         Event::dispatch('lead.create.after', $lead);
 
-        session()->flash('success', trans('admin::app.leads.create-success'));
+        session()->flash('success', trans('admin::app.customers.create-success'));
 
-        return redirect()->route('admin.leads.index', $data['lead_pipeline_id']);
+        return redirect()->route('admin.customers.index', $data['lead_pipeline_id']);
     }
 
     /**
@@ -193,7 +194,7 @@ class CustomerController extends Controller
     {
         $lead = $this->leadRepository->findOrFail($id);
 
-        return view('admin::leads.edit', compact('lead'));
+        return view('admin::customers.edit', compact('lead'));
     }
 
     /**
@@ -207,10 +208,10 @@ class CustomerController extends Controller
             $userIds = bouncer()->getAuthorizedUserIds()
             && ! in_array($lead->user_id, $userIds)
         ) {
-            return redirect()->route('admin.leads.index');
+            return redirect()->route('admin.customers.index');
         }
 
-        return view('admin::leads.view', compact('lead'));
+        return view('admin::customers.view', compact('lead'));
     }
 
     /**
@@ -244,16 +245,16 @@ class CustomerController extends Controller
 
         if (request()->ajax()) {
             return response()->json([
-                'message' => trans('admin::app.leads.update-success'),
+                'message' => trans('admin::app.customers.update-success'),
             ]);
         }
 
-        session()->flash('success', trans('admin::app.leads.update-success'));
+        session()->flash('success', trans('admin::app.customers.update-success'));
 
         if (request()->has('closed_at')) {
             return redirect()->back();
         } else {
-            return redirect()->route('admin.leads.index', $data['lead_pipeline_id']);
+            return redirect()->route('admin.customers.index', $data['lead_pipeline_id']);
         }
     }
 
@@ -276,7 +277,7 @@ class CustomerController extends Controller
         Event::dispatch('lead.update.after', $lead);
 
         return response()->json([
-            'message' => trans('admin::app.leads.update-success'),
+            'message' => trans('admin::app.customers.update-success'),
         ]);
     }
 
@@ -309,7 +310,7 @@ class CustomerController extends Controller
         Event::dispatch('lead.update.after', $lead);
 
         return response()->json([
-            'message' => trans('admin::app.leads.update-success'),
+            'message' => trans('admin::app.customers.update-success'),
         ]);
     }
 
@@ -346,11 +347,11 @@ class CustomerController extends Controller
             Event::dispatch('lead.delete.after', $id);
 
             return response()->json([
-                'message' => trans('admin::app.leads.destroy-success'),
+                'message' => trans('admin::app.customers.destroy-success'),
             ], 200);
         } catch (\Exception $exception) {
             return response()->json([
-                'message' => trans('admin::app.leads.destroy-failed'),
+                'message' => trans('admin::app.customers.destroy-failed'),
             ], 400);
         }
     }
@@ -376,11 +377,11 @@ class CustomerController extends Controller
             }
 
             return response()->json([
-                'message' => trans('admin::app.leads.update-success'),
+                'message' => trans('admin::app.customers.update-success'),
             ]);
         } catch (\Exception $th) {
             return response()->json([
-                'message' => trans('admin::app.leads.destroy-failed'),
+                'message' => trans('admin::app.customers.destroy-failed'),
             ], 400);
         }
     }
@@ -402,11 +403,11 @@ class CustomerController extends Controller
             }
 
             return response()->json([
-                'message' => trans('admin::app.leads.destroy-success'),
+                'message' => trans('admin::app.customers.destroy-success'),
             ]);
         } catch (\Exception $exception) {
             return response()->json([
-                'message' => trans('admin::app.leads.destroy-failed'),
+                'message' => trans('admin::app.customers.destroy-failed'),
             ]);
         }
     }
@@ -432,7 +433,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'data'    => $product,
-            'message' => trans('admin::app.leads.update-success'),
+            'message' => trans('admin::app.customers.update-success'),
         ]);
     }
 
@@ -452,11 +453,11 @@ class CustomerController extends Controller
             Event::dispatch('lead.product.delete.after', $id);
 
             return response()->json([
-                'message' => trans('admin::app.leads.destroy-success'),
+                'message' => trans('admin::app.customers.destroy-success'),
             ]);
         } catch (\Exception $exception) {
             return response()->json([
-                'message' => trans('admin::app.leads.destroy-failed'),
+                'message' => trans('admin::app.customers.destroy-failed'),
             ]);
         }
     }
@@ -495,7 +496,7 @@ class CustomerController extends Controller
         return [
             [
                 'index'                 => 'id',
-                'label'                 => trans('admin::app.leads.index.kanban.columns.id'),
+                'label'                 => trans('admin::app.customers.index.kanban.columns.id'),
                 'type'                  => 'integer',
                 'searchable'            => false,
                 'search_field'          => 'in',
@@ -508,7 +509,7 @@ class CustomerController extends Controller
             ],
             [
                 'index'                 => 'lead_value',
-                'label'                 => trans('admin::app.leads.index.kanban.columns.lead-value'),
+                'label'                 => trans('admin::app.customers.index.kanban.columns.lead-value'),
                 'type'                  => 'string',
                 'searchable'            => false,
                 'search_field'          => 'in',
@@ -521,7 +522,7 @@ class CustomerController extends Controller
             ],
             [
                 'index'                 => 'user_id',
-                'label'                 => trans('admin::app.leads.index.kanban.columns.sales-person'),
+                'label'                 => trans('admin::app.customers.index.kanban.columns.sales-person'),
                 'type'                  => 'string',
                 'searchable'            => false,
                 'search_field'          => 'in',
@@ -540,7 +541,7 @@ class CustomerController extends Controller
             ],
             [
                 'index'                 => 'person.id',
-                'label'                 => trans('admin::app.leads.index.kanban.columns.contact-person'),
+                'label'                 => trans('admin::app.customers.index.kanban.columns.contact-person'),
                 'type'                  => 'string',
                 'searchable'            => false,
                 'search_field'          => 'in',
@@ -560,7 +561,7 @@ class CustomerController extends Controller
             ],
             [
                 'index'                 => 'lead_type_id',
-                'label'                 => trans('admin::app.leads.index.kanban.columns.lead-type'),
+                'label'                 => trans('admin::app.customers.index.kanban.columns.lead-type'),
                 'type'                  => 'string',
                 'searchable'            => false,
                 'search_field'          => 'in',
@@ -573,7 +574,7 @@ class CustomerController extends Controller
             ],
             [
                 'index'                 => 'lead_source_id',
-                'label'                 => trans('admin::app.leads.index.kanban.columns.source'),
+                'label'                 => trans('admin::app.customers.index.kanban.columns.source'),
                 'type'                  => 'string',
                 'searchable'            => false,
                 'search_field'          => 'in',
@@ -587,7 +588,7 @@ class CustomerController extends Controller
 
             [
                 'index'                 => 'tags.name',
-                'label'                 => trans('admin::app.leads.index.kanban.columns.tags'),
+                'label'                 => trans('admin::app.customers.index.kanban.columns.tags'),
                 'type'                  => 'string',
                 'searchable'            => false,
                 'search_field'          => 'in',
@@ -608,7 +609,7 @@ class CustomerController extends Controller
 
             [
                 'index'              => 'expected_close_date',
-                'label'              => trans('admin::app.leads.index.kanban.columns.expected-close-date'),
+                'label'              => trans('admin::app.customers.index.kanban.columns.expected-close-date'),
                 'type'               => 'date',
                 'searchable'         => false,
                 'searchable'         => false,
@@ -620,7 +621,7 @@ class CustomerController extends Controller
 
             [
                 'index'              => 'created_at',
-                'label'              => trans('admin::app.leads.index.kanban.columns.created-at'),
+                'label'              => trans('admin::app.customers.index.kanban.columns.created-at'),
                 'type'               => 'date',
                 'searchable'         => false,
                 'searchable'         => false,

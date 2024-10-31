@@ -1,9 +1,9 @@
-{!! view_render_event('admin.leads.view.person.before', ['lead' => $lead]) !!}
+{!! view_render_event('admin.customers.view.person.before', ['lead' => $lead]) !!}
 
 @if ($lead?->person)
     <div class="flex w-full flex-col gap-4 border-b border-gray-200 p-4 dark:border-gray-800">
         <h4 class="flex items-center justify-between font-semibold dark:text-white">
-            @lang('admin::app.leads.view.persons.title')
+            @lang('admin::app.customers.view.persons.title')
 
             @if (bouncer()->hasPermission('contacts.persons.edit'))
                 <a
@@ -15,16 +15,16 @@
         </h4>
 
         <div class="flex gap-2">
-            {!! view_render_event('admin.leads.view.person.avatar.before', ['lead' => $lead]) !!}
+            {!! view_render_event('admin.customers.view.person.avatar.before', ['lead' => $lead]) !!}
 
             <!-- Person Initials -->
             <x-admin::avatar :name="$lead->person->name" />
 
-            {!! view_render_event('admin.leads.view.person.avatar.after', ['lead' => $lead]) !!}
+            {!! view_render_event('admin.customers.view.person.avatar.after', ['lead' => $lead]) !!}
 
             <!-- Person Details -->
             <div class="flex flex-col gap-1">
-                {!! view_render_event('admin.leads.view.person.name.before', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.person.name.before', ['lead' => $lead]) !!}
 
                 <a
                     href="{{ route('admin.contacts.persons.view', $lead->person->id) }}"
@@ -34,14 +34,14 @@
                     {{ $lead->person->name }}
                 </a>
 
-                {!! view_render_event('admin.leads.view.person.name.after', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.person.name.after', ['lead' => $lead]) !!}
 
-                {!! view_render_event('admin.leads.view.person.job_title.before', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.person.job_title.before', ['lead' => $lead]) !!}
 
                 @if ($lead->person->job_title)
                     <span class="dark:text-white">
                         @if ($lead->person->organization)
-                            @lang('admin::app.leads.view.persons.job-title', [
+                            @lang('admin::app.customers.view.persons.job-title', [
                                 'job_title'    => $lead->person->job_title,
                                 'organization' => $lead->person->organization->name
                             ])
@@ -51,9 +51,9 @@
                     </span>
                 @endif
 
-                {!! view_render_event('admin.leads.view.person.job_title.after', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.person.job_title.after', ['lead' => $lead]) !!}
             
-                {!! view_render_event('admin.leads.view.person.email.before', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.person.email.before', ['lead' => $lead]) !!}
 
                 @foreach ($lead->person->emails as $email)
                     <div class="flex gap-1">
@@ -70,28 +70,30 @@
                     </div>
                 @endforeach
 
-                {!! view_render_event('admin.leads.view.person.email.after', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.person.email.after', ['lead' => $lead]) !!}
 
-                {!! view_render_event('admin.leads.view.person.contact_numbers.before', ['lead' => $lead]) !!}
-            
-                @foreach ($lead->person->contact_numbers as $contactNumber)
-                    <div class="flex gap-1">
-                        <a  
-                            class="text-brandColor"
-                            href="callto:{{ $contactNumber['value'] }}"
-                        >
-                            {{ $contactNumber['value'] }}
-                        </a>
+                {!! view_render_event('admin.customers.view.person.contact_numbers.before', ['lead' => $lead]) !!}
+                
+                @if ($lead->person->contact_numbers)
+                    @foreach ($lead->person->contact_numbers as $contactNumber)
+                        <div class="flex gap-1">
+                            <a  
+                                class="text-brandColor"
+                                href="callto:{{ $contactNumber['value'] }}"
+                            >
+                                {{ $contactNumber['value'] }}
+                            </a>
 
-                        <span class="text-gray-500 dark:text-gray-300">
-                            ({{ $contactNumber['label'] }})
-                        </span>
-                    </div>
-                @endforeach
+                            <span class="text-gray-500 dark:text-gray-300">
+                                ({{ $contactNumber['label'] }})
+                            </span>
+                        </div>
+                    @endforeach
+                @endif
 
-                {!! view_render_event('admin.leads.view.person.contact_numbers.after', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.person.contact_numbers.after', ['lead' => $lead]) !!}
             </div>
         </div>
     </div>
 @endif
-{!! view_render_event('admin.leads.view.person.after', ['lead' => $lead]) !!}
+{!! view_render_event('admin.customers.view.person.after', ['lead' => $lead]) !!}

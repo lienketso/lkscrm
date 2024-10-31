@@ -1,4 +1,4 @@
-{!! view_render_event('admin.leads.index.table.before') !!}
+{!! view_render_event('admin.customers.index.table.before') !!}
 
 <x-admin::datagrid :src="route('admin.customers.index')">
     <!-- DataGrid Shimmer -->
@@ -9,4 +9,4 @@
     </x-slot>
 </x-admin::datagrid>
 
-{!! view_render_event('admin.leads.index.table.after') !!}
+{!! view_render_event('admin.customers.index.table.after') !!}

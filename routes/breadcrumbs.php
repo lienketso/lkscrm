@@ -26,16 +26,34 @@ Breadcrumbs::for('leads.create', function (BreadcrumbTrail $trail) {
     $trail->push(trans('admin::app.leads.create.title'), route('admin.leads.create'));
 });
 
+// Dashboard > Customers > Create
+Breadcrumbs::for('customers.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('customers');
+    $trail->push(trans('admin::app.customers.create.title'), route('admin.customers.create'));
+});
+
 // Leads Edit
 Breadcrumbs::for('leads.edit', function (BreadcrumbTrail $trail, $lead) {
     $trail->parent('leads');
     $trail->push(trans('admin::app.leads.edit.title'), route('admin.leads.edit', $lead->id));
 });
 
+// Customers Edit
+Breadcrumbs::for('customers.edit', function (BreadcrumbTrail $trail, $lead) {
+    $trail->parent('customers');
+    $trail->push(trans('admin::app.customers.edit.title'), route('admin.customers.edit', $lead->id));
+});
+
 // Dashboard > Leads > Title
 Breadcrumbs::for('leads.view', function (BreadcrumbTrail $trail, $lead) {
     $trail->parent('leads');
     $trail->push('#'.$lead->id, route('admin.leads.view', $lead->id));
+});
+
+// Dashboard > Customers > Title
+Breadcrumbs::for('customers.view', function (BreadcrumbTrail $trail, $lead) {
+    $trail->parent('customers');
+    $trail->push('#'.$lead->id, route('admin.customers.view', $lead->id));
 });
 
 // Dashboard > Quotes
