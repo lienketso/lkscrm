@@ -53,6 +53,9 @@ class CustomerDataGrid extends DataGrid
         $queryBuilder = DB::table('leads')
             ->addSelect(
                 'leads.id',
+                'leads.id_kiotviet',
+                'leads.code',
+                'leads.address',
                 'leads.title',
                 'leads.status',
                 'leads.lead_value',
@@ -66,6 +69,7 @@ class CustomerDataGrid extends DataGrid
                 'users.name as sales_person',
                 'persons.id as person_id',
                 'persons.name as person_name',
+                'persons.contact_numbers',
                 'tags.name as tag_name',
                 'lead_pipelines.rotten_days as pipeline_rotten_days',
                 'lead_pipeline_stages.code as stage_code',
@@ -113,28 +117,38 @@ class CustomerDataGrid extends DataGrid
     public function prepareColumns(): void
     {
         $this->addColumn([
-            'index'      => 'id',
-            'label'      => trans('admin::app.customers.index.datagrid.id'),
-            'type'       => 'integer',
+            'index'      => 'code',
+            'label'      => trans('admin::app.customers.index.datagrid.code'),
+            'type'       => 'string',
             'sortable'   => true,
             'filterable' => true,
         ]);
 
+        // $this->addColumn([
+        //     'index'              => 'sales_person',
+        //     'label'              => trans('admin::app.customers.index.datagrid.sales-person'),
+        //     'type'               => 'string',
+        //     'searchable'         => false,
+        //     'sortable'           => true,
+        //     'filterable'         => true,
+        //     'filterable_type'    => 'searchable_dropdown',
+        //     'filterable_options' => [
+        //         'repository' => UserRepository::class,
+        //         'column'     => [
+        //             'label' => 'name',
+        //             'value' => 'name',
+        //         ],
+        //     ],
+        // ]);
+
         $this->addColumn([
-            'index'              => 'sales_person',
-            'label'              => trans('admin::app.customers.index.datagrid.sales-person'),
-            'type'               => 'string',
-            'searchable'         => false,
-            'sortable'           => true,
-            'filterable'         => true,
-            'filterable_type'    => 'searchable_dropdown',
-            'filterable_options' => [
-                'repository' => UserRepository::class,
-                'column'     => [
-                    'label' => 'name',
-                    'value' => 'name',
-                ],
-            ],
+            'index'      => 'contact_numbers',
+            'label'      => trans('admin::app.customers.index.datagrid.contact-number'),
+            'type'       => 'string',
+            'sortable'   => true,
+            'filterable' => true,
+            'searchable' => true,
+            'closure'    => fn ($row) => collect(json_decode($row->contact_numbers, true) ?? [])->pluck('value')->join(', '),
         ]);
 
         $this->addColumn([
@@ -233,41 +247,41 @@ class CustomerDataGrid extends DataGrid
                 ->all(),
         ]);
 
-        $this->addColumn([
-            'index'      => 'rotten_lead',
-            'label'      => trans('admin::app.customers.index.datagrid.rotten-lead'),
-            'type'       => 'string',
-            'sortable'   => true,
-            'searchable' => false,
-            'closure'    => function ($row) {
-                if (! $row->rotten_lead) {
-                    return trans('admin::app.customers.index.datagrid.no');
-                }
+        // $this->addColumn([
+        //     'index'      => 'rotten_lead',
+        //     'label'      => trans('admin::app.customers.index.datagrid.rotten-lead'),
+        //     'type'       => 'string',
+        //     'sortable'   => true,
+        //     'searchable' => false,
+        //     'closure'    => function ($row) {
+        //         if (! $row->rotten_lead) {
+        //             return trans('admin::app.customers.index.datagrid.no');
+        //         }
 
-                if (in_array($row->stage_code, ['won', 'lost'])) {
-                    return trans('admin::app.customers.index.datagrid.no');
-                }
+        //         if (in_array($row->stage_code, ['won', 'lost'])) {
+        //             return trans('admin::app.customers.index.datagrid.no');
+        //         }
 
-                return trans('admin::app.customers.index.datagrid.yes');
-            },
-        ]);
+        //         return trans('admin::app.customers.index.datagrid.yes');
+        //     },
+        // ]);
 
-        $this->addColumn([
-            'index'           => 'expected_close_date',
-            'label'           => trans('admin::app.customers.index.datagrid.expected-close-date'),
-            'type'            => 'date',
-            'searchable'      => false,
-            'sortable'        => true,
-            'filterable'      => true,
-            'filterable_type' => 'date_range',
-            'closure'         => function ($row) {
-                if (! $row->expected_close_date) {
-                    return '--';
-                }
+        // $this->addColumn([
+        //     'index'           => 'expected_close_date',
+        //     'label'           => trans('admin::app.customers.index.datagrid.expected-close-date'),
+        //     'type'            => 'date',
+        //     'searchable'      => false,
+        //     'sortable'        => true,
+        //     'filterable'      => true,
+        //     'filterable_type' => 'date_range',
+        //     'closure'         => function ($row) {
+        //         if (! $row->expected_close_date) {
+        //             return '--';
+        //         }
 
-                return $row->expected_close_date;
-            },
-        ]);
+        //         return $row->expected_close_date;
+        //     },
+        // ]);
 
         $this->addColumn([
             'index'           => 'created_at',

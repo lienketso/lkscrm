@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('id_kiotviet')->nullable();
             $table->string('code')->nullable();
             $table->string('name')->nullable();
-            $table->string('gender')->nullable();
+            $table->string('contactNumber')->nullable();
+            $table->string('address')->nullable();
             $table->string('retailerId')->nullable();
             $table->string('branchId')->nullable();
             $table->string('locationName')->nullable();

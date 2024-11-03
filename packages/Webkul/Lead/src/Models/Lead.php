@@ -52,6 +52,9 @@ class Lead extends Model implements LeadContract
         'lead_pipeline_id',
         'lead_pipeline_stage_id',
         'is_customer',
+        'id_kiotviet',
+        'code',
+        'address',
     ];
 
     /**

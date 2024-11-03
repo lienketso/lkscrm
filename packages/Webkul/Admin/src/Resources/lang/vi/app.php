@@ -1850,11 +1850,12 @@ return [
 
             'datagrid' => [
                 'id'                  => 'ID',
+                'code'                => 'Mã khách hàng',
                 'sales-person'        => 'Nhân viên bán hàng',
-                'subject'             => 'Chủ đề',
+                'subject'             => 'Tên khách hàng',
                 'source'              => 'Nguồn',
-                'lead-value'          => 'Giá trị khách hàng hiện hữu',
-                'lead-type'           => 'Loại khách hàng hiện hữu',
+                'lead-value'          => 'Giá trị khách hàng',
+                'lead-type'           => 'Loại khách hàng',
                 'tag-name'            => 'Tên thẻ',
                 'contact-person'      => 'Người liên hệ',
                 'stage'               => 'Giai đoạn',
@@ -1866,6 +1867,8 @@ return [
                 'delete'              => 'Xóa',
                 'mass-delete'         => 'Xóa hàng loạt',
                 'mass-update'         => 'Cập nhật hàng loạt',
+                'address'             => 'Địa chỉ',
+                'contact-number'      => 'Số điện thoại',
             ],
 
             'kanban' => [
