@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::table('leads', function (Blueprint $table) {
             $table->integer('is_customer')->nullable();
+            $table->string('id_kiotviet')->nullable();
+            $table->string('code')->nullable();
+            $table->string('address')->nullable();
         });
     }
 
@@ -23,6 +26,9 @@ return new class extends Migration
     {
         Schema::table('leads', function (Blueprint $table) {
             $table->dropColumn('is_customer');
+            $table->dropColumn('id_kiotviet');
+            $table->dropColumn('code');
+            $table->dropColumn('address');
         });
     }
 };

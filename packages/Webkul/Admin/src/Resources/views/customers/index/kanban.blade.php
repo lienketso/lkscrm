@@ -164,7 +164,7 @@
 
                                     <!-- Lead Title -->
                                     <p class="text-xs font-medium">
-                                        @{{ element.title }}
+                                        @{{ element.contact_numbers}}
                                     </p>
 
                                     {!! view_render_event('admin.customers.index.kanban.content.stage.body.card.title.after') !!}
