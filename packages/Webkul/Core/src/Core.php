@@ -240,4 +240,10 @@ class Core
     {
         return system_config()->getConfigData($field);
     }
+
+    public function parseContactNumber($contactNumber)
+    {
+        if (empty($contactNumber) || !is_array($contactNumber)) return '';
+        return collect($contactNumber)->pluck('value')->join(', ');
+    }
 }
