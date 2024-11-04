@@ -8,6 +8,7 @@ use Webkul\Contact\Repositories\PersonRepository;
 use Webkul\User\Repositories\UserRepository;
 use Webkul\Lead\Repositories\LeadRepository;
 use Webkul\User\Models\User;
+use Webkul\Lead\Models\Lead;
 use Webkul\Admin\Services\KiotVietService;
 
 class TmpCustomer extends Command
@@ -151,6 +152,16 @@ class TmpCustomer extends Command
                 echo 'done->' . $item->name . "; \n";
             }
             exit("done 2! \n");
+        }
+        if ($option == 3) {
+            $customers = $this->leadRepository->all();
+            // dd(count($customers));
+            foreach ($customers as $customer) {
+                $code = $customer->code;
+                $tmps = ModelTmpCustomer::where('code', $code)->sum('totalInvoiced');
+                Lead::whereId($customer->id)->update(['lead_value' => $tmps]);
+                echo 'done: ' . $code . ' => ' . $tmps . "\n";
+            }
         }
 
         exit("done 333! \n");
