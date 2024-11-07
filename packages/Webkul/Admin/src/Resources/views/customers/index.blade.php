@@ -26,14 +26,14 @@
         <div class="flex items-center gap-x-2.5">
             <!-- Create button for Leads -->
             <div class="flex items-center gap-x-2.5">
-                <!-- @if (bouncer()->hasPermission('leads.create'))
+                @if (bouncer()->hasPermission('leads.create'))
                     <a
                         href="{{ route('admin.customers.create') }}"
                         class="primary-button"
                     >
                         @lang('admin::app.customers.index.create-btn')
                     </a>
-                @endif -->
+                @endif
             </div>
         </div>
 
