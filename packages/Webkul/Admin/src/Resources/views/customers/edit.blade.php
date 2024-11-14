@@ -106,9 +106,23 @@
                             {!! view_render_event('admin.customers.edit.lead_details.attributes.before', ['lead' => $lead]) !!}
 
                             <!-- Lead Details Title and Description -->
-                            <x-admin::attributes
+                            <!-- <x-admin::attributes
                                 :custom-attributes="app('Webkul\Attribute\Repositories\AttributeRepository')->findWhere([
                                     ['code', 'NOTIN', ['lead_value', 'lead_type_id', 'lead_source_id', 'expected_close_date', 'user_id', 'lead_pipeline_id', 'lead_pipeline_stage_id']],
+                                    'entity_type' => 'leads',
+                                    'quick_add'   => 1
+                                ])"
+                                :custom-validations="[
+                                    'expected_close_date' => [
+                                        'date_format:yyyy-MM-dd',
+                                        'after:' .  \Carbon\Carbon::yesterday()->format('Y-m-d')
+                                    ],
+                                ]"
+                                :entity="$lead"
+                            /> -->
+                            <x-admin::attributes
+                                :custom-attributes="app('Webkul\Attribute\Repositories\AttributeRepository')->findWhere([
+                                    ['code', 'NOTIN', ['lead_value', 'lead_type_id', 'lead_source_id', 'expected_close_date', 'user_id', 'lead_pipeline_stage_id']],
                                     'entity_type' => 'leads',
                                     'quick_add'   => 1
                                 ])"
