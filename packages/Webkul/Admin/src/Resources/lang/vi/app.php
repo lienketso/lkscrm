@@ -4,8 +4,8 @@ return [
     'acl' => [
         'leads'           => 'Khách hàng tiềm năng',
         'lead'            => 'Khách hàng tiềm năng',
-        'customers'           => 'Khách hàng hiện hữu',
-        'customer'            => 'Khách hàng hiện hữu',
+        'customers'       => 'Khách hàng hiện hữu',
+        'customer'        => 'Khách hàng hiện hữu',
         'quotes'          => 'Báo giá',
         'mail'            => 'Thư',
         'inbox'           => 'Hộp thư đến',

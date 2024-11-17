@@ -104,12 +104,13 @@ class ActivityRepository extends Repository
         return $this->select(
             'activities.id',
             'activities.created_at',
-            'activities.title',
+            // 'activities.title',
             'activities.schedule_from as start',
             'activities.schedule_to as end',
             'users.name as user_name',
         )
             ->addSelect(\DB::raw('IF(activities.is_done, "done", "") as class'))
+            ->addSelect(\DB::raw(' CONCAT("User: ", users.name, " <br> ", activities.title) as title '))
             ->leftJoin('activity_participants', 'activities.id', '=', 'activity_participants.activity_id')
             ->leftJoin('users', 'activities.user_id', '=', 'users.id')
             ->whereIn('type', ['call', 'meeting', 'lunch'])
