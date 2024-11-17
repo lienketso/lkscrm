@@ -45,7 +45,7 @@
     {!! view_render_event('admin.customers.index.content.before') !!}
 
     <!-- Content -->
-    <div class="mt-3.5 annp">
+    <div class="mt-3.5">
         @if ((request()->view_type ?? "kanban") == "table")
             @include('admin::customers.index.table')
         @else
