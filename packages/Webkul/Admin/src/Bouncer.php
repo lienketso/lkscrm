@@ -57,4 +57,13 @@ class Bouncer
             return [$user->id];
         }
     }
+
+    public function getUsers()
+    {
+        if ($userIds = $this->getAuthorizedUserIds()) {
+            return app(UserRepository::class)->select('id', 'name')->whereIn('id', $userIds)->get();
+        } else {
+            return app(UserRepository::class)->select('id', 'name')->get();
+        }
+    }
 }
