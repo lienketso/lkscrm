@@ -54,8 +54,10 @@ class ActivityController extends Controller
         $endDate = request()->get('endDate')
             ? Carbon::createFromTimeString(request()->get('endDate').' 23:59:59')
             : Carbon::now()->endOfWeek()->format('Y-m-d H:i:s');
+        
+        $userId = request()->get('userId');
 
-        $activities = $this->activityRepository->getActivities([$startDate, $endDate])->toArray();
+        $activities = $this->activityRepository->getActivities([$startDate, $endDate], $userId)->toArray();
 
         return response()->json([
             'activities' => $activities,

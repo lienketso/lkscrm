@@ -285,6 +285,28 @@
             type="text/x-template"
             id="v-calendar-template"
         >
+            <div class="flex flex-col gap-4">
+                <div class="box-shadow rounded bg-white p-4">
+                    <x-admin::form.control-group>
+                        <x-admin::form.control-group.control
+                            type="select"
+                            name="filter-user"
+                            id="filter-user"
+                            class="!w-1/4 rounded-r-none"
+                            v-model="userId"
+                            @change="changeUser"
+                        >
+                            <option value="">@lang('admin::app.components.activities.index.all')</option>
+                            @foreach (bouncer()->getUsers() as $user)
+                                <option value="{{ $user->id }}">
+                                    {{ $user->name }}
+                                </option>
+                            @endforeach
+                        </x-admin::form.control-group.control>
+                    </x-admin::form.control-group>
+                </div>
+            </div>
+
             <v-vue-cal
                 hide-view-selector
                 :watchRealTime="true"
@@ -339,6 +361,8 @@
                         events: [],
 
                         theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
+
+                        userId: '',
                     };
                 },
 
@@ -362,7 +386,7 @@
                     getActivities({startDate, endDate}) {
                         this.$root.pageLoaded = false;
 
-                        this.$axios.get("{{ route('admin.activities.get', ['view_type' => 'calendar']) }}" + `&startDate=${new Date(startDate).toLocaleDateString("en-US")}&endDate=${new Date(endDate).toLocaleDateString("en-US")}`)
+                        this.$axios.get("{{ route('admin.activities.get', ['view_type' => 'calendar']) }}" + `&userId=${this.userId}&startDate=${new Date(startDate).toLocaleDateString("en-US")}&endDate=${new Date(endDate).toLocaleDateString("en-US")}`)
                             .then(response => {
                                 this.events = response.data.activities;
                             })
@@ -379,6 +403,13 @@
                         if (event.id) {
                             window.location.href = `{{ route('admin.activities.edit', ':id') }}`.replace(':id', event.id);
                         }
+                    },
+                    changeUser() {
+                        this.$axios.get("{{ route('admin.activities.get', ['view_type' => 'calendar']) }}" + `&userId=${this.userId}`)
+                            .then(response => {
+                                this.events = response.data.activities;
+                            })
+                            .catch(error => {});
                     },
                 },
             });
