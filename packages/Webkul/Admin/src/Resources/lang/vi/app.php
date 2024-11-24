@@ -2193,29 +2193,47 @@ return [
     ],
 
     'emails' => [
-    'common' => [
-        'dear'   => 'Kính gửi :name',
-        'cheers' => 'Trân trọng,</br>Đội ngũ :app_name',
+        'common' => [
+            'dear'   => 'Kính gửi :name',
+            'cheers' => 'Trân trọng,</br>Đội ngũ :app_name',
 
-        'user'   => [
-            'dear'           => 'Kính gửi :username',
-            'create-subject' => 'Bạn đã được thêm vào làm thành viên.',
-            'create-body'    => 'Chúc mừng! Bạn hiện là thành viên của đội ngũ chúng tôi.',
+            'user'   => [
+                'dear'           => 'Kính gửi :username',
+                'create-subject' => 'Bạn đã được thêm vào làm thành viên.',
+                'create-body'    => 'Chúc mừng! Bạn hiện là thành viên của đội ngũ chúng tôi.',
 
-            'forget-password' => [
-                'subject'           => 'Khách hàng Đặt lại Mật khẩu',
-                'dear'              => 'Kính gửi :username',
-                'reset-password'    => 'Đặt lại Mật khẩu',
-                'info'              => 'Bạn nhận được email này vì chúng tôi đã nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn',
-                'final-summary'     => 'Nếu bạn không yêu cầu đặt lại mật khẩu, không cần thực hiện thêm hành động nào',
-                'thanks'            => 'Cảm ơn!',
+                'forget-password' => [
+                    'subject'           => 'Khách hàng Đặt lại Mật khẩu',
+                    'dear'              => 'Kính gửi :username',
+                    'reset-password'    => 'Đặt lại Mật khẩu',
+                    'info'              => 'Bạn nhận được email này vì chúng tôi đã nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn',
+                    'final-summary'     => 'Nếu bạn không yêu cầu đặt lại mật khẩu, không cần thực hiện thêm hành động nào',
+                    'thanks'            => 'Cảm ơn!',
+                ],
             ],
         ],
     ],
-],
 
-'errors' => [
-    '401' => 'Bạn không được phép truy cập trang này',
-],
+    'errors' => [
+        '401' => 'Bạn không được phép truy cập trang này',
+    ],
 
+    'zalo' => [
+        'title' => 'Zalo',
+        'template_title' => 'Zalo - Tin nhắn mẫu',
+        'template' => 'Tin nhắn mẫu',
+        'columns' => [
+            'id' => 'Id',
+            'template_id' => 'ID template',
+            'template_name' => 'Tên template',
+            'status' => 'Trạng thái',
+            'price' => 'Giá',
+            'template_quality' => 'Chất lượng gửi ',
+            'template_tag' => 'Loại nội dung',
+        ],
+        'button' => [
+            'sync_template_from_zalo' => 'Lấy mẫu tin nhắn từ zalo OA',
+        ],
+        'sync_template_from_zalo_mes' => 'Vui lòng chờ hệ thống xử lý đồng bộ tin nhắn mẫu từ Zalo'
+    ]
 ];
