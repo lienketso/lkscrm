@@ -2242,6 +2242,7 @@ return [
         'update-success'    => 'Chiến dịch đã được cập nhật thành công.',
         'destroy-success'   => 'Chiến dịch đã được xóa thành công.',
         'destroy-failed'    => 'Chiến dịch không thể bị xóa.',
+        'no-result-found'   => 'Không tìm thấy kết quả',
         'index' => [
             'title'      => 'Chiến dịch',
             'list'       => 'Danh sách chiến dịch',
@@ -2256,6 +2257,7 @@ return [
                 'delete'      => 'Xóa',
                 'mass-delete' => 'Xóa hàng loạt',
                 'mass-update' => 'Cập nhật hàng loạt',
+                'customer'    => 'Khách hàng',
             ],
         ],
 

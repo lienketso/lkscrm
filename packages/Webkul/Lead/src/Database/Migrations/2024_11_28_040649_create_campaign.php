@@ -46,6 +46,17 @@ return new class extends Migration
             $table->index('zalo_template_id');
             $table->index('zalo_template_info_id');
         });
+
+        Schema::create('campaign_customers', function (Blueprint $table) {
+            $table->id();
+            $table->integer('campaign_id');
+            $table->integer('lead_id');
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('campaign_id');
+            $table->index('lead_id');
+        });
     }
 
     /**

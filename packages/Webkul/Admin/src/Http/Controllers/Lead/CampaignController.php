@@ -5,6 +5,11 @@ namespace Webkul\Admin\Http\Controllers\Lead;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Admin\DataGrids\Lead\CampaignDataGrid;
 use Illuminate\Http\Request;
+use Webkul\Admin\Http\Requests\CampaignForm;
+use Webkul\Lead\Models\Campaign;
+use Webkul\Lead\Models\CampaignSchedule;
+use Webkul\Lead\Models\CampaignScheduleContent;
+use Webkul\Lead\Models\CampaignCustomer;
 
 class CampaignController extends Controller
 {
@@ -41,9 +46,27 @@ class CampaignController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CampaignForm $request)
     {
+        $params = (Object) $request->all();
+
+        // dd($params);
         
+        $campaign = new Campaign();
+        $campaign->name = $params->name;
+        $campaign->description = $params->description;
+        $campaign->save();
+
+        foreach ($params->customers as $customerId) {
+            $campaignCustomer = new CampaignCustomer();
+            $campaignCustomer->campaign_id = $campaign->id;
+            $campaignCustomer->lead_id = $customerId;
+            $campaignCustomer->save();
+        }
+
+        session()->flash('success', trans('admin::app.campaign.create-success'));
+
+        return redirect()->route('admin.campaign.index');
     }
 
     /**
@@ -51,9 +74,14 @@ class CampaignController extends Controller
      */
     public function edit(int $id)
     {
-        $lead = $this->leadRepository->findOrFail($id);
+        $campaign = Campaign::findOrFail($id);
 
-        return view('admin::leads.edit', compact('lead'));
+        $customers = [];
+        foreach($campaign->customers as $item) {
+            $customers[] = $item->lead;
+        }
+        
+        return view('admin::campaign.edit', compact('campaign', 'customers'));
     }
 
     /**
@@ -61,19 +89,15 @@ class CampaignController extends Controller
      */
     public function view(int $id)
     {
-        $lead = $this->leadRepository->findOrFail($id);
-        $userIds = bouncer()->getAuthorizedUserIds();
-        if ($userIds && !in_array($lead->user_id, $userIds)) {
-            return redirect()->route('admin.leads.index');
-        }
+        $lead = Campaign::findOrFail($id);
 
-        return view('admin::leads.view', compact('lead'));
+        return view('admin::campaign.view', compact('campaign'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $id)
+    public function update(CampaignForm $request, int $id)
     {
         
     }

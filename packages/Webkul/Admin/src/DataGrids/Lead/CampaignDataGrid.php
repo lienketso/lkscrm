@@ -69,6 +69,12 @@ class CampaignDataGrid extends DataGrid
                 'method' => 'GET',
                 'url'    => fn ($row) => route('admin.campaign.view', $row->id),
             ]);
+            $this->addAction([
+                'icon'   => 'icon-edit',
+                'title'  => trans('admin::app.campaign.edit.title'),
+                'method' => 'GET',
+                'url'    => fn ($row) => route('admin.campaign.edit', $row->id),
+            ]);
         // }
     }
 

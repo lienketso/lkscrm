@@ -16,4 +16,9 @@ class Campaign extends Model
     {
         return $this->hasMany(CampaignSchedule::class, 'campaign_id');
     }
+
+    public function customers()
+    {
+        return $this->hasMany(CampaignCustomer::class, 'campaign_id');
+    }
 }
