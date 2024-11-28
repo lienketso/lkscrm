@@ -76,4 +76,9 @@ class ZaloTemplate extends Model
         self::GENERAL_UPDATE => 'General update',
         self::FOLLOW_UP => 'Follow up',
     ];
+
+    public function info()
+    {
+        return $this->hasMany(ZaloTemplateInfo::class, 'template_id', 'template_id');
+    }
 }
