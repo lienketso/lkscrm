@@ -2221,6 +2221,7 @@ return [
     'zalo' => [
         'title' => 'Zalo',
         'template_title' => 'Zalo - Tin nhắn mẫu',
+        'template_detail' => 'Zalo - Chi tiết tin nhắn mẫu',
         'template' => 'Tin nhắn mẫu',
         'columns' => [
             'id' => 'Id',

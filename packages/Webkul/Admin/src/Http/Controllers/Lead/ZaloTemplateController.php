@@ -5,6 +5,8 @@ namespace Webkul\Admin\Http\Controllers\Lead;
 use Illuminate\Support\Facades\Event;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Admin\DataGrids\Lead\ZaloTemplateDataGrid;
+use Webkul\Lead\Models\ZaloTemplate;
+use Webkul\Lead\Models\ZaloTemplateInfo;
 
 class ZaloTemplateController extends Controller
 {
@@ -39,5 +41,16 @@ class ZaloTemplateController extends Controller
         session()->flash('success', trans('admin::app.zalo.sync_template_from_zalo_mes'));
 
         return redirect()->route('admin.zalo.template.index');
+    }
+
+    /**
+     * Display a resource.
+     */
+    public function view(int $id)
+    {
+        $template = ZaloTemplate::findOrFail($id);
+        // dd($template->id);
+
+        return view('admin::zalo.view-template', compact('template'));
     }
 }

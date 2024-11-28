@@ -7,5 +7,7 @@ Route::controller(ZaloTemplateController::class)->prefix('zalos')->group(functio
 
     Route::get('', 'index')->name('admin.zalo.template.index');
 
+    Route::get('view/{id}', 'view')->name('admin.zalo.view');
+
     Route::get('sync-template', 'syncZaloMessageTemplate')->name('admin.zalo.template.sync');
 });

@@ -28,15 +28,8 @@ class ZaloService
     public function getConfig()
     {
         $config = ZaloConfig::where('id', $this->idZaloConfig)->first();
-        var_dump(time() . '__' . $config->token_expired_at);
-        var_dump(time() >= $config->token_expired_at);
-        die();
-
         if (time() >= $config->token_expired_at) {
-
             $this->getAccessTokenByRefreshToken();
-
-            $config = ZaloConfig::where('id', $this->idZaloConfig)->first();
         }
 
         return $config;
@@ -44,7 +37,7 @@ class ZaloService
 
     public function getAccessTokenByRefreshToken()
     {
-        $config = $this->getConfig();
+        $config = ZaloConfig::where('id', $this->idZaloConfig)->first();
         $data = [
             'headers' => [
                 'secret_key' => $this->secretKey,
@@ -62,11 +55,10 @@ class ZaloService
         $content = json_decode($content);
 
         # lưu lại thông tin config vào db
-        $this->zaloConfigRepository->update([
-            'access_token' => $content->access_token,
-            'refresh_token' => $content->refresh_token,
-            'token_expired_at' => time() + $content->expires_in - 600, // trừ 600s tức là chủ động set lại thời gian hết hạn của token 
-        ], $this->idZaloConfig);
+        $config->access_token = $content->access_token;
+        $config->refresh_token = $content->refresh_token;
+        $config->token_expired_at = time() + $content->expires_in - 600;
+        $config->save();
 
         return true;
     }
@@ -84,14 +76,15 @@ class ZaloService
                     'Access_token' => $config->access_token
                 ],
                 'query' => [
-                    'offset' => $config->offset,
-                    'limit' => $config->limit,
+                    'offset' => $config->template_offset,
+                    'limit' => $config->template_limit,
                     'status' => 1,
                 ],
             ];
-
+            // dd($config);
             $res = $client->request('GET', $url, $options);
             $response = json_decode($res->getBody()->getContents());
+            
             if ($response->message == 'Success' && $response->data) {
                 $data = $response->data;
             }

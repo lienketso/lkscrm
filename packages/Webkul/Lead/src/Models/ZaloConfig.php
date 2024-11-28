@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ZaloConfig extends Model
 {
+    
+    public $timestamps = true;
+
     protected $table = 'zalo_configs';
 
     /**

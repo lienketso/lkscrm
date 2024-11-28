@@ -451,3 +451,9 @@ Breadcrumbs::for('zalo.template', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push(trans('admin::app.zalo.title'), route('admin.zalo.template.index'));
 });
+
+// Dashboard > zalo template => view detail
+Breadcrumbs::for('zalo.template.view', function (BreadcrumbTrail $trail, $template) {
+    $trail->parent('zalo.template');
+    $trail->push('#'.$template->id, route('admin.zalo.view', ['id' => $template->id]));
+});
