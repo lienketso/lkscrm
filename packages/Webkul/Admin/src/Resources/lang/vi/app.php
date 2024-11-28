@@ -2236,5 +2236,46 @@ return [
             'sync_template_from_zalo' => 'Lấy mẫu tin nhắn từ zalo OA',
         ],
         'sync_template_from_zalo_mes' => 'Vui lòng chờ hệ thống xử lý đồng bộ tin nhắn mẫu từ Zalo'
-    ]
+    ],
+    'campaign' => [
+        'create-success'    => 'Chiến dịch đã được tạo thành công.',
+        'update-success'    => 'Chiến dịch đã được cập nhật thành công.',
+        'destroy-success'   => 'Chiến dịch đã được xóa thành công.',
+        'destroy-failed'    => 'Chiến dịch không thể bị xóa.',
+        'index' => [
+            'title'      => 'Chiến dịch',
+            'list'       => 'Danh sách chiến dịch',
+            'create-btn' => 'Tạo Chiến dịch',
+            'datagrid' => [
+                'id'          => 'ID',
+                'name'        => 'Tên chiến dịch',
+                'description' => 'Mô tả',
+                'created-at'  => 'Ngày tạo',
+                'no'          => 'Không',
+                'yes'         => 'Có',
+                'delete'      => 'Xóa',
+                'mass-delete' => 'Xóa hàng loạt',
+                'mass-update' => 'Cập nhật hàng loạt',
+            ],
+        ],
+
+        'create' => [
+            'title'          => 'Tạo chiến dịch',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của chiến dịch',
+        ],
+
+        'edit' => [
+            'title'          => 'Chỉnh sửa chiến dịch',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của chiến dịch',
+        ],
+
+        'view' => [
+            'title' => 'Chi tiết chiến dịch',
+        ],
+    ],
+
 ];

@@ -11,4 +11,9 @@ class Campaign extends Model
 
     protected $table = 'campaigns';
     public $timestamps = true;
+
+    public function schedules()
+    {
+        return $this->hasMany(CampaignSchedule::class, 'campaign_id');
+    }
 }

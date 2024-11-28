@@ -301,5 +301,11 @@ return [
         'route'      => 'admin.zalo.template.index',
         'sort'       => 1,
         'icon-class' => '',
+    ], [
+        'key'        => 'zalo.campaign',
+        'name'       => 'admin::app.campaign.index.title',
+        'route'      => 'admin.campaign.index',
+        'sort'       => 2,
+        'icon-class' => '',
     ],
 ];
