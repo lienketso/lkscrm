@@ -284,4 +284,28 @@ return [
         'sort'       => 9,
         'icon-class' => 'icon-configuration',
     ],
+
+    /**
+     * Zalo.
+     */
+    [
+        'key'        => 'zalo',
+        'name'       => 'admin::app.zalo.title',
+        'route'      => 'admin.zalo.template.index',
+        'params'     => ['route' => 'compose'],
+        'sort'       => 10,
+        'icon-class' => 'icon-quote',
+    ], [
+        'key'        => 'zalo.template',
+        'name'       => 'admin::app.zalo.template',
+        'route'      => 'admin.zalo.template.index',
+        'sort'       => 1,
+        'icon-class' => '',
+    ], [
+        'key'        => 'zalo.campaign',
+        'name'       => 'admin::app.campaign.index.title',
+        'route'      => 'admin.campaign.index',
+        'sort'       => 2,
+        'icon-class' => '',
+    ],
 ];

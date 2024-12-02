@@ -445,3 +445,39 @@ Breadcrumbs::for('dashboard.account.edit', function (BreadcrumbTrail $trail, $us
     $trail->parent('dashboard');
     $trail->push(trans('admin::app.account.edit.title'), route('admin.user.account.edit', $user->id));
 });
+
+// Dashboard > zalo template
+Breadcrumbs::for('zalo.template', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push(trans('admin::app.zalo.title'), route('admin.zalo.template.index'));
+});
+
+// Dashboard > zalo template => view detail
+Breadcrumbs::for('zalo.template.view', function (BreadcrumbTrail $trail, $template) {
+    $trail->parent('zalo.template');
+    $trail->push('#'.$template->id, route('admin.zalo.view', ['id' => $template->id]));
+});
+
+// Dashboard > ZNS campaign
+Breadcrumbs::for('campaign', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push(trans('admin::app.campaign.index.title'), route('admin.campaign.index'));
+});
+
+// Dashboard > campaign > Create
+Breadcrumbs::for('campaign.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('campaign');
+    $trail->push(trans('admin::app.campaign.create.title'), route('admin.campaign.create'));
+});
+
+// Dashboard > campaign Edit
+Breadcrumbs::for('campaign.edit', function (BreadcrumbTrail $trail, $campaign) {
+    $trail->parent('campaign');
+    $trail->push(trans('admin::app.campaign.edit.title'), route('admin.campaign.edit', $campaign->id));
+});
+
+// Dashboard > campaign > view
+Breadcrumbs::for('campaign.view', function (BreadcrumbTrail $trail, $campaign) {
+    $trail->parent('campaign');
+    $trail->push('#'.$campaign->id, route('admin.campaign.view', $campaign->id));
+});

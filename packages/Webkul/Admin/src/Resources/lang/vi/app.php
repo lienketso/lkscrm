@@ -2193,29 +2193,102 @@ return [
     ],
 
     'emails' => [
-    'common' => [
-        'dear'   => 'Kính gửi :name',
-        'cheers' => 'Trân trọng,</br>Đội ngũ :app_name',
+        'common' => [
+            'dear'   => 'Kính gửi :name',
+            'cheers' => 'Trân trọng,</br>Đội ngũ :app_name',
 
-        'user'   => [
-            'dear'           => 'Kính gửi :username',
-            'create-subject' => 'Bạn đã được thêm vào làm thành viên.',
-            'create-body'    => 'Chúc mừng! Bạn hiện là thành viên của đội ngũ chúng tôi.',
+            'user'   => [
+                'dear'           => 'Kính gửi :username',
+                'create-subject' => 'Bạn đã được thêm vào làm thành viên.',
+                'create-body'    => 'Chúc mừng! Bạn hiện là thành viên của đội ngũ chúng tôi.',
 
-            'forget-password' => [
-                'subject'           => 'Khách hàng Đặt lại Mật khẩu',
-                'dear'              => 'Kính gửi :username',
-                'reset-password'    => 'Đặt lại Mật khẩu',
-                'info'              => 'Bạn nhận được email này vì chúng tôi đã nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn',
-                'final-summary'     => 'Nếu bạn không yêu cầu đặt lại mật khẩu, không cần thực hiện thêm hành động nào',
-                'thanks'            => 'Cảm ơn!',
+                'forget-password' => [
+                    'subject'           => 'Khách hàng Đặt lại Mật khẩu',
+                    'dear'              => 'Kính gửi :username',
+                    'reset-password'    => 'Đặt lại Mật khẩu',
+                    'info'              => 'Bạn nhận được email này vì chúng tôi đã nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn',
+                    'final-summary'     => 'Nếu bạn không yêu cầu đặt lại mật khẩu, không cần thực hiện thêm hành động nào',
+                    'thanks'            => 'Cảm ơn!',
+                ],
             ],
         ],
     ],
-],
 
-'errors' => [
-    '401' => 'Bạn không được phép truy cập trang này',
-],
+    'errors' => [
+        '401' => 'Bạn không được phép truy cập trang này',
+    ],
+
+    'zalo' => [
+        'title' => 'Zalo',
+        'template_title' => 'Zalo - Tin nhắn mẫu',
+        'template_detail' => 'Zalo - Chi tiết tin nhắn mẫu',
+        'template' => 'Tin nhắn mẫu',
+        'columns' => [
+            'id' => 'Id',
+            'template_id' => 'ID template',
+            'template_name' => 'Tên template',
+            'status' => 'Trạng thái',
+            'price' => 'Giá',
+            'template_quality' => 'Chất lượng gửi ',
+            'template_tag' => 'Loại nội dung',
+        ],
+        'button' => [
+            'sync_template_from_zalo' => 'Lấy mẫu tin nhắn từ zalo OA',
+        ],
+        'sync_template_from_zalo_mes' => 'Vui lòng chờ hệ thống xử lý đồng bộ tin nhắn mẫu từ Zalo'
+    ],
+    'campaign' => [
+        'create-success'    => 'Chiến dịch đã được tạo thành công.',
+        'create-failed'    => 'Thêm mới Chiến dịch không thành công.',
+        'update-success'    => 'Chiến dịch đã được cập nhật thành công.',
+        'destroy-success'   => 'Chiến dịch đã được xóa thành công.',
+        'destroy-failed'    => 'Chiến dịch không thể bị xóa.',
+        'no-result-found'   => 'Không tìm thấy kết quả',
+        'index' => [
+            'title'      => 'Chiến dịch',
+            'list'       => 'Danh sách chiến dịch',
+            'create-btn' => 'Tạo Chiến dịch',
+            'datagrid' => [
+                'id'          => 'ID',
+                'name'        => 'Tên chiến dịch',
+                'description' => 'Mô tả',
+                'created-at'  => 'Ngày tạo',
+                'no'          => 'Không',
+                'yes'         => 'Có',
+                'delete'      => 'Xóa',
+                'mass-delete' => 'Xóa hàng loạt',
+                'mass-update' => 'Cập nhật hàng loạt',
+                'customer'    => 'Khách hàng',
+                'schedule'    => 'Lịch trình',
+                'status'      => 'Trạng thái',
+            ],
+        ],
+
+        'create' => [
+            'title'          => 'Tạo chiến dịch',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của chiến dịch',
+        ],
+
+        'edit' => [
+            'title'          => 'Chỉnh sửa chiến dịch',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của chiến dịch',
+        ],
+
+        'view' => [
+            'title' => 'Chi tiết chiến dịch',
+        ],
+        'common' => [
+            'add-more' => 'Thêm nhiều',
+            'number' => 'Số thứ tự',
+            'date-time' => 'Ngày, giờ',
+            'template' => 'Mẫu tin nhắn',
+            'select-template' => 'Chọn mẫu tin nhắn',
+            'params' => 'Giá trị',
+        ],
+    ],
 
 ];
