@@ -10,6 +10,7 @@ use Webkul\Lead\Models\Campaign;
 use Webkul\Lead\Models\CampaignSchedule;
 use Webkul\Lead\Models\CampaignScheduleContent;
 use Webkul\Lead\Models\CampaignCustomer;
+use Webkul\Lead\Models\ZaloTemplate;
 
 class CampaignController extends Controller
 {
@@ -40,7 +41,9 @@ class CampaignController extends Controller
      */
     public function create()
     {
-        return view('admin::campaign.create');
+        $znsTemplates = ZaloTemplate::select('template_id', 'template_name')->with(['info:template_id,name,require,type,max_length'])->get();
+        // dd($znsTemplates);
+        return view('admin::campaign.create', compact('znsTemplates'));
     }
 
     /**

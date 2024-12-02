@@ -2258,6 +2258,7 @@ return [
                 'mass-delete' => 'Xóa hàng loạt',
                 'mass-update' => 'Cập nhật hàng loạt',
                 'customer'    => 'Khách hàng',
+                'schedule'    => 'Lịch trình',
             ],
         ],
 
@@ -2277,6 +2278,14 @@ return [
 
         'view' => [
             'title' => 'Chi tiết chiến dịch',
+        ],
+        'common' => [
+            'add-more' => 'Thêm nhiều',
+            'number' => 'Số thứ tự',
+            'date-time' => 'Ngày, giờ',
+            'template' => 'Mẫu tin nhắn',
+            'select-template' => 'Chọn mẫu tin nhắn',
+            'params' => 'Giá trị',
         ],
     ],
 

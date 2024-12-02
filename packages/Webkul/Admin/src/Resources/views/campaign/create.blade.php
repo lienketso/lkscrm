@@ -111,15 +111,25 @@
                         </v-multi-lookup-component>
                     </x-admin::form.control-group>
 
+                    <!-- Schedules -->
+                    <x-admin::form.control-group>
+                        <x-admin::form.control-group.label>
+                            @lang('admin::app.campaign.index.datagrid.schedule')
+                        </x-admin::form.control-group.label>
+
+                        <v-multi-schedule-component :data="schedules"></v-multi-schedule-component>
+
+                    </x-admin::form.control-group>
+
                     {!! view_render_event('admin.campaign.create.form_controls.after') !!}
                 </div>
             </div>
             <!-- Right -->
-            <div class="flex w-[926px] max-w-full flex-col gap-2 max-sm:w-full">
+            <!-- <div class="flex w-[926px] max-w-full flex-col gap-2 max-sm:w-full">
                 <div class="box-shadow rounded-lg border border-gray-200 bg-white p-4 dark:bg-gray-900 dark:border-gray-800">
                     
                 </div>
-            </div>
+            </div> -->
         </div>
     </x-admin::form>
 
@@ -286,6 +296,200 @@
                         );
                     },
                 },
+            });
+        </script>
+
+        <script 
+            type="text/x-template"
+            id="v-multi-schedule-component-template"
+        >
+            <!-- create schedule -->
+            <div class="flex flex-col gap-4">
+                <!-- Table -->
+                <x-admin::table>
+                    <!-- Table Head -->
+                    <x-admin::table.thead>
+                        <x-admin::table.th>
+                            @lang('admin::app.campaign.common.number')
+                        </x-admin::table.th>
+                        <x-admin::table.th>
+                            @lang('admin::app.campaign.common.date-time')
+                        </x-admin::table.th>
+                        <x-admin::table.th>
+                            @lang('admin::app.campaign.common.template')
+                        </x-admin::table.th>
+                        <x-admin::table.th>
+                            @lang('admin::app.campaign.common.params')
+                        </x-admin::table.th>
+                    </x-admin::table.thead>
+                    <!-- Table Body -->
+                    <x-admin::table.tbody>
+
+                        <!-- schedule Item Vue Component -->
+                        <v-schedule-item
+                            v-for='(schedule, index) in schedules'
+                            :schedule="schedule"
+                            :key="index"
+                            :index="index"
+                            @onRemoveSchedule="removeSchedule($event)"
+                        ></v-schedule-item>
+
+                    </x-admin::table.tbody>
+                </x-admin::table>
+
+                <!-- Add New schedule Item -->
+                <button
+                    type="button"
+                    class="flex max-w-max items-center gap-2 text-brandColor"
+                    @click="addSchedule"
+                >
+                    <i class="icon-add text-md !text-brandColor"></i>
+
+                    @lang('admin::app.campaign.common.add-more')
+                </button>
+            </div>
+        </script>
+        <script 
+            type="text/x-template" 
+            id="v-schedule-item-template"
+        >
+            <x-admin::table.thead.tr>
+                <x-admin::table.td>
+                    <x-admin::form.control-group>
+                        <x-admin::form.control-group.control
+                            type="text"
+                            ::name="`${inputName}[number]`"
+                            v-model="index"
+                            disabled
+                        />
+                    </x-admin::form.control-group>
+                </x-admin::table.td>
+
+                <x-admin::table.td>
+                    <x-admin::form.control-group>
+                        <x-admin::form.control-group.control
+                            type="datetime"
+                            ::name="`${inputName}[date-time]`"
+                            rules="required"
+                        />
+                    </x-admin::form.control-group>
+                </x-admin::table.td>
+
+                <x-admin::table.td>
+                    <x-admin::form.control-group>
+                        <x-admin::form.control-group.control
+                            type="select"
+                            ::name="`${inputName}[template]`"
+                            v-model="schedule.product_id"
+                            rules="required"
+                            @on-change="changeSelect"
+                        >
+                            <option value="">@lang('admin::app.campaign.common.select-template')</option>
+                            
+                            @foreach ($znsTemplates as $zns)
+                                <option value="{{ $zns->template_id }}">{{ $zns->template_name }}</option>
+                            @endforeach
+                        </x-admin::form.control-group.control>
+                    </x-admin::form.control-group>
+                </x-admin::table.td>
+
+                <x-admin::table.td>
+                    <x-admin::form.control-group>
+                        <x-admin::form.control-group.control
+                            type="select"
+                            ::name="`${inputName}[template]`"
+                            v-model="schedule.product_id"
+                            rules="required"
+                            @on-change="changeSelect"
+                        >
+                            
+                        </x-admin::form.control-group.control>
+                    </x-admin::form.control-group>
+                </x-admin::table.td>
+
+            </x-admin::table.thead.tr>
+        </script>
+        <script type="module">
+            app.component('v-multi-schedule-component', {
+                template: '#v-multi-schedule-component-template',
+
+                data() {
+                    return {
+                        schedules: this.data ? this.data : [],
+                    };
+                },
+
+                methods: {
+
+                    removeSchedule(schedule) {
+                        const index = this.schedules.indexOf(schedule);
+                        this.schedules.splice(index, 1);
+                    },
+
+                    addSchedule() {
+                        console.log('1')
+                        this.schedules.push({
+                            id: null,
+                            date_time: null,
+                            template_id: null,
+                            params_id: null,
+                        })
+                        console.log('2')
+                    },
+                },
+            });
+
+            app.component('v-schedule-item', {
+                template: '#v-schedule-item-template',
+
+                props: ['index', 'schedule'],
+
+                data() {
+                    return {
+                        schedules: [],
+                    }
+                },
+
+                computed: {
+                    inputName() {
+                        if (this.schedules.id) {
+                            return "schedules[" + this.schedules.id + "]";
+                        }
+
+                        return "schedules[schedules_" + this.index + "]";
+                    },
+                },
+
+                methods: {
+                    /**
+                     * Add the schedule.
+                     * 
+                     * @param {Object} result
+                     * 
+                     * @return {void}
+                     */
+                    addSchedule(result) {
+                        console.log(result)
+                        this.schedule.template_id = result.id;
+
+                        this.schedule.date_time = result.date_time;
+                        
+                        this.schedule.params_id = result.params_id;
+                    },
+                    
+                    /**
+                     * Remove the schedule.
+                     * 
+                     * @return {void}
+                     */
+                    removeSchedule () {
+                        this.$emit('onRemoveSchedule', this.schedule)
+                    },
+
+                    changeSelect() {
+
+                    }
+                }
             });
         </script>
     @endPushOnce   
