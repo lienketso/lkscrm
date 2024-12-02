@@ -12,6 +12,14 @@ class Campaign extends Model
     protected $table = 'campaigns';
     public $timestamps = true;
 
+    const ACTIVE = 1;
+    const INACTIVE = 2;
+
+    const STATUS = [
+        self::ACTIVE => 'Hoạt động',
+        self::INACTIVE => 'Không hoạt động',
+    ];
+
     public function schedules()
     {
         return $this->hasMany(CampaignSchedule::class, 'campaign_id');

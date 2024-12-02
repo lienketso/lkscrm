@@ -11,6 +11,7 @@ use Webkul\Lead\Models\CampaignSchedule;
 use Webkul\Lead\Models\CampaignScheduleContent;
 use Webkul\Lead\Models\CampaignCustomer;
 use Webkul\Lead\Models\ZaloTemplate;
+use Illuminate\Support\Facades\DB;
 
 class CampaignController extends Controller
 {
@@ -41,8 +42,7 @@ class CampaignController extends Controller
      */
     public function create()
     {
-        $znsTemplates = ZaloTemplate::select('template_id', 'template_name')->with(['info:template_id,name,require,type,max_length'])->get();
-        // dd($znsTemplates);
+        $znsTemplates = ZaloTemplate::select('template_id', 'template_name')->with(['info:template_id,id,name,require,type,max_length'])->get();
         return view('admin::campaign.create', compact('znsTemplates'));
     }
 
@@ -52,24 +52,63 @@ class CampaignController extends Controller
     public function store(CampaignForm $request)
     {
         $params = (Object) $request->all();
-
         // dd($params);
+
+        DB::beginTransaction();
+
+        try {
         
-        $campaign = new Campaign();
-        $campaign->name = $params->name;
-        $campaign->description = $params->description;
-        $campaign->save();
+            $campaign = new Campaign();
+            $campaign->name = $params->name;
+            $campaign->description = $params->description;
+            $campaign->save();
 
-        foreach ($params->customers as $customerId) {
-            $campaignCustomer = new CampaignCustomer();
-            $campaignCustomer->campaign_id = $campaign->id;
-            $campaignCustomer->lead_id = $customerId;
-            $campaignCustomer->save();
+            # customers
+            foreach ($params->customers as $customerId) {
+                $campaignCustomer = new CampaignCustomer();
+                $campaignCustomer->campaign_id = $campaign->id;
+                $campaignCustomer->lead_id = $customerId;
+                $campaignCustomer->save();
+            }
+
+            # schedules
+            foreach ($params->schedules as $schedule) {
+                $schedule = (Object) $schedule;
+                $campaignSchedule = new CampaignSchedule();
+                $campaignSchedule->campaign_id = $campaign->id;
+                $campaignSchedule->start_at = $schedule->date_time;
+                $campaignSchedule->zalo_template_id = $schedule->template_id;
+                $campaignSchedule->save();
+
+                # CampaignScheduleContent
+                foreach ($schedule->params as $key => $valParam) {
+                    
+                    $tmpIds = explode('_', $key);
+                    $zaloTemplateInfoId = $tmpIds[count($tmpIds) - 1];
+
+                    $campaignScheduleContent = new CampaignScheduleContent();
+                    $campaignScheduleContent->campaign_id = $campaign->id;
+                    $campaignScheduleContent->campaign_schedule_id = $campaignSchedule->id;
+                    $campaignScheduleContent->zalo_template_id = $schedule->template_id;
+                    $campaignScheduleContent->zalo_template_info_id = $zaloTemplateInfoId;
+                    $campaignScheduleContent->content = $valParam;
+                    $campaignScheduleContent->save();
+                }
+            }
+
+            DB::commit();
+
+            session()->flash('success', trans('admin::app.campaign.create-success'));
+
+            return redirect()->route('admin.campaign.index');
+        } catch (\Exception $exception) {
+            // dd($exception);
+            DB::rollback();
+           
+            session()->flash('error', trans('admin::app.campaign.create-failed'));
+
+            return redirect()->route('admin.campaign.index');
         }
-
-        session()->flash('success', trans('admin::app.campaign.create-success'));
-
-        return redirect()->route('admin.campaign.index');
     }
 
     /**

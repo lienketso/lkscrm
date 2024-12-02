@@ -2239,6 +2239,7 @@ return [
     ],
     'campaign' => [
         'create-success'    => 'Chiến dịch đã được tạo thành công.',
+        'create-failed'    => 'Thêm mới Chiến dịch không thành công.',
         'update-success'    => 'Chiến dịch đã được cập nhật thành công.',
         'destroy-success'   => 'Chiến dịch đã được xóa thành công.',
         'destroy-failed'    => 'Chiến dịch không thể bị xóa.',
@@ -2259,6 +2260,7 @@ return [
                 'mass-update' => 'Cập nhật hàng loạt',
                 'customer'    => 'Khách hàng',
                 'schedule'    => 'Lịch trình',
+                'status'      => 'Trạng thái',
             ],
         ],
 

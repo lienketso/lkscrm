@@ -117,7 +117,7 @@
                             @lang('admin::app.campaign.index.datagrid.schedule')
                         </x-admin::form.control-group.label>
 
-                        <v-multi-schedule-component :data="schedules"></v-multi-schedule-component>
+                        <v-multi-schedule-component></v-multi-schedule-component>
 
                     </x-admin::form.control-group>
 
@@ -309,13 +309,10 @@
                 <x-admin::table>
                     <!-- Table Head -->
                     <x-admin::table.thead>
-                        <x-admin::table.th>
-                            @lang('admin::app.campaign.common.number')
-                        </x-admin::table.th>
-                        <x-admin::table.th>
+                        <x-admin::table.th class="w-[280px] border">
                             @lang('admin::app.campaign.common.date-time')
                         </x-admin::table.th>
-                        <x-admin::table.th>
+                        <x-admin::table.th class="w-[280px] border">
                             @lang('admin::app.campaign.common.template')
                         </x-admin::table.th>
                         <x-admin::table.th>
@@ -328,9 +325,9 @@
                         <!-- schedule Item Vue Component -->
                         <v-schedule-item
                             v-for='(schedule, index) in schedules'
+                            :key='index'
                             :schedule="schedule"
-                            :key="index"
-                            :index="index"
+                            :index='index'
                             @onRemoveSchedule="removeSchedule($event)"
                         ></v-schedule-item>
 
@@ -353,36 +350,27 @@
             type="text/x-template" 
             id="v-schedule-item-template"
         >
-            <x-admin::table.thead.tr>
-                <x-admin::table.td>
-                    <x-admin::form.control-group>
-                        <x-admin::form.control-group.control
-                            type="text"
-                            ::name="`${inputName}[number]`"
-                            v-model="index"
-                            disabled
-                        />
-                    </x-admin::form.control-group>
-                </x-admin::table.td>
+            <x-admin::table.thead.tr class="border">
 
-                <x-admin::table.td>
+                <x-admin::table.td class="border">
                     <x-admin::form.control-group>
                         <x-admin::form.control-group.control
                             type="datetime"
-                            ::name="`${inputName}[date-time]`"
+                            ::name="`${inputName}[date_time]`"
+                            v-model="schedule.date_time"
                             rules="required"
                         />
                     </x-admin::form.control-group>
                 </x-admin::table.td>
 
-                <x-admin::table.td>
+                <x-admin::table.td class="border">
                     <x-admin::form.control-group>
                         <x-admin::form.control-group.control
                             type="select"
-                            ::name="`${inputName}[template]`"
-                            v-model="schedule.product_id"
+                            ::name="`${inputName}[template_id]`"
+                            v-model="schedule.template_id"
                             rules="required"
-                            @on-change="changeSelect"
+                            @change="changeSelect"
                         >
                             <option value="">@lang('admin::app.campaign.common.select-template')</option>
                             
@@ -393,17 +381,26 @@
                     </x-admin::form.control-group>
                 </x-admin::table.td>
 
-                <x-admin::table.td>
+                <x-admin::table.td class="border">
                     <x-admin::form.control-group>
-                        <x-admin::form.control-group.control
-                            type="select"
-                            ::name="`${inputName}[template]`"
-                            v-model="schedule.product_id"
-                            rules="required"
-                            @on-change="changeSelect"
-                        >
-                            
-                        </x-admin::form.control-group.control>
+                        
+                        <x-admin::table>
+                            <x-admin::table.thead.tr v-for="param in paramsInfo" class="border">
+                                <x-admin::table.td class="!w-56 border">
+                                @{{ param.name }}
+                                </x-admin::table.td>
+                                <x-admin::table.td class="border">
+                                    <x-admin::form.control-group>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            ::name="`${inputName}[params][${param.name}_${param.id}]`"
+                                            class="border"
+                                        />
+                                    </x-admin::form.control-group>
+                                </x-admin::table.td>
+                            </x-admin::table.thead.tr>
+                        </x-admin::table>
+                        
                     </x-admin::form.control-group>
                 </x-admin::table.td>
 
@@ -415,8 +412,12 @@
 
                 data() {
                     return {
-                        schedules: this.data ? this.data : [],
+                        schedules: [], // ở đây nếu là edit thì đẩy từ trong php ra đây luôn dạng @ json ( $ campaign -> schedules )
                     };
+                },
+
+                created() {
+                    // console.log(this.schedules)
                 },
 
                 methods: {
@@ -427,14 +428,12 @@
                     },
 
                     addSchedule() {
-                        console.log('1')
                         this.schedules.push({
                             id: null,
                             date_time: null,
                             template_id: null,
-                            params_id: null,
-                        })
-                        console.log('2')
+                            params: [],
+                        });
                     },
                 },
             });
@@ -446,18 +445,24 @@
 
                 data() {
                     return {
-                        schedules: [],
+                        paramsInfo: [],
+                        znsTemplates: @json($znsTemplates),
                     }
                 },
 
                 computed: {
                     inputName() {
-                        if (this.schedules.id) {
-                            return "schedules[" + this.schedules.id + "]";
+                        if (this.schedule.id) {
+                            return "schedules[" + this.schedule.id + "]";
                         }
 
-                        return "schedules[schedules_" + this.index + "]";
+                        return "schedules[schedule_" + this.index + "]";
                     },
+                },
+                
+                created() {
+                    // console.log(this.znsTemplates)
+                    // console.log(this.schedule)
                 },
 
                 methods: {
@@ -469,11 +474,8 @@
                      * @return {void}
                      */
                     addSchedule(result) {
-                        console.log(result)
-                        this.schedule.template_id = result.id;
-
+                        this.schedule.template_id = result.template_id;
                         this.schedule.date_time = result.date_time;
-                        
                         this.schedule.params_id = result.params_id;
                     },
                     
@@ -487,7 +489,14 @@
                     },
 
                     changeSelect() {
+                        this.paramsInfo = [];
+                        let tem = this.znsTemplates.filter(item => 
+                            item.template_id == this.schedule.template_id
+                        );
 
+                        if (tem && tem[0]) {
+                            this.paramsInfo = tem[0].info
+                        }
                     }
                 }
             });

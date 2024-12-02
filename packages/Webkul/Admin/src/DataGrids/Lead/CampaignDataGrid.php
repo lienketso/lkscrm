@@ -5,6 +5,8 @@ namespace Webkul\Admin\DataGrids\Lead;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Webkul\DataGrid\DataGrid;
+use Webkul\Lead\Models\Campaign;
+use Webkul\Lead\Models\CampaignSchedule;
 
 class CampaignDataGrid extends DataGrid
 {
@@ -55,6 +57,17 @@ class CampaignDataGrid extends DataGrid
             'sortable'   => true,
             'filterable' => true,
         ]);
+
+        $this->addColumn([
+            'index'      => 'status',
+            'label'      => trans('admin::app.campaign.index.datagrid.status'),
+            'type'       => 'string',
+            'sortable'   => true,
+            'filterable' => true,
+            'closure'    => function ($row) {
+                return Campaign::STATUS[$row->status];
+            },
+        ]);
     }
 
     /**
@@ -63,18 +76,18 @@ class CampaignDataGrid extends DataGrid
     public function prepareActions(): void
     {
         // if (bouncer()->hasPermission('leads.view')) {
-            $this->addAction([
-                'icon'   => 'icon-eye',
-                'title'  => trans('admin::app.campaign.view.title'),
-                'method' => 'GET',
-                'url'    => fn ($row) => route('admin.campaign.view', $row->id),
-            ]);
-            $this->addAction([
-                'icon'   => 'icon-edit',
-                'title'  => trans('admin::app.campaign.edit.title'),
-                'method' => 'GET',
-                'url'    => fn ($row) => route('admin.campaign.edit', $row->id),
-            ]);
+            // $this->addAction([
+            //     'icon'   => 'icon-eye',
+            //     'title'  => trans('admin::app.campaign.view.title'),
+            //     'method' => 'GET',
+            //     'url'    => fn ($row) => route('admin.campaign.view', $row->id),
+            // ]);
+            // $this->addAction([
+            //     'icon'   => 'icon-edit',
+            //     'title'  => trans('admin::app.campaign.edit.title'),
+            //     'method' => 'GET',
+            //     'url'    => fn ($row) => route('admin.campaign.edit', $row->id),
+            // ]);
         // }
     }
 

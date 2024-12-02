@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->integer('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->integer('campaign_id');
             $table->datetime('start_at');
             $table->integer('zalo_template_id');
+            $table->integer('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
 
