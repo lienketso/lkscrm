@@ -27,5 +27,9 @@ class EventServiceProvider extends ServiceProvider
         'activity.update.after' => [
             'Webkul\Admin\Listeners\Activity@afterUpdateOrCreate',
         ],
+
+        'zalo.template.after' => [
+            'Webkul\Admin\Listeners\Zalo@syncTemplate',
+        ],
     ];
 }

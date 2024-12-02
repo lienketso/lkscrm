@@ -54,3 +54,8 @@ require 'rest-routes.php';
  * Leads customers.
  */
 require 'customers-routes.php';
+
+/**
+ * Zalos.
+ */
+require 'zalos-routes.php';
