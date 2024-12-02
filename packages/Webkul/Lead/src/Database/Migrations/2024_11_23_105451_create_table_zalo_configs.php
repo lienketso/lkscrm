@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('template_limit')->default(100);
             $table->text('access_token')->nullable();
             $table->text('refresh_token')->nullable();
-            
+            $table->string('token_expired_at')->nullable();
             $table->timestamps();
         });
     }
