@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Webkul\Core\Acl;
 use Webkul\Core\Console\Commands\Version;
 use Webkul\Core\Console\Commands\TmpCustomer;
+use Webkul\Core\Console\Commands\ZNSGetToken;
 use Webkul\Core\Core;
 use Webkul\Core\Facades\Acl as AclFacade;
 use Webkul\Core\Facades\Core as CoreFacade;
@@ -88,6 +89,7 @@ class CoreServiceProvider extends ServiceProvider
             $this->commands([
                 Version::class,
                 TmpCustomer::class,
+                ZNSGetToken::class,
             ]);
         }
     }
