@@ -124,8 +124,8 @@ class LeadRepository extends Repository
 
         $lead = parent::create(array_merge([
             'person_id'              => $person->id,
-            'lead_pipeline_id'       => 1,
-            'lead_pipeline_stage_id' => 1,
+            // 'lead_pipeline_id'       => 1,
+            // 'lead_pipeline_stage_id' => 1,
         ], $data));
 
         $this->attributeValueRepository->save(array_merge($data, [

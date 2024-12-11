@@ -28,6 +28,7 @@ use Webkul\Lead\Repositories\StageRepository;
 use Webkul\Lead\Repositories\TypeRepository;
 use Webkul\Tag\Repositories\TagRepository;
 use Webkul\User\Repositories\UserRepository;
+use Webkul\Core\Jobs\SendZNSNewCustomerWithPoint;
 
 class CustomerController extends Controller
 {
@@ -151,53 +152,67 @@ class CustomerController extends Controller
      */
     public function store(LeadForm $request): RedirectResponse
     {
-        Event::dispatch('lead.create.before');
 
-        $data = $request->all();
+        try {
 
-        $data['status'] = 1;
+            Event::dispatch('lead.create.before');
 
-        $data['is_customer'] = 1;
+            $data = $request->all();
 
-        // if (request()->input('lead_pipeline_stage_id')) {
-        //     $stage = $this->stageRepository->findOrFail($data['lead_pipeline_stage_id']);
+            $data['status'] = 1;
 
-        //     $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
-        // } else {
-        //     $pipeline = $this->pipelineRepository->getDefaultPipeline();
+            $data['is_customer'] = 1;
 
-        //     $stage = $pipeline->stages()->first();
+            // if (request()->input('lead_pipeline_stage_id')) {
+            //     $stage = $this->stageRepository->findOrFail($data['lead_pipeline_stage_id']);
 
-        //     $data['lead_pipeline_id'] = $pipeline->id;
+            //     $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
+            // } else {
+            //     $pipeline = $this->pipelineRepository->getDefaultPipeline();
 
-        //     $data['lead_pipeline_stage_id'] = $stage->id;
-        // }
+            //     $stage = $pipeline->stages()->first();
 
-        if (isset($data['lead_pipeline_id']) && $data['lead_pipeline_id']) {
-            $pipeline = $this->pipelineRepository->findOrFail($data['lead_pipeline_id']);
-        } else {
-            $pipeline = $this->pipelineRepository->getDefaultPipeline();
+            //     $data['lead_pipeline_id'] = $pipeline->id;
+
+            //     $data['lead_pipeline_stage_id'] = $stage->id;
+            // }
+
+            if (isset($data['lead_pipeline_id']) && $data['lead_pipeline_id']) {
+                $pipeline = $this->pipelineRepository->findOrFail($data['lead_pipeline_id']);
+            } else {
+                $pipeline = $this->pipelineRepository->getDefaultPipeline();
+            }
+
+            $stage = $pipeline->stages()->first();
+
+            $data['lead_pipeline_id'] = $pipeline->id;
+
+            $data['lead_pipeline_stage_id'] = $stage->id;
+
+            if (in_array($stage->code, ['won', 'lost'])) {
+                $data['closed_at'] = Carbon::now();
+            }
+
+            $data['person']['organization_id'] = empty($data['person']['organization_id']) ? null : $data['person']['organization_id'];
+
+            $lead = $this->leadRepository->create($data);
+
+            # sau khi tạo mới 1 khách hàng hiện hựu thì auto sẽ gửi 1 tin nhắn thông báo tích điểm đến khách hàng
+            dispatch(new SendZNSNewCustomerWithPoint($lead))->onQueue('send_zns');
+
+            Event::dispatch('lead.create.after', $lead);
+
+            session()->flash('success', trans('admin::app.customers.create-success'));
+
+            return redirect()->route('admin.customers.index', $data['lead_pipeline_id']);
+        } catch (\Exception $exception) {
+
+            // dd($exception);
+
+            session()->flash('success', trans('admin::app.customers.create-failed'));
+
+            return redirect()->route('admin.customers.index', $data['lead_pipeline_id']);
         }
-
-        $stage = $pipeline->stages()->first();
-
-        $data['lead_pipeline_id'] = $pipeline->id;
-
-        $data['lead_pipeline_stage_id'] = $stage->id;
-
-        if (in_array($stage->code, ['won', 'lost'])) {
-            $data['closed_at'] = Carbon::now();
-        }
-
-        $data['person']['organization_id'] = empty($data['person']['organization_id']) ? null : $data['person']['organization_id'];
-
-        $lead = $this->leadRepository->create($data);
-
-        Event::dispatch('lead.create.after', $lead);
-
-        session()->flash('success', trans('admin::app.customers.create-success'));
-
-        return redirect()->route('admin.customers.index', $data['lead_pipeline_id']);
     }
 
     /**
