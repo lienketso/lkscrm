@@ -51,6 +51,16 @@
 
             <!-- Lead Create Component -->
             <v-lead-create></v-lead-create>
+
+            <div class="flex items-center gap-x-2.5">
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    @lang('admin::app.customers.create.save-btn')
+                </button>
+            </div>
         </div>
     </x-admin::form>
 
@@ -77,7 +87,6 @@
                                 ? 'text-brandColor border-brandColor dark:brandColor dark:brandColor'
                                 : 'text-gray-600 dark:text-gray-300  border-transparent hover:text-gray-800 hover:border-gray-400 dark:hover:border-gray-400  dark:hover:text-white'
                             ]"
-                            @click="scrollToSection(tab.id)"
                             :text="tab.label"
                         ></a>
 
