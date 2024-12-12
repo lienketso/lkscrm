@@ -41,17 +41,15 @@ class SendZNSNewCustomerWithPoint implements ShouldQueue
     {
         $config = ZaloConfig::where('id', $this->idZaloConfig)->first();
         $leadInfo = $this->leadInfo;
-        # giờ chỉ cần bên bên zlo xác nhận cái mẫu tích điểm sau đó điền ID đó vào env là đc
 
-        // 'phone' => '84374099263',
-        // 'template_id' => '388481',
-        // 'template_data' => [
-        //     'customer_name' => 'Nguyễn Phúc An',
-        //     'address' => '123 Duy Tân',
-        //     'booking_code' => 'HD0038',
-        //     'schedule_time' => '14:00:00 20/12/2024',
-        // ],
-        // 'tracking_id' => 'f9f696ec-b7f8-11ef-a2ae-c46516b04a5a'
+        # phần này là conver lại số điện thoại về dạng 84xxxxxxxxx
+        if (env('APP_ENV') != 'production') {
+            $phone = '';
+        } else {
+            # 84374099263 annp 
+            # 84963775533 hoàng minh hải
+            $phone = "84963775533";
+        }
 
         $client = new Client();
         $option = [
@@ -60,7 +58,7 @@ class SendZNSNewCustomerWithPoint implements ShouldQueue
                 'Content-Type' => 'application/json',
             ],
             'body' => json_encode([
-                'phone' => 12,
+                'phone' => $phone,
                 'template_id' => $this->templateIdNewCustomer,
                 'template_data' => [
                     'customer_name' => $leadInfo->title,
