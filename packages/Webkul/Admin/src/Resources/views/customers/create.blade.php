@@ -66,6 +66,16 @@
 
     {!! view_render_event('admin.customers.create.form.after') !!}
 
+    <!-- @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif -->
+
     @pushOnce('scripts')
         <script 
             type="text/x-template"

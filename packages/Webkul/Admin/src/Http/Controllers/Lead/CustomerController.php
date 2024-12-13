@@ -29,6 +29,7 @@ use Webkul\Lead\Repositories\TypeRepository;
 use Webkul\Tag\Repositories\TagRepository;
 use Webkul\User\Repositories\UserRepository;
 use Webkul\Core\Jobs\SendZNSNewCustomerWithPoint;
+use Webkul\Core\Jobs\QueueName;
 
 class CustomerController extends Controller
 {
@@ -198,7 +199,7 @@ class CustomerController extends Controller
             $lead = $this->leadRepository->create($data);
 
             # sau khi tạo mới 1 khách hàng hiện hựu thì auto sẽ gửi 1 tin nhắn thông báo tích điểm đến khách hàng
-            dispatch(new SendZNSNewCustomerWithPoint($lead))->onQueue('send_zns');
+            dispatch(new SendZNSNewCustomerWithPoint($lead))->onQueue(QueueName::SEND_ZNS_NEW_CUSTOMER);
 
             Event::dispatch('lead.create.after', $lead);
 

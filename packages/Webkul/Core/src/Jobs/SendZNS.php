@@ -31,7 +31,7 @@ class SendZNS implements ShouldQueue
     {
         $this->params = $params;
         $this->url = env('ZALO_URL_SEND_ZNS');
-        $this->idZaloConfig = 1;
+        $this->idZaloConfig = env('ZALO_CONFIG_ID');
     }
 
     /**
