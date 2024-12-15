@@ -66,7 +66,10 @@
 
     {!! view_render_event('admin.customers.create.form.after') !!}
 
-    <!-- @if ($errors->any())
+    @if ($errors->any())
+
+        @dd($errors)
+        
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -74,7 +77,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif -->
+    @endif
 
     @pushOnce('scripts')
         <script 

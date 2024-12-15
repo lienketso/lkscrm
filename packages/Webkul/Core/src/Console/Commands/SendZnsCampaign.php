@@ -2,12 +2,10 @@
 namespace Webkul\Core\Console\Commands;
 
 use Illuminate\Console\Command;
-use Webkul\Lead\Models\Campaign;
+use Illuminate\Support\Str;
+use Webkul\Core\Jobs\SendZNS;
+use Webkul\Core\Jobs\QueueName;
 use Webkul\Lead\Models\CampaignSchedule;
-use Webkul\Lead\Models\CampaignScheduleContent;
-use Webkul\Lead\Models\CampaignCustomer;
-use Webkul\Lead\Models\ZaloTemplate;
-
 class SendZnsCampaign extends Command
 {
     /**
@@ -55,30 +53,38 @@ class SendZnsCampaign extends Command
         $listCampaignSchedules = CampaignSchedule::startAt($date)->notDone()->get();
         foreach ($listCampaignSchedules as $schedule) {
 
-            // $campaign = $schedule->campaign;
             $scheduleContents = $schedule->scheduleContent;
             $campaignCustomers = $schedule->campaign->customers;
-            $zaloTemplate = $schedule->zaloTemplate; // thông tin template zns
-            $zaloTemplateInfo = $zaloTemplate->info; // thông tin các params thuộc template zns
-            // dd($zaloTemplateInfo);
             
-            # tạo param để gửi zns cho từng khách hàng trong chiến dịch này
-            if (count($campaignCustomers) > 0) {
+            # lấy thông tin template_data trước
+            $templateData = [];
+            foreach ($scheduleContents as $param) {
+                $templateData[$param->zaloTemplateInfo->name] = $param->content;
+            }
+
+            if (count($campaignCustomers) > 0 && count($templateData) > 0) {
+
                 foreach ($campaignCustomers as $customer) {
                     $customerInfo = $customer->lead;
                     $contactNumbers = $customerInfo->person->contact_numbers;
-                    if (count($contactNumbers) > 0) {
-                        $tmp = $contactNumbers[0];
-                        $templateData = [];
-                        foreach ($zaloTemplateInfo as $param) {
-                            
-                        }
+                    
+                    if (count($contactNumbers) > 0 && $contactNumbers[0]['value'] != '') {
+                        
+                        $number = $contactNumbers[0];
+                        $number = '84' . substr($number['value'], 1);
 
+                        $tmpTemplateData = $templateData;
+                        # lấy lại tên khách hàng theo lead 
+                        $tmpTemplateData['customer_name'] = $customerInfo->title;
+                        
                         $param = [
-                            'phone' => $tmp->value,
+                            'phone' => $number,
                             'template_id' => $schedule->zalo_template_id,
-                            'template_data' => [],
+                            'template_data' => $tmpTemplateData,
+                            'tracking_id' => Str::uuid(),
                         ];
+
+                        dispatch(new SendZNS($param))->onQueue(QueueName::SEND_ZNS_CAMPAIGN);
                     }
                 }
             }
@@ -88,6 +94,7 @@ class SendZnsCampaign extends Command
             $schedule->save();
         }
 
+        \Log::info('done schedule campaign in date: ' . $date);
         return true;
     }
 }

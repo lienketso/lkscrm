@@ -11,4 +11,14 @@ class CampaignScheduleContent extends Model
 
     protected $table = 'campaign_schedule_content';
     public $timestamps = true;
+
+    public function zaloTemplate()
+    {
+        return $this->belongsTo(ZaloTemplate::class, 'zalo_template_id', 'template_id');
+    }
+
+    public function zaloTemplateInfo()
+    {
+        return $this->belongsTo(ZaloTemplateInfo::class, 'zalo_template_info_id', 'id');
+    }
 }

@@ -15,7 +15,7 @@ class SendZNSNewCustomerWithPoint implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
-    private $leadInfo;
+    protected $leadInfo;
     protected $url;
     protected $idZaloConfig;
     protected $templateIdNewCustomer;
@@ -29,8 +29,8 @@ class SendZNSNewCustomerWithPoint implements ShouldQueue
     {
         $this->leadInfo = $leadInfo;
         $this->url = env('ZALO_URL_SEND_ZNS');
-        $this->templateIdNewCustomer = env('ZALO_TEMPLATE_ID_NEW_CUSTOMER');
         $this->idZaloConfig = env('ZALO_CONFIG_ID');
+        $this->templateIdNewCustomer = env('ZALO_TEMPLATE_ID_NEW_CUSTOMER');
     }
 
     /**
@@ -45,7 +45,11 @@ class SendZNSNewCustomerWithPoint implements ShouldQueue
 
         # phần này là conver lại số điện thoại về dạng 84xxxxxxxxx
         if (env('APP_ENV') == 'production') {
-            $phone = '';
+            $contactNumbers = $leadInfo->person->contact_numbers;
+            if (count($contactNumbers) > 0 && $contactNumbers[0]['value'] != '') {
+                $phone = $contactNumbers[0]['value'];
+                $phone = '84' . substr($phone, 1);
+            } 
         } else {
             # 84374099263 annp 
             # 84963775533 hoàng minh hải
