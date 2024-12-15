@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ZaloTemplate extends Model
 {
     protected $table = 'zalo_templates';
+    public $timestamps = true;
 
     /**
      * The attributes that are mass assignable.

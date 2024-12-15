@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Webkul\Lead\Models\ZaloConfig;
+use Webkul\Lead\Models\ZaloZnsMessages;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 
@@ -14,7 +15,7 @@ class SendZNSNewCustomerWithPoint implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
-    private $leadInfo;
+    protected $leadInfo;
     protected $url;
     protected $idZaloConfig;
     protected $templateIdNewCustomer;
@@ -28,8 +29,8 @@ class SendZNSNewCustomerWithPoint implements ShouldQueue
     {
         $this->leadInfo = $leadInfo;
         $this->url = env('ZALO_URL_SEND_ZNS');
+        $this->idZaloConfig = env('ZALO_CONFIG_ID');
         $this->templateIdNewCustomer = env('ZALO_TEMPLATE_ID_NEW_CUSTOMER');
-        $this->idZaloConfig = 1;
     }
 
     /**
@@ -41,49 +42,63 @@ class SendZNSNewCustomerWithPoint implements ShouldQueue
     {
         $config = ZaloConfig::where('id', $this->idZaloConfig)->first();
         $leadInfo = $this->leadInfo;
-        # giờ chỉ cần bên bên zlo xác nhận cái mẫu tích điểm sau đó điền ID đó vào env là đc
 
-        // 'phone' => '84374099263',
-        // 'template_id' => '388481',
-        // 'template_data' => [
-        //     'customer_name' => 'Nguyễn Phúc An',
-        //     'address' => '123 Duy Tân',
-        //     'booking_code' => 'HD0038',
-        //     'schedule_time' => '14:00:00 20/12/2024',
-        // ],
-        // 'tracking_id' => 'f9f696ec-b7f8-11ef-a2ae-c46516b04a5a'
+        # phần này là conver lại số điện thoại về dạng 84xxxxxxxxx
+        if (env('APP_ENV') == 'production') {
+            $contactNumbers = $leadInfo->person->contact_numbers;
+            if (count($contactNumbers) > 0 && $contactNumbers[0]['value'] != '') {
+                $phone = $contactNumbers[0]['value'];
+                $phone = '84' . substr($phone, 1);
+            } 
+        } else {
+            # 84374099263 annp 
+            # 84963775533 hoàng minh hải
+            $phone = "84374099263";
+        }
 
         $client = new Client();
+        $trackingId = Str::uuid();
+        $templateData = [
+            'customer_name' => $leadInfo->title,
+            'total_point' => 100,
+            'customer_code' => $leadInfo->code ?: 'KH_' . $leadInfo->id,
+        ];
         $option = [
             'headers' => [
                 'access_token' => $config->access_token,
                 'Content-Type' => 'application/json',
             ],
             'body' => json_encode([
-                'phone' => 12,
+                'phone' => $phone,
                 'template_id' => $this->templateIdNewCustomer,
-                'template_data' => [
-                    'customer_name' => $leadInfo->title,
-                    'total_point' => 100,
-                    'customer_code' => $leadInfo->code ?: 'KH_' . $leadInfo->id,
-                ],
-                'tracking_id' => Str::uuid(),
+                'template_data' => $templateData,
+                'tracking_id' => $trackingId,
             ]),
         ];
+
+        # lưu vào bảng zns_messages
+        $modelZns = new ZaloZnsMessages();
+        $modelZns->phone = $phone;
+        $modelZns->template_id = $this->templateIdNewCustomer;
+        $modelZns->template_data = json_encode($templateData);
+        $modelZns->tracking_id = $trackingId;
+        $modelZns->save();
 
         $rs = $client->request('POST', $this->url, $option);
         $response = (Object) [
             'code' => $rs->getStatusCode(),
             'result' => json_decode($rs->getBody()->getContents()),
         ];
-
         if ($response->code == 200 && $response->result->error == 0) {
             # xử lý gì khi thành công hay không
             \Log::info(json_encode($response));
+            $modelZns->status = ZaloZnsMessages::SENT;
         } else {
             # gửi thất bại
             \Log::error(json_encode($response));
+            $modelZns->status = ZaloZnsMessages::SEND_FALSE;
         }
+        $modelZns->save();
 
         return true;
     }

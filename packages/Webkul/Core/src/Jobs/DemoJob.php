@@ -33,7 +33,7 @@ class DemoJob implements ShouldQueue
         $this->params = $params;
         $this->appId = env('ZALO_APP_ID');
         $this->secretKey = env('ZALO_SECRET_KEY');
-        $this->idZaloConfig = 1;
+        $this->idZaloConfig = env('ZALO_CONFIG_ID');
     }
 
     /**
