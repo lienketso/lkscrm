@@ -6,13 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
 use Webkul\Lead\Models\ZaloConfig;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Message;
-use GuzzleHttp\Psr7\Request;
+use Webkul\Lead\Models\ZaloZnsMessages;
+use GuzzleHttp\Client;;
 
 class SendZNS implements ShouldQueue
 {
@@ -31,7 +27,7 @@ class SendZNS implements ShouldQueue
     {
         $this->params = $params;
         $this->url = env('ZALO_URL_SEND_ZNS');
-        $this->idZaloConfig = 1;
+        $this->idZaloConfig = env('ZALO_CONFIG_ID');
     }
 
     /**
@@ -43,13 +39,22 @@ class SendZNS implements ShouldQueue
     {
         $config = ZaloConfig::where('id', $this->idZaloConfig)->first();
         $client = new Client();
+        $params = $this->params;
         $option = [
             'headers' => [
                 'access_token' => $config->access_token,
                 'Content-Type' => 'application/json',
             ],
-            'body' => json_encode($this->params),
+            'body' => json_encode($params),
         ];
+
+        # lưu vào bảng zns_messages
+        $modelZns = new ZaloZnsMessages();
+        $modelZns->phone = $params['phone'];
+        $modelZns->template_id = $params['template_id'];
+        $modelZns->template_data = json_encode($params);
+        $modelZns->tracking_id = $params['tracking_id'];
+        $modelZns->save();
 
         $rs = $client->request('POST', $this->url, $option);
         $response = (Object) [
@@ -60,10 +65,13 @@ class SendZNS implements ShouldQueue
         if ($response->code == 200 && $response->result->error == 0) {
             # xử lý gì khi thành công hay không
             \Log::info(json_encode($response));
+            $modelZns->status = ZaloZnsMessages::SENT;
         } else {
             # gửi thất bại
             \Log::error(json_encode($response));
+            $modelZns->status = ZaloZnsMessages::SEND_FALSE;
         }
+        $modelZns->save();
 
         return true;
     }

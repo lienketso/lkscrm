@@ -13,6 +13,7 @@ use Webkul\Admin\DataGrids\Lead\LeadDataGrid;
 use Webkul\Admin\DataGrids\Customer\CustomerDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Admin\Http\Requests\LeadForm;
+use Webkul\Admin\Http\Requests\LeadFormCustome;
 use Webkul\Admin\Http\Requests\MassDestroyRequest;
 use Webkul\Admin\Http\Requests\MassUpdateRequest;
 use Webkul\Admin\Http\Resources\LeadResource;
@@ -29,6 +30,7 @@ use Webkul\Lead\Repositories\TypeRepository;
 use Webkul\Tag\Repositories\TagRepository;
 use Webkul\User\Repositories\UserRepository;
 use Webkul\Core\Jobs\SendZNSNewCustomerWithPoint;
+use Webkul\Core\Jobs\QueueName;
 
 class CustomerController extends Controller
 {
@@ -150,7 +152,7 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(LeadForm $request): RedirectResponse
+    public function store(LeadFormCustome $request): RedirectResponse
     {
 
         try {
@@ -198,7 +200,7 @@ class CustomerController extends Controller
             $lead = $this->leadRepository->create($data);
 
             # sau khi tạo mới 1 khách hàng hiện hựu thì auto sẽ gửi 1 tin nhắn thông báo tích điểm đến khách hàng
-            dispatch(new SendZNSNewCustomerWithPoint($lead))->onQueue('send_zns');
+            dispatch(new SendZNSNewCustomerWithPoint($lead))->onQueue(QueueName::SEND_ZNS_NEW_CUSTOMER);
 
             Event::dispatch('lead.create.after', $lead);
 
@@ -242,7 +244,7 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(LeadForm $request, int $id): RedirectResponse|JsonResponse
+    public function update(LeadFormCustome $request, int $id): RedirectResponse|JsonResponse
     {
         Event::dispatch('lead.update.before', $id);
 

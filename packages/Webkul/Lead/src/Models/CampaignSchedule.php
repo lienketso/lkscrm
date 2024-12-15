@@ -19,8 +19,33 @@ class CampaignSchedule extends Model
         self::DONE => 'Gửi thành công',
     ];
 
+    public function zaloTemplate()
+    {
+        return $this->belongsTo(ZaloTemplate::class, 'zalo_template_id', 'template_id');
+    }
+
+    public function campaign()
+    {
+        return $this->belongsTo(Campaign::class, 'campaign_id');
+    }
+
     public function scheduleContent()
     {
         return $this->hasMany(CampaignScheduleContent::class, 'campaign_schedule_id');
+    }
+
+    public function scopeStartAt($query, $date)
+    {
+        return $query->where("start_at", 'LIKE', $date . '%');
+    }
+
+    public function scopeNotDone($query)
+    {
+        return $query->where("status", self::NOT_DONE);
+    }
+
+    public function scopeDone($query)
+    {
+        return $query->where("status", self::DONE);
     }
 }
