@@ -66,19 +66,6 @@
 
     {!! view_render_event('admin.customers.create.form.after') !!}
 
-    @if ($errors->any())
-
-        @dd($errors)
-        
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     @pushOnce('scripts')
         <script 
             type="text/x-template"
@@ -216,6 +203,18 @@
                         </div>
 
                         <div class="w-1/2">
+                            
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li class='mt-1 text-xs italic text-red-600'>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <br />
+                                </div>
+                            @endif
+
                             <!-- Contact Person Component -->
                             @include('admin::customers.common.contact')
                         </div>
