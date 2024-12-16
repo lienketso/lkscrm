@@ -53,7 +53,7 @@ class SendZNSNewCustomerWithPoint implements ShouldQueue
         } else {
             # 84374099263 annp 
             # 84963775533 hoàng minh hải
-            $phone = "84374099263";
+            $phone = env('ZALO_PHONE_DEFAULT', '84374099263');
         }
 
         $client = new Client();
@@ -83,6 +83,7 @@ class SendZNSNewCustomerWithPoint implements ShouldQueue
         $modelZns->template_data = json_encode($templateData);
         $modelZns->tracking_id = $trackingId;
         $modelZns->save();
+        \Log::info($option['body']);
 
         $rs = $client->request('POST', $this->url, $option);
         $response = (Object) [
