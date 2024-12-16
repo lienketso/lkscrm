@@ -55,6 +55,7 @@ class SendZNS implements ShouldQueue
         $modelZns->template_data = json_encode($params);
         $modelZns->tracking_id = $params['tracking_id'];
         $modelZns->save();
+        \Log::info($option['body']);
 
         $rs = $client->request('POST', $this->url, $option);
         $response = (Object) [

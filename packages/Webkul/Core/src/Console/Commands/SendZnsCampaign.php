@@ -72,6 +72,9 @@ class SendZnsCampaign extends Command
                         
                         $number = $contactNumbers[0];
                         $number = '84' . substr($number['value'], 1);
+                        if (env('APP_ENV') != 'production') {
+                            $number = env('ZALO_PHONE_DEFAULT', '84374099263');
+                        }
 
                         $tmpTemplateData = $templateData;
                         # lấy lại tên khách hàng theo lead 
