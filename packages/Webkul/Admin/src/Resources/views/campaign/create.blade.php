@@ -84,33 +84,6 @@
                         <x-admin::form.control-group.error control-name="description" />
                     </x-admin::form.control-group>
 
-                    <!-- Customers -->
-                    <x-admin::form.control-group>
-                        <x-admin::form.control-group.label>
-                            @lang('admin::app.campaign.index.datagrid.customer')
-                        </x-admin::form.control-group.label>
-
-                        <!-- Participants Multilookup Vue Component -->
-                        <v-multi-lookup-component>
-                            <div 
-                                class="relative rounded border border-gray-200 px-2 py-1 hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:hover:border-gray-400 dark:focus:border-gray-400" 
-                                role="button"
-                            >
-                                <ul class="flex flex-wrap items-center gap-1">
-                                    <li>
-                                        <input
-                                            type="text"
-                                            class="w-full px-1 py-1 dark:bg-gray-900 dark:text-gray-300"
-                                            placeholder="@lang('admin::app.campaign.index.datagrid.customer')"
-                                        />
-                                    </li>
-                                </ul>
-
-                                <span class="icon-down-arrow absolute top-1.5 text-2xl ltr:right-1.5 rtl:left-1.5"></span>
-                            </div>
-                        </v-multi-lookup-component>
-                    </x-admin::form.control-group>
-
                     <!-- Schedules -->
                     <x-admin::form.control-group>
                         <x-admin::form.control-group.label>
@@ -121,15 +94,19 @@
 
                     </x-admin::form.control-group>
 
+                    <!-- Customers -->
+                    <x-admin::form.control-group>
+                        <x-admin::form.control-group.label>
+                            @lang('admin::app.campaign.index.datagrid.customer')
+                        </x-admin::form.control-group.label>
+
+                        <!-- Participants Multilookup Vue Component -->
+                        <v-multi-select-customer-component> </v-multi-select-customer-component>
+                    </x-admin::form.control-group>
+
                     {!! view_render_event('admin.campaign.create.form_controls.after') !!}
                 </div>
             </div>
-            <!-- Right -->
-            <!-- <div class="flex w-[926px] max-w-full flex-col gap-2 max-sm:w-full">
-                <div class="box-shadow rounded-lg border border-gray-200 bg-white p-4 dark:bg-gray-900 dark:border-gray-800">
-                    
-                </div>
-            </div> -->
         </div>
     </x-admin::form>
 
@@ -138,162 +115,134 @@
     @pushOnce('scripts')
         <script 
             type="text/x-template"
-            id="v-multi-lookup-component-template"
+            id="v-multi-select-customer-component-template"
         >
             <!-- Search Button -->
             <div class="relative">
-                <div class="relative rounded border border-gray-200 px-2 py-1 hover:border-gray-400 focus:border-gray-400 dark:border-gray-800" role="button">
-                    <ul class="flex flex-wrap items-center gap-1">
-                        <!-- Added Customer -->
-                        <li
-                            class="flex items-center gap-1 rounded-md bg-slate-100 pl-2 dark:bg-slate-950 dark:text-gray-300"
-                            v-for="(item, index) in addedCustomers"
+                <div class="form-search-customer flex items-center">
+                    <div class="flex gap-x-1 px-4 py-[9px]">
+                        <x-admin::form.control-group.control
+                            type="text"
+                            name="s-name"
+                            id="s-name"
+                            v-model="filters.name"
+                            label="Tìm theo tên"
+                            placeholder="Tìm theo tên"
+                        />
+                    </div>
+                    <div class="flex gap-x-1 px-4 py-[9px]">
+                        <x-admin::form.control-group.control
+                            type="text"
+                            name="s-phone"
+                            id="s-phone"
+                            v-model="filters.phone"
+                            label="Tìm theo số điện thoại"
+                            placeholder="Tìm theo số điện thoại"
+                        />
+                    </div>
+                    <div class="flex gap-x-1 px-4 py-[9px]">
+                        <x-admin::form.control-group.control
+                            type="select"
+                            name="s-type"
+                            v-model="filters.type"
                         >
-                            <input
-                                type="hidden"
-                                :name="`customers[]`"
-                                :value="item.id"
-                            />
-
-                            @{{ item.title }}
-
-                            <span
-                                class="icon-cross-large cursor-pointer p-0.5 text-xl"
-                                @click="remove(item)"
-                            ></span>
-                        </li>
-
-                        <!-- Search Input Box -->
-                        <li>
-                            <input
-                                type="text"
-                                class="w-full px-1 py-1 dark:bg-gray-900 dark:text-gray-300"
-                                placeholder="@lang('admin::app.campaign.index.datagrid.customer')"
-                                v-model.lazy="searchTerm"
-                                v-debounce="500"
-                            />
-                        </li>
-                    </ul>
-
-                    <!-- Search and Spinner Icon -->
-                    <div>
-                        <template v-if="!isSearching">
-                            <span
-                                class="absolute top-1.5 text-2xl ltr:right-1.5 rtl:left-1.5"
-                                :class="[searchTerm.length >= 2 ? 'icon-up-arrow' : 'icon-down-arrow']"
-                            ></span>
-                        </template>
-
-                        <template v-else>
-                            <x-admin::spinner class="absolute top-2 ltr:right-2 rtl:left-2" />
-                        </template>
+                            <option value="">Chọn chi nhánh</option>
+                            @foreach ($leadTypes as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </x-admin::form.control-group.control>
+                    </div>
+                    <div class="flex gap-x-1 px-4 py-[9px]">
+                        <x-admin::form.control-group.control
+                            type="select"
+                            name="s-tag"
+                            v-model="filters.tag"
+                        >
+                            <option value="">Chọn tag</option>
+                            @foreach ($leadTags as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </x-admin::form.control-group.control>
+                    </div>
+                    <div class="flex gap-x-1 px-4 py-[9px]">
+                        <x-admin::form.control-group.control
+                            type="select"
+                            name="s-source"
+                            v-model="filters.source"
+                        >
+                            <option value="">Chọn nguồn</option>
+                            @foreach ($leadsources as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </x-admin::form.control-group.control>
+                    </div>
+                    <div class="flex gap-x-1 px-4 py-[9px]">
+                        <button
+                            type="button"
+                            class="primary-button"
+                            @click="search"
+                        >
+                            Tìm kiếm
+                        </button>
                     </div>
                 </div>
+                <div class="form-result-customer flex items-center">
+                    <div v-for="(pCustomer, j) in pCustomers">
+                        <div class="flex gap-x-1 px-4 py-[9px] cursor-pointer items-center gap-2.5">
+                            <x-admin::form.control-group.control
+                                type="checkbox"
+                                name="customers[]"
+                                ::id="pCustomer.id"
+                                ::for="pCustomer.id"
+                                ::value="pCustomer.id"
+                            />
 
-                <!-- Search Dropdown -->
-                <div
-                    class="absolute z-10 w-full rounded bg-white shadow-[0px_10px_20px_0px_#0000001F] dark:bg-gray-900"
-                    v-if="searchTerm.length >= 2"
-                >
-                    <ul class="flex flex-col gap-1 p-2">
-                        <!-- Searched Customer -->
-                        <h3 class="text-sm font-bold text-gray-600 dark:text-gray-400">
-                            <template>
-                                @lang('admin::app.campaign.index.datagrid.customer')
-                            </template>
-                        </h3>
-
-                        <ul>
-                            <li
-                                class="rounded-sm px-5 py-2 text-sm text-gray-800 dark:text-gray-300"
-                                v-if="! searchedCustomers.length && ! isSearching"
-                            >
-                                <p class="text-sm text-gray-500 dark:text-gray-400">
-                                    @lang('admin::app.campaign.no-result-found')
-                                </p>
-                            </li>
-
-                            <li
-                                class="cursor-pointer rounded-sm px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-950"
-                                v-for="user in searchedCustomers"
-                                @click="add(user)"
-                            >
-                                @{{ user.title }}
-                            </li>
-                        </ul>
-                    </ul>
+                            <label class="cursor-pointer !text-gray-600 dark:!text-gray-300" ::for="pCustomer.id">
+                                @{{ pCustomer.title }}
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </script>
 
         <script type="module">
-            app.component('v-multi-lookup-component', {
-                template: '#v-multi-lookup-component-template',
+            app.component('v-multi-select-customer-component', {
+                template: '#v-multi-select-customer-component-template',
 
                 data() {
                     return {
-                        isSearching: false,
-                        searchTerm: '',
-                        addedCustomers: [],
-                        searchedCustomers: [],
-                        searchEnpoints:  "{{ route('admin.customers.search') }}",
+                        searchEnpoints:  "{{ route('admin.customers.search_campaign') }}",
+                        filters: {
+                            name: '',
+                            phone: '',
+                            type: '',
+                            tag: '',
+                            source: '',
+                        },
+                        pCustomers: [],
+                        customers: [],
                     };
-                },
-
-                watch: {
-                    searchTerm(newVal, oldVal) {
-                        this.search();
-                    },
-                },
-
-                created() {
-                    
                 },
 
                 methods: {
                     search() {
-                        if (this.searchTerm.length <= 1) {
-                            this.searchedCustomers = [];
-
-                            this.isSearching = false;
-
-                            return;
-                        }
-
-                        this.isSearching = true;
 
                         this.$axios.get(this.searchEnpoints, {
                                 params: {
-                                    search: 'title:' + this.searchTerm,
-                                    searchFields: 'title:like',
+                                    name: this.filters.name,
+                                    phone: this.filters.phone,
+                                    type: this.filters.type,
+                                    tag: this.filters.tag,
+                                    source: this.filters.source,
                                 }
                             })
                             .then ((response) => {
-                                this.addedCustomers.forEach(addedCus => 
-                                    response.data.data = response.data.data.filter(participant => participant.id !== addedCus.id)
-                                );
-
-                                this.searchedCustomers = response.data.data;
-
-                                this.isSearching = false;
+                                this.pCustomers = response.data;
                             })
                             .catch (function (error) {
-                                this.isSearching = false;
+
                             });
-                    },
-
-                    add(customer) {
-                        this.addedCustomers.push(customer);
-
-                        this.searchTerm = '';
-
-                        this.searchedCustomers = [];
-                    },
-
-                    remove(customer) {
-                        this.addedCustomers = this.addedCustomers.filter(addedCus => 
-                            addedCus.id !== customer.id
-                        );
                     },
                 },
             });
