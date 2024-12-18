@@ -31,6 +31,9 @@ use Webkul\Tag\Repositories\TagRepository;
 use Webkul\User\Repositories\UserRepository;
 use Webkul\Core\Jobs\SendZNSNewCustomerWithPoint;
 use Webkul\Core\Jobs\QueueName;
+use Illuminate\Http\Request;
+use Webkul\Lead\Models\Lead;
+use Webkul\Lead\Models\Source;
 
 class CustomerController extends Controller
 {
@@ -369,6 +372,33 @@ class CustomerController extends Controller
         }
 
         return LeadResource::collection($results);
+    }
+
+    /**
+     * Search person results.
+     */
+    public function searchCampaign(Request $request)
+    {
+        $params = (Object) $request->all();
+
+        if ($params->phone) {
+
+        }
+        if ($params->tag) {
+
+        }
+
+        $results = $this->leadRepository->select('id', 'title', 'code')->where('is_customer', 1)
+            ->when($params->name, function($sQuery, $name) {
+                return $sQuery->where('title', 'like', '%' . $name . '%');
+            })->when($params->type, function($sQuery, $type) {
+                return $sQuery->where('lead_type_id', $type);
+            })->when($params->source, function($sQuery, $source) {
+                return $sQuery->where('lead_source_id', $source);
+            })
+            ->get();
+
+        return response()->json($results);
     }
 
     /**
