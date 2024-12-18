@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Webkul\DataGrid\DataGrid;
 use Webkul\Lead\Models\Campaign;
 use Webkul\Lead\Models\CampaignSchedule;
+use Webkul\Lead\Models\CampaignCustomer;
 
 class CampaignDataGrid extends DataGrid
 {
@@ -38,7 +39,7 @@ class CampaignDataGrid extends DataGrid
             'index'      => 'id',
             'label'      => trans('admin::app.campaign.index.datagrid.id'),
             'type'       => 'string',
-            'sortable'   => true,
+            'sortable'   => false,
             'filterable' => true,
         ]);
 
@@ -46,7 +47,7 @@ class CampaignDataGrid extends DataGrid
             'index'      => 'name',
             'label'      => trans('admin::app.campaign.index.datagrid.name'),
             'type'       => 'string',
-            'sortable'   => true,
+            'sortable'   => false,
             'filterable' => true,
         ]);
 
@@ -54,15 +55,37 @@ class CampaignDataGrid extends DataGrid
             'index'      => 'description',
             'label'      => trans('admin::app.campaign.index.datagrid.description'),
             'type'       => 'string',
-            'sortable'   => true,
+            'sortable'   => false,
             'filterable' => true,
+        ]);
+
+        $this->addColumn([
+            'index'      => 'campaign_customers',
+            'label'      => trans('admin::app.campaign.index.datagrid.customer'),
+            'type'       => 'string',
+            'sortable'   => false,
+            'filterable' => true,
+            'closure'    => function ($row) {
+                return CampaignCustomer::where('campaign_id', $row->id)->count();
+            },
+        ]);
+
+        $this->addColumn([
+            'index'      => 'campaign_schedule',
+            'label'      => trans('admin::app.campaign.index.datagrid.schedule'),
+            'type'       => 'string',
+            'sortable'   => false,
+            'filterable' => true,
+            'closure'    => function ($row) {
+                return CampaignSchedule::where('campaign_id', $row->id)->count();
+            },
         ]);
 
         $this->addColumn([
             'index'      => 'status',
             'label'      => trans('admin::app.campaign.index.datagrid.status'),
             'type'       => 'string',
-            'sortable'   => true,
+            'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
                 return Campaign::STATUS[$row->status];

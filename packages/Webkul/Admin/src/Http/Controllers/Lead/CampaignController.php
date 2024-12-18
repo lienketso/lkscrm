@@ -11,6 +11,9 @@ use Webkul\Lead\Models\CampaignSchedule;
 use Webkul\Lead\Models\CampaignScheduleContent;
 use Webkul\Lead\Models\CampaignCustomer;
 use Webkul\Lead\Models\ZaloTemplate;
+use Webkul\Lead\Models\Type;
+use Webkul\Tag\Models\Tag;
+use Webkul\Lead\Models\Source;
 use Illuminate\Support\Facades\DB;
 
 class CampaignController extends Controller
@@ -43,7 +46,11 @@ class CampaignController extends Controller
     public function create()
     {
         $znsTemplates = ZaloTemplate::select('template_id', 'template_name')->with(['info:template_id,id,name,require,type,max_length'])->get();
-        return view('admin::campaign.create', compact('znsTemplates'));
+        $leadTypes = Type::all();
+        $leadTags = Tag::all();
+        $leadsources = Source::all();
+
+        return view('admin::campaign.create', compact('znsTemplates', 'leadTypes', 'leadTags', 'leadsources'));
     }
 
     /**
@@ -52,7 +59,6 @@ class CampaignController extends Controller
     public function store(CampaignForm $request)
     {
         $params = (Object) $request->all();
-        // dd($params);
 
         DB::beginTransaction();
 
