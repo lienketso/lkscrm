@@ -18,6 +18,7 @@ use Webkul\Admin\Http\Requests\MassDestroyRequest;
 use Webkul\Admin\Http\Requests\MassUpdateRequest;
 use Webkul\Admin\Http\Resources\LeadResource;
 use Webkul\Admin\Http\Resources\StageResource;
+use Webkul\Admin\Http\Resources\LeadSearchResource;
 use Webkul\Attribute\Repositories\AttributeRepository;
 use Webkul\Contact\Repositories\PersonRepository;
 use Webkul\DataGrid\Enums\DateRangeOptionEnum;
@@ -34,6 +35,8 @@ use Webkul\Core\Jobs\QueueName;
 use Illuminate\Http\Request;
 use Webkul\Lead\Models\Lead;
 use Webkul\Lead\Models\Source;
+use Webkul\Tag\Models\LeadTag;
+use Webkul\Contact\Models\Person;
 
 class CustomerController extends Controller
 {
@@ -380,25 +383,31 @@ class CustomerController extends Controller
     public function searchCampaign(Request $request)
     {
         $params = (Object) $request->all();
+        $customerIds = [];
+        $personIds = [];
 
         if ($params->phone) {
-
+            $personIds = Person::where('contact_numbers', 'like', '%' . $params->phone . '%')->pluck('id')->toArray();
         }
         if ($params->tag) {
-
+            $customerIds = LeadTag::where('tag_id', $params->tag)->pluck('lead_id')->toArray();
         }
 
-        $results = $this->leadRepository->select('id', 'title', 'code')->where('is_customer', 1)
+        $results = $this->leadRepository->where('is_customer', 1)
             ->when($params->name, function($sQuery, $name) {
                 return $sQuery->where('title', 'like', '%' . $name . '%');
             })->when($params->type, function($sQuery, $type) {
                 return $sQuery->where('lead_type_id', $type);
             })->when($params->source, function($sQuery, $source) {
                 return $sQuery->where('lead_source_id', $source);
+            })->when($params->tag, function($sQuery) use ($customerIds) {
+                return $sQuery->whereIn('id', $customerIds);
+            })->when($params->phone, function($sQuery) use ($personIds) {
+                return $sQuery->whereIn('person_id', $personIds);
             })
             ->get();
-
-        return response()->json($results);
+        return LeadSearchResource::collection($results);
+        // return response()->json($results);
     }
 
     /**

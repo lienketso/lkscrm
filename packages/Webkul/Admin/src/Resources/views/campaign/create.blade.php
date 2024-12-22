@@ -140,7 +140,7 @@
                             placeholder="Tìm theo số điện thoại"
                         />
                     </div>
-                    <div class="flex gap-x-1 px-4 py-[9px]">
+                    <div class="flex gap-x-1 px-4 py-[9px] w-[210px]">
                         <x-admin::form.control-group.control
                             type="select"
                             name="s-type"
@@ -152,7 +152,7 @@
                             @endforeach
                         </x-admin::form.control-group.control>
                     </div>
-                    <div class="flex gap-x-1 px-4 py-[9px]">
+                    <div class="flex gap-x-1 px-4 py-[9px] w-[210px]">
                         <x-admin::form.control-group.control
                             type="select"
                             name="s-tag"
@@ -164,7 +164,7 @@
                             @endforeach
                         </x-admin::form.control-group.control>
                     </div>
-                    <div class="flex gap-x-1 px-4 py-[9px]">
+                    <div class="flex gap-x-1 px-4 py-[9px] w-[210px]">
                         <x-admin::form.control-group.control
                             type="select"
                             name="s-source"
@@ -187,7 +187,7 @@
                     </div>
                 </div>
                 <div class="form-result-customer flex items-center">
-                    <div v-for="(pCustomer, j) in pCustomers">
+                    <template v-for="(pCustomer, j) in pCustomers">
                         <div class="flex gap-x-1 px-4 py-[9px] cursor-pointer items-center gap-2.5">
                             <x-admin::form.control-group.control
                                 type="checkbox"
@@ -197,15 +197,14 @@
                                 ::value="pCustomer.id"
                             />
 
-                            <label class="cursor-pointer !text-gray-600 dark:!text-gray-300" ::for="pCustomer.id">
+                            <label class="cursor-pointer !text-gray-600 dark:!text-gray-300" :for="pCustomer.id">
                                 @{{ pCustomer.title }}
                             </label>
                         </div>
-                    </div>
+                    </template>
                 </div>
             </div>
         </script>
-
         <script type="module">
             app.component('v-multi-select-customer-component', {
                 template: '#v-multi-select-customer-component-template',
@@ -227,7 +226,10 @@
 
                 methods: {
                     search() {
-
+                        if (this.filters.name == '' && this.filters.phone == '' &&this.filters.type == '' &&this.filters.tag == '' &&this.filters.source == '') {
+                            alert('Vui lòng thêm điều kiện lọc trước khi nhấn tìm kiếm!');
+                            return;
+                        }
                         this.$axios.get(this.searchEnpoints, {
                                 params: {
                                     name: this.filters.name,
@@ -238,7 +240,13 @@
                                 }
                             })
                             .then ((response) => {
-                                this.pCustomers = response.data;
+                                this.pCustomers = response.data.data.map(item => {
+                                    let tmp = item.title + (item.code ? (' | ' + item.code) : '') + (item.contact_numbers ? (' | ' + item.contact_numbers) : '');
+                                    return {
+                                        id: item.id,
+                                        title: tmp,
+                                    };
+                                });
                             })
                             .catch (function (error) {
 
@@ -247,7 +255,6 @@
                 },
             });
         </script>
-
         <script 
             type="text/x-template"
             id="v-multi-schedule-component-template"
