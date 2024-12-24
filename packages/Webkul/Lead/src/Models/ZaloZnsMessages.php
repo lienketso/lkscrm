@@ -15,4 +15,7 @@ class ZaloZnsMessages extends Model
     const NOT_SEND = 1;
     const SENT = 2;
     const SEND_FALSE = 3;
+
+    const EVENT_NAME_USER_RECEIVED_MESSAGE = 'user_received_message'; // Sự kiện người dùng nhận thông báo ZNS
+    
 }
