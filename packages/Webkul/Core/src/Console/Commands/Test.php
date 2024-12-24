@@ -66,7 +66,7 @@ class Test extends Command
                 'booking_code' => 'HD0038',
                 'schedule_time' => '14:00:00 20/12/2024',
             ],
-            'tracking_id' => 'f9f696ec-b7f8-11ef-a2ae-c46516b04a5a'
+            'tracking_id' => 'f9f696ec-b7f8-11ef-a2ae-c46516b04b5a'
         ]))->onQueue('test_queue');
 
         return true;
