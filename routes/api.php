@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Webkul\Admin\Http\Controllers\Lead\ZaloTemplateController;
+use App\Http\Controllers\ZNSController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +14,7 @@ use Webkul\Admin\Http\Controllers\Lead\ZaloTemplateController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('/tesst-zns-webhook', [ZNSController::class, 'handleWebhook']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
