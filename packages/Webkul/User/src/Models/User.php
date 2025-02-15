@@ -24,6 +24,7 @@ class User extends Authenticatable implements UserContract
         'password',
         'api_token',
         'role_id',
+        'leader_id',
         'status',
     ];
 
@@ -99,5 +100,10 @@ class User extends Authenticatable implements UserContract
         }
 
         return in_array($permission, $this->role->permissions);
+    }
+
+    public function leader(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(UserProxy::modelClass(), 'id', 'leader_id');
     }
 }

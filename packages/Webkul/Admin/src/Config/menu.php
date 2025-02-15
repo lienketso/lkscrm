@@ -284,4 +284,64 @@ return [
         'sort'       => 9,
         'icon-class' => 'icon-configuration',
     ],
+
+    /**
+     * Zalo.
+     */
+    [
+        'key'        => 'zalo',
+        'name'       => 'admin::app.zalo.title',
+        'route'      => 'admin.zalo.template.index',
+        'params'     => ['route' => 'compose'],
+        'sort'       => 10,
+        'icon-class' => 'icon-quote',
+    ], [
+        'key'        => 'zalo.template',
+        'name'       => 'admin::app.zalo.template',
+        'route'      => 'admin.zalo.template.index',
+        'sort'       => 1,
+        'icon-class' => '',
+    ], [
+        'key'        => 'zalo.campaign',
+        'name'       => 'admin::app.campaign.index.title',
+        'route'      => 'admin.campaign.index',
+        'sort'       => 2,
+        'icon-class' => '',
+    ],
+
+    /**
+     * Dự án.
+     */
+    [
+        'key'        => 'project',
+        'name'       => 'admin::app.project.title',
+        'route'      => 'admin.phases.index',
+        'params'     => ['route' => 'compose'],
+        'sort'       => 10,
+        'icon-class' => 'icon-quote',
+    ], [
+        'key'        => 'project.list',
+        'name'       => 'admin::app.project.list',
+        'route'      => 'admin.projects.index',
+        'sort'       => 1,
+        'icon-class' => '',
+    ], [
+        'key'        => 'project.phase',
+        'name'       => 'admin::app.project.phase_title',
+        'route'      => 'admin.phases.index',
+        'sort'       => 2,
+        'icon-class' => '',
+    ],
+
+    /**
+     * Task.
+     */
+    [
+        'key'        => 'task',
+        'name'       => 'admin::app.task.title',
+        'route'      => 'admin.tasks.index',
+//        'params'     => ['route' => 'compose'],
+        'sort'       => 10,
+        'icon-class' => 'icon-quote',
+    ]
 ];

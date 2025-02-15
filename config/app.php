@@ -82,7 +82,7 @@ return [
     |
      */
 
-    'timezone' => env('APP_TIMEZONE', 'Asia/Kolkata'),
+    'timezone' => env('APP_TIMEZONE', 'Asia/Ho_Chi_Minh'),
 
     /*
     |--------------------------------------------------------------------------
@@ -214,6 +214,10 @@ return [
         Webkul\Quote\Providers\QuoteServiceProvider::class,
         Webkul\Tag\Providers\TagServiceProvider::class,
         Webkul\User\Providers\UserServiceProvider::class,
+        Webkul\TaskStatusSetting\Providers\TaskStatusSettingServiceProvider::class,
+        Webkul\TaskPrioritySetting\Providers\TaskPrioritySettingServiceProvider::class,
+        Webkul\Project\Providers\ProjectServiceProvider::class,
+        Webkul\Task\Providers\TaskServiceProvider::class,
         Webkul\Warehouse\Providers\WarehouseServiceProvider::class,
         Webkul\WebForm\Providers\WebFormServiceProvider::class,
     ])->toArray(),

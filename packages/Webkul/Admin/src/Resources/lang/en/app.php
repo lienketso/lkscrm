@@ -1155,6 +1155,7 @@ return [
                     'password'         => 'Password',
                     'permission'       => 'Permission',
                     'role'             => 'Role',
+                    'leader'           => 'Leader',
                     'save-btn'         => 'Save User',
                     'status'           => 'Status',
                     'title'            => 'Create User',

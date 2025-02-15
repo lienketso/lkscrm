@@ -118,7 +118,7 @@
     </div>
 
     {!! view_render_event('admin.layout.body.after') !!}
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @stack('scripts')
 
     {!! view_render_event('admin.layout.vue-app-mount.before') !!}

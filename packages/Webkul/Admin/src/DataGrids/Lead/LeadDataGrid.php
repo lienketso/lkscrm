@@ -40,11 +40,7 @@ class LeadDataGrid extends DataGrid
         } else {
             $this->pipeline = $this->pipelineRepository->getDefaultPipeline();
         }
-        if (request('is_customer')) {
-            $this->isCustomer = 1;
-        } else {
-            $this->isCustomer = 0;
-        }
+        $this->isCustomer = 0;
     }
 
     /**

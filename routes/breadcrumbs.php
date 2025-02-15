@@ -26,16 +26,34 @@ Breadcrumbs::for('leads.create', function (BreadcrumbTrail $trail) {
     $trail->push(trans('admin::app.leads.create.title'), route('admin.leads.create'));
 });
 
+// Dashboard > Customers > Create
+Breadcrumbs::for('customers.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('customers');
+    $trail->push(trans('admin::app.customers.create.title'), route('admin.customers.create'));
+});
+
 // Leads Edit
 Breadcrumbs::for('leads.edit', function (BreadcrumbTrail $trail, $lead) {
     $trail->parent('leads');
     $trail->push(trans('admin::app.leads.edit.title'), route('admin.leads.edit', $lead->id));
 });
 
+// Customers Edit
+Breadcrumbs::for('customers.edit', function (BreadcrumbTrail $trail, $lead) {
+    $trail->parent('customers');
+    $trail->push(trans('admin::app.customers.edit.title'), route('admin.customers.edit', $lead->id));
+});
+
 // Dashboard > Leads > Title
 Breadcrumbs::for('leads.view', function (BreadcrumbTrail $trail, $lead) {
     $trail->parent('leads');
     $trail->push('#'.$lead->id, route('admin.leads.view', $lead->id));
+});
+
+// Dashboard > Customers > Title
+Breadcrumbs::for('customers.view', function (BreadcrumbTrail $trail, $lead) {
+    $trail->parent('customers');
+    $trail->push('#'.$lead->id, route('admin.customers.view', $lead->id));
 });
 
 // Dashboard > Quotes
@@ -426,4 +444,40 @@ Breadcrumbs::for('configuration.slug', function (BreadcrumbTrail $trail, $slug) 
 Breadcrumbs::for('dashboard.account.edit', function (BreadcrumbTrail $trail, $user) {
     $trail->parent('dashboard');
     $trail->push(trans('admin::app.account.edit.title'), route('admin.user.account.edit', $user->id));
+});
+
+// Dashboard > zalo template
+Breadcrumbs::for('zalo.template', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push(trans('admin::app.zalo.title'), route('admin.zalo.template.index'));
+});
+
+// Dashboard > zalo template => view detail
+Breadcrumbs::for('zalo.template.view', function (BreadcrumbTrail $trail, $template) {
+    $trail->parent('zalo.template');
+    $trail->push('#'.$template->id, route('admin.zalo.view', ['id' => $template->id]));
+});
+
+// Dashboard > ZNS campaign
+Breadcrumbs::for('campaign', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push(trans('admin::app.campaign.index.title'), route('admin.campaign.index'));
+});
+
+// Dashboard > campaign > Create
+Breadcrumbs::for('campaign.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('campaign');
+    $trail->push(trans('admin::app.campaign.create.title'), route('admin.campaign.create'));
+});
+
+// Dashboard > campaign Edit
+Breadcrumbs::for('campaign.edit', function (BreadcrumbTrail $trail, $campaign) {
+    $trail->parent('campaign');
+    $trail->push(trans('admin::app.campaign.edit.title'), route('admin.campaign.edit', $campaign->id));
+});
+
+// Dashboard > campaign > view
+Breadcrumbs::for('campaign.view', function (BreadcrumbTrail $trail, $campaign) {
+    $trail->parent('campaign');
+    $trail->push('#'.$campaign->id, route('admin.campaign.view', $campaign->id));
 });

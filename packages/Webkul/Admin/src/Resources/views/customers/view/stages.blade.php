@@ -1,12 +1,12 @@
 <!-- Stages Navigation -->
-{!! view_render_event('admin.leads.view.stages.before', ['lead' => $lead]) !!}
+{!! view_render_event('admin.customers.view.stages.before', ['lead' => $lead]) !!}
 
 <!-- Stages Vue Component -->
 <v-lead-stages>
-    <x-admin::shimmer.leads.view.stages :count="$lead->pipeline->stages->count() - 1" />
+    <x-admin::shimmer.customers.view.stages :count="$lead->pipeline->stages->count() - 1" />
 </v-lead-stages>
 
-{!! view_render_event('admin.leads.view.stages.after', ['lead' => $lead]) !!}
+{!! view_render_event('admin.customers.view.stages.after', ['lead' => $lead]) !!}
 
 @pushOnce('scripts')
     <script type="text/x-template" id="v-lead-stages-template">
@@ -17,7 +17,7 @@
         >
             <!-- Stages Item -->
             <template v-for="stage in stages">
-                {!! view_render_event('admin.leads.view.stages.items.before', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.stages.items.before', ['lead' => $lead]) !!}
 
                 <div
                     class="stage relative flex h-7 min-w-24 cursor-pointer items-center justify-center bg-white pl-7 pr-4 dark:bg-gray-900 ltr:first:rounded-l-lg rtl:first:rounded-r-lg"
@@ -33,15 +33,15 @@
                     </span>
                 </div>
 
-                {!! view_render_event('admin.leads.view.stages.items.after', ['lead' => $lead]) !!}
+                {!! view_render_event('admin.customers.view.stages.items.after', ['lead' => $lead]) !!}
             </template>
 
-            {!! view_render_event('admin.leads.view.stages.items.dropdown.before', ['lead' => $lead]) !!}
+            {!! view_render_event('admin.customers.view.stages.items.dropdown.before', ['lead' => $lead]) !!}
 
             <!-- Won/Lost Stage Item -->
             <x-admin::dropdown position="bottom-right">
                 <x-slot:toggle>
-                    {!! view_render_event('admin.leads.view.stages.items.dropdown.toggle.before', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.view.stages.items.dropdown.toggle.before', ['lead' => $lead]) !!}
 
                     <div
                         class="relative flex h-7 min-w-24 cursor-pointer items-center justify-center rounded-r-lg bg-white pl-7 pr-4 dark:bg-gray-900"
@@ -51,37 +51,37 @@
                         }"
                     >
                         <span class="z-20 whitespace-nowrap text-sm font-medium dark:text-white">
-                            {{ __('admin::app.leads.view.stages.won-lost') }}
+                            {{ __('admin::app.customers.view.stages.won-lost') }}
                         </span>
 
                         <span class="icon-down-arrow text-2xl dark:text-gray-900"></span>
                     </div>
 
-                    {!! view_render_event('admin.leads.view.stages.items.dropdown.toggle.after', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.view.stages.items.dropdown.toggle.after', ['lead' => $lead]) !!}
                 </x-slot>
 
                 <x-slot:menu>
-                    {!! view_render_event('admin.leads.view.stages.items.dropdown.menu_item.before', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.view.stages.items.dropdown.menu_item.before', ['lead' => $lead]) !!}
 
                     <x-admin::dropdown.menu.item
                         @click="openModal(this.stages.find(stage => stage.code == 'won'))"
                     >
-                        @lang('admin::app.leads.view.stages.won')
+                        @lang('admin::app.customers.view.stages.won')
                     </x-admin::dropdown.menu.item>
 
                     <x-admin::dropdown.menu.item
                         @click="openModal(this.stages.find(stage => stage.code == 'lost'))"
                     >
-                        @lang('admin::app.leads.view.stages.lost')
+                        @lang('admin::app.customers.view.stages.lost')
                     </x-admin::dropdown.menu.item>
 
-                    {!! view_render_event('admin.leads.view.stages.items.dropdown.menu_item.after', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.view.stages.items.dropdown.menu_item.after', ['lead' => $lead]) !!}
                 </x-slot>
             </x-admin::dropdown>
 
-            {!! view_render_event('admin.leads.view.stages.items.dropdown.after', ['lead' => $lead]) !!}
+            {!! view_render_event('admin.customers.view.stages.items.dropdown.after', ['lead' => $lead]) !!}
 
-            {!! view_render_event('admin.leads.view.stages.form_controls.before', ['lead' => $lead]) !!}
+            {!! view_render_event('admin.customers.view.stages.form_controls.before', ['lead' => $lead]) !!}
 
             <x-admin::form
                 v-slot="{ meta, errors, handleSubmit }"
@@ -89,27 +89,27 @@
                 ref="stageUpdateForm"
             >
                 <form @submit="handleSubmit($event, handleFormSubmit)">
-                    {!! view_render_event('admin.leads.view.stages.form_controls.modal.before', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.view.stages.form_controls.modal.before', ['lead' => $lead]) !!}
 
                     <x-admin::modal ref="stageUpdateModal">
                         <x-slot:header>
-                            {!! view_render_event('admin.leads.view.stages.form_controls.modal.header.before', ['lead' => $lead]) !!}
+                            {!! view_render_event('admin.customers.view.stages.form_controls.modal.header.before', ['lead' => $lead]) !!}
 
                             <h3 class="text-base font-semibold dark:text-white">
-                                @lang('admin::app.leads.view.stages.need-more-info')
+                                @lang('admin::app.customers.view.stages.need-more-info')
                             </h3>
 
-                            {!! view_render_event('admin.leads.view.stages.form_controls.modal.header.after', ['lead' => $lead]) !!}
+                            {!! view_render_event('admin.customers.view.stages.form_controls.modal.header.after', ['lead' => $lead]) !!}
                         </x-slot>
 
                         <x-slot:content>
-                            {!! view_render_event('admin.leads.view.stages.form_controls.modal.content.before', ['lead' => $lead]) !!}
+                            {!! view_render_event('admin.customers.view.stages.form_controls.modal.content.before', ['lead' => $lead]) !!}
 
                             <!-- Won Value -->
                             <template v-if="nextStage.code == 'won'">
                                 <x-admin::form.control-group>
                                     <x-admin::form.control-group.label>
-                                        @lang('admin::app.leads.view.stages.won-value')
+                                        @lang('admin::app.customers.view.stages.won-value')
                                     </x-admin::form.control-group.label>
 
                                     <x-admin::form.control-group.control
@@ -125,7 +125,7 @@
                             <template v-else>
                                 <x-admin::form.control-group>
                                     <x-admin::form.control-group.label>
-                                        @lang('admin::app.leads.view.stages.lost-reason')
+                                        @lang('admin::app.customers.view.stages.lost-reason')
                                     </x-admin::form.control-group.label>
 
                                     <x-admin::form.control-group.control
@@ -139,41 +139,41 @@
                             <!-- Closed At -->
                             <x-admin::form.control-group>
                                 <x-admin::form.control-group.label>
-                                    @lang('admin::app.leads.view.stages.closed-at')
+                                    @lang('admin::app.customers.view.stages.closed-at')
                                 </x-admin::form.control-group.label>
 
                                 <x-admin::form.control-group.control
                                     type="date"
                                     name="closed_at"
                                     v-model="nextStage.closed_at"
-                                    :label="trans('admin::app.leads.view.stages.closed-at')"
+                                    :label="trans('admin::app.customers.view.stages.closed-at')"
                                 />
 
                                 <x-admin::form.control-group.error control-name="closed_at"/>
                             </x-admin::form.control-group>
 
-                            {!! view_render_event('admin.leads.view.stages.form_controls.modal.content.after', ['lead' => $lead]) !!}
+                            {!! view_render_event('admin.customers.view.stages.form_controls.modal.content.after', ['lead' => $lead]) !!}
                         </x-slot>
 
                         <x-slot:footer>
-                            {!! view_render_event('admin.leads.view.stages.form_controls.modal.footer.before', ['lead' => $lead]) !!}
+                            {!! view_render_event('admin.customers.view.stages.form_controls.modal.footer.before', ['lead' => $lead]) !!}
 
                             <button
                                 type="submit"
                                 class="primary-button"
                             >
-                                @lang('admin::app.leads.view.stages.save-btn')
+                                @lang('admin::app.customers.view.stages.save-btn')
                             </button>
 
-                            {!! view_render_event('admin.leads.view.stages.form_controls.modal.footer.after', ['lead' => $lead]) !!}
+                            {!! view_render_event('admin.customers.view.stages.form_controls.modal.footer.after', ['lead' => $lead]) !!}
                         </x-slot>
                     </x-admin::modal>
 
-                    {!! view_render_event('admin.leads.view.stages.form_controls.modal.after', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.view.stages.form_controls.modal.after', ['lead' => $lead]) !!}
                 </form>
             </x-admin::form>
 
-            {!! view_render_event('admin.leads.view.stages.form_controls.after', ['lead' => $lead]) !!}
+            {!! view_render_event('admin.customers.view.stages.form_controls.after', ['lead' => $lead]) !!}
         </div>
     </script>
 
@@ -234,7 +234,7 @@
                     let self = this;
 
                     this.$axios
-                        .put("{{ route('admin.leads.stage.update', $lead->id) }}", params ?? {
+                        .put("{{ route('admin.customers.stage.update', $lead->id) }}", params ?? {
                             'lead_pipeline_stage_id': stage.id
                         })
                         .then (function(response) {

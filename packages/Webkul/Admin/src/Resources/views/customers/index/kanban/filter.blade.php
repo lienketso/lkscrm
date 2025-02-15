@@ -1,4 +1,4 @@
-{!! view_render_event('admin.leads.index.kanban.filter.before') !!}
+{!! view_render_event('admin.customers.index.kanban.filter.before') !!}
 
 <v-kanban-filter
     :is-loading="isLoading"
@@ -8,14 +8,14 @@
 >
 </v-kanban-filter>
 
-{!! view_render_event('admin.leads.index.kanban.filter.after') !!}
+{!! view_render_event('admin.customers.index.kanban.filter.after') !!}
 
 @pushOnce('scripts')
     <script
         type="text/x-template"
         id="v-kanban-filter-template"
     >
-        {!! view_render_event('admin.leads.index.kanban.filter.drawer.before') !!}
+        {!! view_render_event('admin.customers.index.kanban.filter.drawer.before') !!}
 
         <x-admin::drawer
             width="350px"
@@ -23,10 +23,10 @@
         >
             <!-- Drawer Toggler -->
             <x-slot:toggle>
-                {!! view_render_event('admin.leads.index.kanban.filter.drawer.toggle_button.before') !!}
+                {!! view_render_event('admin.customers.index.kanban.filter.drawer.toggle_button.before') !!}
 
                 <div class="relative flex cursor-pointer items-center rounded-md bg-sky-100 px-4 py-[9px] font-semibold text-sky-600 dark:bg-brandColor dark:text-white">
-                    @lang('admin::app.leads.index.kanban.toolbar.filters.filter')
+                    @lang('admin::app.customers.index.kanban.toolbar.filters.filter')
 
                     <span
                         class="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-sky-600 dark:bg-white"
@@ -35,27 +35,27 @@
                     </span>
                 </div>
 
-                {!! view_render_event('admin.leads.index.kanban.filter.drawer.toggle_button.after') !!}
+                {!! view_render_event('admin.customers.index.kanban.filter.drawer.toggle_button.after') !!}
             </x-slot>
 
             <!-- Drawer Header -->
             <x-slot:header class="p-3.5">
-                {!! view_render_event('admin.leads.index.kanban.filter.drawer.header.title.before') !!}
+                {!! view_render_event('admin.customers.index.kanban.filter.drawer.header.title.before') !!}
 
                 <div class="grid gap-3">
                     <div class="flex items-center justify-between">
                         <p class="text-xl font-semibold dark:text-white">
-                            @lang('admin::app.leads.index.kanban.toolbar.filters.filters')
+                            @lang('admin::app.customers.index.kanban.toolbar.filters.filters')
                         </p>
                     </div>
                 </div>
 
-                {!! view_render_event('admin.leads.index.kanban.filter.drawer.header.title.after') !!}
+                {!! view_render_event('admin.customers.index.kanban.filter.drawer.header.title.after') !!}
             </x-slot>
 
             <!-- Drawer Content -->
             <x-slot:content>
-                {!! view_render_event('admin.leads.index.kanban.filter.drawer.content.before') !!}
+                {!! view_render_event('admin.customers.index.kanban.filter.drawer.content.before') !!}
 
                 <div>
                     <div v-for="column in available.columns">
@@ -79,7 +79,7 @@
                                                 class="cursor-pointer text-xs font-medium leading-6 text-brandColor"
                                                 v-if="hasAnyAppliedColumnValues(column.index)"
                                             >
-                                                @lang('admin::app.leads.index.kanban.toolbar.filters.clear-all')
+                                                @lang('admin::app.customers.index.kanban.toolbar.filters.clear-all')
                                             </p>
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@
                                                     <!-- If Allow Multiple Values -->
                                                     <span
                                                         class="text-sm text-gray-400 dark:text-gray-400"
-                                                        v-text="'@lang('admin::app.leads.index.kanban.toolbar.filters.select')'"
+                                                        v-text="'@lang('admin::app.customers.index.kanban.toolbar.filters.select')'"
                                                         v-if="column.allow_multiple_values"
                                                     >
                                                     </span>
@@ -102,7 +102,7 @@
                                                     <!-- If Allow Single Value -->
                                                     <span
                                                         class="text-sm text-gray-400 dark:text-gray-400"
-                                                        v-text="column.filterable_options.find((option => option.value === getAppliedColumnValues(column.index)))?.label ?? '@lang('admin::app.leads.index.kanban.toolbar.filters.select')'"
+                                                        v-text="column.filterable_options.find((option => option.value === getAppliedColumnValues(column.index)))?.label ?? '@lang('admin::app.customers.index.kanban.toolbar.filters.select')'"
                                                         v-else
                                                     >
                                                     </span>
@@ -165,7 +165,7 @@
                                                 class="cursor-pointer text-xs font-medium leading-6 text-brandColor"
                                                 v-if="hasAnyAppliedColumnValues(column.index)"
                                             >
-                                                @lang('admin::app.leads.index.kanban.toolbar.filters.clear-all')
+                                                @lang('admin::app.customers.index.kanban.toolbar.filters.clear-all')
                                             </p>
                                         </div>
                                     </div>
@@ -251,7 +251,7 @@
                                                 class="cursor-pointer text-xs font-medium leading-6 text-brandColor"
                                                 v-if="hasAnyAppliedColumnValues(column.index)"
                                             >
-                                                @lang('admin::app.leads.index.kanban.toolbar.filters.clear-all')
+                                                @lang('admin::app.customers.index.kanban.toolbar.filters.clear-all')
                                             </p>
                                         </div>
                                     </div>
@@ -308,7 +308,7 @@
                                                 class="cursor-pointer text-xs font-medium leading-6 text-brandColor"
                                                 v-if="hasAnyAppliedColumnValues(column.index)"
                                             >
-                                                @lang('admin::app.leads.index.kanban.toolbar.filters.clear-all')
+                                                @lang('admin::app.customers.index.kanban.toolbar.filters.clear-all')
                                             </p>
                                         </div>
                                     </div>
@@ -394,7 +394,7 @@
                                                 class="cursor-pointer text-xs font-medium leading-6 text-brandColor"
                                                 v-if="hasAnyAppliedColumnValues(column.index)"
                                             >
-                                                @lang('admin::app.leads.index.kanban.toolbar.filters.clear-all')
+                                                @lang('admin::app.customers.index.kanban.toolbar.filters.clear-all')
                                             </p>
                                         </div>
                                     </div>
@@ -451,7 +451,7 @@
                                                 class="cursor-pointer text-xs font-medium leading-6 text-brandColor"
                                                 v-if="hasAnyAppliedColumnValues(column.index)"
                                             >
-                                                @lang('admin::app.leads.index.kanban.toolbar.filters.clear-all')
+                                                @lang('admin::app.customers.index.kanban.toolbar.filters.clear-all')
                                             </p>
                                         </div>
                                     </div>
@@ -466,7 +466,7 @@
                                                     <!-- If Allow Multiple Values -->
                                                     <span
                                                         class="text-sm text-gray-400 dark:text-gray-400"
-                                                        v-text="'@lang('admin::app.leads.index.kanban.toolbar.filters.select')'"
+                                                        v-text="'@lang('admin::app.customers.index.kanban.toolbar.filters.select')'"
                                                         v-if="column.allow_multiple_values"
                                                     >
                                                     </span>
@@ -474,7 +474,7 @@
                                                     <!-- If Allow Single Value -->
                                                     <span
                                                         class="text-sm text-gray-400 dark:text-gray-400"
-                                                        v-text="column.filterable_options.find((option => option.value === getAppliedColumnValues(column.index)))?.label ?? '@lang('admin::app.leads.index.kanban.toolbar.filters.select')'"
+                                                        v-text="column.filterable_options.find((option => option.value === getAppliedColumnValues(column.index)))?.label ?? '@lang('admin::app.customers.index.kanban.toolbar.filters.select')'"
                                                         v-else
                                                     >
                                                     </span>
@@ -576,7 +576,7 @@
                                                 class="cursor-pointer text-xs font-medium leading-6 text-brandColor"
                                                 v-if="hasAnyAppliedColumnValues(column.index)"
                                             >
-                                                @lang('admin::app.leads.index.kanban.toolbar.filters.clear-all')
+                                                @lang('admin::app.customers.index.kanban.toolbar.filters.clear-all')
                                             </p>
                                         </div>
                                     </div>
@@ -630,12 +630,12 @@
                     </div>
                 </div>
 
-                {!! view_render_event('admin.leads.index.kanban.filter.drawer.content.after') !!}
+                {!! view_render_event('admin.customers.index.kanban.filter.drawer.content.after') !!}
             </x-slot:content>
 
             <!-- Drawer Footer -->
             <x-slot:footer class="!pb-3">
-                {!! view_render_event('admin.leads.index.kanban.filter.drawer.footer.before') !!}
+                {!! view_render_event('admin.customers.index.kanban.filter.drawer.footer.before') !!}
 
                 <div class="flex justify-end gap-2 px-2 pt-3">
                     <!-- Apply Filter Button -->
@@ -644,15 +644,15 @@
                         class="primary-button"
                         @click="applyFilters"
                     >
-                        @lang('admin::app.leads.index.kanban.toolbar.filters.apply-filters')
+                        @lang('admin::app.customers.index.kanban.toolbar.filters.apply-filters')
                     </button>
                 </div>
 
-                {!! view_render_event('admin.leads.index.kanban.filter.drawer.footer.after') !!}
+                {!! view_render_event('admin.customers.index.kanban.filter.drawer.footer.after') !!}
             </x-slot>
         </x-admin::drawer>
 
-        {!! view_render_event('admin.leads.index.kanban.filter.drawer.after') !!}
+        {!! view_render_event('admin.customers.index.kanban.filter.drawer.after') !!}
     </script>
 
     <script type="module">
@@ -1066,7 +1066,7 @@
                     }
 
                     this.$axios
-                        .get('{{ route('admin.leads.kanban.look_up') }}', {
+                        .get('{{ route('admin.customers.kanban.look_up') }}', {
                             params
                         })
                         .then(({

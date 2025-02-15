@@ -6,7 +6,10 @@ return [
         'name'  => 'admin::app.layouts.dashboard',
         'route' => 'admin.dashboard.index',
         'sort'  => 1,
-    ],  [
+    ],  
+    
+    
+    [
         'key'   => 'leads',
         'name'  => 'admin::app.acl.leads',
         'route' => 'admin.leads.index',
@@ -31,7 +34,41 @@ return [
         'name'  => 'admin::app.acl.delete',
         'route' => ['admin.leads.delete', 'admin.leads.mass_delete'],
         'sort'  => 4,
+    ], 
+
+
+
+    [
+        'key'   => 'customers',
+        'name'  => 'admin::app.acl.customers',
+        'route' => 'admin.customers.index',
+        'sort'  => 2,
     ], [
+        'key'   => 'customers.create',
+        'name'  => 'admin::app.acl.create',
+        'route' => ['admin.customers.create', 'admin.customers.store'],
+        'sort'  => 1,
+    ], [
+        'key'   => 'customers.view',
+        'name'  => 'admin::app.acl.view',
+        'route' => 'admin.customers.view',
+        'sort'  => 2,
+    ], [
+        'key'   => 'customers.edit',
+        'name'  => 'admin::app.acl.edit',
+        'route' => ['admin.customers.edit', 'admin.customers.update', 'admin.customers.mass_update'],
+        'sort'  => 3,
+    ], [
+        'key'   => 'customers.delete',
+        'name'  => 'admin::app.acl.delete',
+        'route' => ['admin.customers.delete', 'admin.customers.mass_delete'],
+        'sort'  => 4,
+    ], 
+    
+    
+    
+    
+    [
         'key'   => 'quotes',
         'name'  => 'admin::app.acl.quotes',
         'route' => 'admin.quotes.index',

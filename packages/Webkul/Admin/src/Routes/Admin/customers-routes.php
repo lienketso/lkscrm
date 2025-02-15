@@ -27,6 +27,8 @@ Route::controller(CustomerController::class)->prefix('customers')->group(functio
 
     Route::get('search', 'search')->name('admin.customers.search');
 
+    Route::get('search-campaign', 'searchCampaign')->name('admin.customers.search_campaign');
+
     Route::delete('{id}', 'destroy')->name('admin.customers.delete');
 
     Route::post('mass-update', 'massUpdate')->name('admin.customers.mass_update');

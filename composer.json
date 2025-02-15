@@ -70,7 +70,11 @@
             "Webkul\\Warehouse\\": "packages/Webkul/Warehouse/src",
             "Webkul\\WebForm\\": "packages/Webkul/WebForm/src",
             "Webkul\\Automation\\": "packages/Webkul/Automation/src",
-            "Webkul\\DataGrid\\": "packages/Webkul/DataGrid/src"
+            "Webkul\\DataGrid\\": "packages/Webkul/DataGrid/src",
+            "Webkul\\TaskPrioritySetting\\": "packages/Webkul/TaskPrioritySetting/src",
+            "Webkul\\TaskStatusSetting\\": "packages/Webkul/TaskStatusSetting/src",
+            "Webkul\\Project\\": "packages/Webkul/Project/src",
+            "Webkul\\Task\\": "packages/Webkul/Task/src"
         }
     },
     "autoload-dev": {

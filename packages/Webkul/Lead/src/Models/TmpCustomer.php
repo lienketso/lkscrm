@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class TmpCustomer extends Model
 {
+    protected $table = 'tmp_customers';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -15,7 +17,8 @@ class TmpCustomer extends Model
         'id_kiotviet',
         'code',
         'name',
-        'gender',
+        'contactNumber',
+        'address',
         'retailerId',
         'branchId',
         'locationName',

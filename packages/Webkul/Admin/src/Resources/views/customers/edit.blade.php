@@ -4,11 +4,11 @@
         @lang('admin::app.customers.edit.title')
     </x-slot>
 
-    {!! view_render_event('admin.leads.edit.form_controls.before', ['lead' => $lead]) !!}
+    {!! view_render_event('admin.customers.edit.form_controls.before', ['lead' => $lead]) !!}
 
     <!-- Edit Lead Form -->
     <x-admin::form         
-        :action="route('admin.leads.update', $lead->id)"
+        :action="route('admin.customers.update', $lead->id)"
         method="PUT"
     >
         <div class="flex flex-col gap-4">
@@ -17,7 +17,7 @@
                 <div class="flex flex-col gap-2">
                     <div class="flex cursor-pointer items-center">
                         <x-admin::breadcrumbs 
-                            name="leads.edit" 
+                            name="customers.edit" 
                             :entity="$lead"
                         />
                     </div>
@@ -28,23 +28,23 @@
                 </div>
 
                 <div class="flex items-center gap-x-2.5">
-                    {!! view_render_event('admin.leads.edit.save_button.before', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.edit.save_button.before', ['lead' => $lead]) !!}
 
                     <!-- Save button for Editing Lead -->
                     <div class="flex items-center gap-x-2.5">
-                        {!! view_render_event('admin.leads.edit.form_buttons.before') !!}
+                        {!! view_render_event('admin.customers.edit.form_buttons.before') !!}
 
                         <button
                             type="submit"
                             class="primary-button"
                         >
-                            @lang('admin::app.leads.edit.save-btn')
+                            @lang('admin::app.customers.edit.save-btn')
                         </button>
 
-                        {!! view_render_event('admin.leads.edit.form_buttons.after') !!}
+                        {!! view_render_event('admin.customers.edit.form_buttons.after') !!}
                     </div>
 
-                    {!! view_render_event('admin.leads.edit.save_button.after', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.edit.save_button.after', ['lead' => $lead]) !!}
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
         </div>
     </x-admin::form>
 
-    {!! view_render_event('admin.leads.edit.form_controls.after', ['lead' => $lead]) !!}
+    {!! view_render_event('admin.customers.edit.form_controls.after', ['lead' => $lead]) !!}
 
     @pushOnce('scripts')
         <script 
@@ -66,7 +66,7 @@
                 <div class="flex gap-2 border-b border-gray-200 dark:border-gray-800">
                     <!-- Tabs -->
                     <template v-for="tab in tabs" :key="tab.id">
-                        {!! view_render_event('admin.leads.edit.tabs.before', ['lead' => $lead]) !!}
+                        {!! view_render_event('admin.customers.edit.tabs.before', ['lead' => $lead]) !!}
 
                         <a
                             :href="'#' + tab.id"
@@ -80,12 +80,12 @@
                             :text="tab.label"
                         ></a>
 
-                        {!! view_render_event('admin.leads.edit.tabs.after', ['lead' => $lead]) !!}
+                        {!! view_render_event('admin.customers.edit.tabs.after', ['lead' => $lead]) !!}
                     </template>
                 </div>
 
                 <div class="flex flex-col gap-4 px-4 py-2">
-                    {!! view_render_event('admin.leads.edit.lead_details.before', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.edit.lead_details.before', ['lead' => $lead]) !!}
 
                     <!-- Details section -->
                     <div 
@@ -94,21 +94,35 @@
                     >
                         <div class="flex flex-col gap-1">
                             <p class="text-base font-semibold dark:text-white">
-                                @lang('admin::app.leads.edit.details')
+                                @lang('admin::app.customers.edit.details')
                             </p>
 
                             <p class="text-gray-600 dark:text-white">
-                                @lang('admin::app.leads.edit.details-info')
+                                @lang('admin::app.customers.edit.details-info')
                             </p>
                         </div>
 
                         <div class="w-1/2">
-                            {!! view_render_event('admin.leads.edit.lead_details.attributes.before', ['lead' => $lead]) !!}
+                            {!! view_render_event('admin.customers.edit.lead_details.attributes.before', ['lead' => $lead]) !!}
 
                             <!-- Lead Details Title and Description -->
-                            <x-admin::attributes
+                            <!-- <x-admin::attributes
                                 :custom-attributes="app('Webkul\Attribute\Repositories\AttributeRepository')->findWhere([
                                     ['code', 'NOTIN', ['lead_value', 'lead_type_id', 'lead_source_id', 'expected_close_date', 'user_id', 'lead_pipeline_id', 'lead_pipeline_stage_id']],
+                                    'entity_type' => 'leads',
+                                    'quick_add'   => 1
+                                ])"
+                                :custom-validations="[
+                                    'expected_close_date' => [
+                                        'date_format:yyyy-MM-dd',
+                                        'after:' .  \Carbon\Carbon::yesterday()->format('Y-m-d')
+                                    ],
+                                ]"
+                                :entity="$lead"
+                            /> -->
+                            <x-admin::attributes
+                                :custom-attributes="app('Webkul\Attribute\Repositories\AttributeRepository')->findWhere([
+                                    ['code', 'NOTIN', ['lead_value', 'lead_type_id', 'lead_source_id', 'expected_close_date', 'user_id', 'lead_pipeline_stage_id']],
                                     'entity_type' => 'leads',
                                     'quick_add'   => 1
                                 ])"
@@ -158,13 +172,13 @@
                                 </div>
                             </div>
 
-                            {!! view_render_event('admin.leads.edit.lead_details.attributes.after', ['lead' => $lead]) !!}
+                            {!! view_render_event('admin.customers.edit.lead_details.attributes.after', ['lead' => $lead]) !!}
                         </div>
                     </div>
 
-                    {!! view_render_event('admin.leads.edit.lead_details.after', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.edit.lead_details.after', ['lead' => $lead]) !!}
 
-                    {!! view_render_event('admin.leads.edit.contact_person.before', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.edit.contact_person.before', ['lead' => $lead]) !!}
 
                     <!-- Contact Person -->
                     <div 
@@ -173,23 +187,23 @@
                     >
                         <div class="flex flex-col gap-1">
                             <p class="text-base font-semibold dark:text-white">
-                                @lang('admin::app.leads.edit.contact-person')
+                                @lang('admin::app.customers.edit.contact-person')
                             </p>
 
                             <p class="text-gray-600 dark:text-white">
-                                @lang('admin::app.leads.edit.contact-info')
+                                @lang('admin::app.customers.edit.contact-info')
                             </p>
                         </div>
 
                         <div class="w-1/2">
                             <!-- Contact Person Component -->
-                            @include('admin::leads.common.contact')
+                            @include('admin::customers.common.contact')
                         </div>
                     </div>
 
-                    {!! view_render_event('admin.leads.edit.contact_person.after', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.edit.contact_person.after', ['lead' => $lead]) !!}
 
-                    {!! view_render_event('admin.leads.edit.contact_person.products.before', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.edit.contact_person.products.before', ['lead' => $lead]) !!}
 
                     <!-- Product Section -->
                     <div 
@@ -198,24 +212,24 @@
                     >
                         <div class="flex flex-col gap-1">
                             <p class="text-base font-semibold dark:text-white">
-                                @lang('admin::app.leads.edit.products')
+                                @lang('admin::app.customers.edit.products')
                             </p>
 
                             <p class="text-gray-600 dark:text-white">
-                                @lang('admin::app.leads.edit.products-info')
+                                @lang('admin::app.customers.edit.products-info')
                             </p>
                         </div>
 
                         <div>
                             <!-- Product Component -->
-                            @include('admin::leads.common.products')
+                            @include('admin::customers.common.products')
                         </div>
                     </div>
 
-                    {!! view_render_event('admin.leads.edit.contact_person.products.after', ['lead' => $lead]) !!}
+                    {!! view_render_event('admin.customers.edit.contact_person.products.after', ['lead' => $lead]) !!}
                 </div>
                 
-                {!! view_render_event('admin.leads.form_controls.after') !!}
+                {!! view_render_event('admin.customers.form_controls.after') !!}
             </div>
         </script>
 
@@ -234,9 +248,9 @@
                         products: @json($lead->products),
 
                         tabs: [
-                            { id: 'lead-details', label: '@lang('admin::app.leads.edit.details')' },
-                            { id: 'contact-person', label: '@lang('admin::app.leads.edit.contact-person')' },
-                            { id: 'products', label: '@lang('admin::app.leads.edit.products')' }
+                            { id: 'lead-details', label: '@lang('admin::app.customers.edit.details')' },
+                            { id: 'contact-person', label: '@lang('admin::app.customers.edit.contact-person')' },
+                            { id: 'products', label: '@lang('admin::app.customers.edit.products')' }
                         ],
                     };
                 },

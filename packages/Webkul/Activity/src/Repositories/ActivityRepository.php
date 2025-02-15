@@ -99,23 +99,27 @@ class ActivityRepository extends Repository
      * @param  string  $dateRange
      * @return mixed
      */
-    public function getActivities($dateRange)
+    public function getActivities($dateRange, $userId = null)
     {
         return $this->select(
             'activities.id',
             'activities.created_at',
-            'activities.title',
+            // 'activities.title',
             'activities.schedule_from as start',
             'activities.schedule_to as end',
             'users.name as user_name',
         )
             ->addSelect(\DB::raw('IF(activities.is_done, "done", "") as class'))
+            ->addSelect(\DB::raw(' CONCAT("User: ", users.name, " <br> ", activities.title) as title '))
             ->leftJoin('activity_participants', 'activities.id', '=', 'activity_participants.activity_id')
             ->leftJoin('users', 'activities.user_id', '=', 'users.id')
             ->whereIn('type', ['call', 'meeting', 'lunch'])
             ->whereBetween('activities.schedule_from', $dateRange)
-            ->where(function ($query) {
-                if ($userIds = bouncer()->getAuthorizedUserIds()) {
+            ->where(function ($query) use ($userId) {
+                if ($userId) {
+                    $query->where('activities.user_id', $userId)
+                        ->orWhere('activity_participants.user_id', $userId);
+                } else if ($userIds = bouncer()->getAuthorizedUserIds()) {
                     $query->whereIn('activities.user_id', $userIds)
                         ->orWhereIn('activity_participants.user_id', $userIds);
                 }

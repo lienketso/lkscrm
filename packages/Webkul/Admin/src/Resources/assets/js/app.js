@@ -32,18 +32,18 @@ window.app = createApp({
         onSubmit() {},
 
         onInvalidSubmit({ values, errors, results }) {
-            setTimeout(() => {
-                const errorKeys = Object.entries(errors)
-                    .map(([key, value]) => ({ key, value }))
-                    .filter(error => error["value"].length);
+            // setTimeout(() => {
+            //     const errorKeys = Object.entries(errors)
+            //         .map(([key, value]) => ({ key, value }))
+            //         .filter(error => error["value"].length);
 
-                let firstErrorElement = document.querySelector('[name="' + errorKeys[0]["key"] + '"]');
+            //     let firstErrorElement = document.querySelector('[name="' + errorKeys[0]["key"] + '"]');
 
-                firstErrorElement.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-            }, 100);
+            //     firstErrorElement.scrollIntoView({
+            //         behavior: "smooth",
+            //         block: "center"
+            //     });
+            // }, 100);
         },
 
         handleMouseOver(event) {

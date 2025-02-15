@@ -1,4 +1,4 @@
-{!! view_render_event('admin.leads.index.kanban.search.before') !!}
+{!! view_render_event('admin.customers.index.kanban.search.before') !!}
 
 <v-kanban-search
     :is-loading="isLoading"
@@ -8,7 +8,7 @@
 >
 </v-kanban-search>
 
-{!! view_render_event('admin.leads.index.kanban.search.after') !!}
+{!! view_render_event('admin.customers.index.kanban.search.after') !!}
 
 @pushOnce('scripts')
     <script
@@ -22,7 +22,7 @@
                 type="text"
                 name="search"
                 class="block w-full rounded-lg border bg-white py-1.5 leading-6 text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400 ltr:pl-10 ltr:pr-3 rtl:pl-3 rtl:pr-10"
-                placeholder="@lang('admin::app.leads.index.kanban.toolbar.search.title')"
+                placeholder="@lang('admin::app.customers.index.kanban.toolbar.search.title')"
                 autocomplete="off"
                 :value="getSearchedValues()"
                 @keyup.enter="search"

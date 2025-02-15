@@ -43,4 +43,17 @@ class UserRepository extends Repository
 
         return $userIds;
     }
+
+    public function getLeaderListSelectInput()
+    {
+        return $this->getModel()->whereNull('leader_id')->get(['id', 'name', 'email'])->toArray();
+    }
+
+    public function getMemberByLeader($leaderId)
+    {
+        $query = $this->getModel()->when($leaderId, function ($sq) use ($leaderId) {
+            $sq->where('leader_id', $leaderId);
+        });
+        return $query->get(['id', 'name', 'email'])->toArray();
+    }
 }
