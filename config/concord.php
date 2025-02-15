@@ -18,6 +18,10 @@ return [
         \Webkul\User\Providers\ModuleServiceProvider::class,
         \Webkul\Warehouse\Providers\ModuleServiceProvider::class,
         \Webkul\WebForm\Providers\ModuleServiceProvider::class,
+        \Webkul\TaskPrioritySetting\Providers\ModuleServiceProvider::class,
+        \Webkul\TaskStatusSetting\Providers\ModuleServiceProvider::class,
+        \Webkul\Project\Providers\ModuleServiceProvider::class,
+        \Webkul\Task\Providers\ModuleServiceProvider::class,
     ],
 
     'register_route_models' => true,

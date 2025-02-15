@@ -9,6 +9,8 @@ use Webkul\Installer\Database\Seeders\EmailTemplate\DatabaseSeeder as EmailTempl
 use Webkul\Installer\Database\Seeders\Lead\DatabaseSeeder as LeadSeeder;
 use Webkul\Installer\Database\Seeders\User\DatabaseSeeder as UserSeeder;
 use Webkul\Installer\Database\Seeders\Workflow\DatabaseSeeder as WorkflowSeeder;
+use Webkul\TaskPrioritySetting\Database\Seeders\MakeExampleTaskPrioritySettingSeeder;
+use Webkul\TaskStatusSetting\Database\Seeders\MakeExampleTaskStatusSettingSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,11 +22,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run($parameters = [])
     {
-        $this->call(AttributeSeeder::class, false, ['parameters' => $parameters]);
-        $this->call(CoreSeeder::class, false, ['parameters' => $parameters]);
-        $this->call(EmailTemplateSeeder::class, false, ['parameters' => $parameters]);
-        $this->call(LeadSeeder::class, false, ['parameters' => $parameters]);
-        $this->call(UserSeeder::class, false, ['parameters' => $parameters]);
-        $this->call(WorkflowSeeder::class, false, ['parameters' => $parameters]);
+//        $this->call(AttributeSeeder::class, false, ['parameters' => $parameters]);
+//        $this->call(CoreSeeder::class, false, ['parameters' => $parameters]);
+//        $this->call(EmailTemplateSeeder::class, false, ['parameters' => $parameters]);
+//        $this->call(LeadSeeder::class, false, ['parameters' => $parameters]);
+//        $this->call(UserSeeder::class, false, ['parameters' => $parameters]);
+//        $this->call(WorkflowSeeder::class, false, ['parameters' => $parameters]);
+        $this->call(MakeExampleTaskStatusSettingSeeder::class);
+        $this->call(MakeExampleTaskPrioritySettingSeeder::class);
     }
 }
