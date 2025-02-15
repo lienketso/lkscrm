@@ -3,6 +3,7 @@
 namespace Webkul\Admin\Http\Controllers\Settings;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
@@ -39,12 +40,13 @@ class UserController extends Controller
         if (request()->ajax()) {
             return datagrid(UserDataGrid::class)->process();
         }
+        $leaders = $this->userRepository->getLeaderListSelectInput();
 
         $roles = $this->roleRepository->all();
 
         $groups = $this->groupRepository->all();
 
-        return view('admin::settings.users.index', compact('roles', 'groups'));
+        return view('admin::settings.users.index', compact('roles', 'groups', 'leaders'));
     }
 
     /**
@@ -256,5 +258,19 @@ class UserController extends Controller
         return response()->json([
             'message' => trans('admin::app.settings.users.index.mass-delete-success'),
         ]);
+    }
+
+    public function getMemberByLeader(Request $request)
+    {
+        try {
+            $members = $this->userRepository->getMemberByLeader($request->leader_id);
+            return new JsonResponse([
+                'data' => $members,
+            ], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'message' => trans('admin::app.an_error_occurred'),
+            ], 500);
+        }
     }
 }

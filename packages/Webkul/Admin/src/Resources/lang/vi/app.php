@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'an_error_occurred' => 'Có lỗi xảy ra, vui lòng thử lại sau',
     'acl' => [
         'leads'           => 'Khách hàng tiềm năng',
         'lead'            => 'Khách hàng tiềm năng',
@@ -2288,6 +2289,210 @@ return [
             'template' => 'Mẫu tin nhắn',
             'select-template' => 'Chọn mẫu tin nhắn',
             'params' => 'Giá trị',
+        ],
+    ],
+
+    'project' => [
+        'title' => 'Dự án',
+        'list' => 'Danh sách Dự án',
+        'phase_title' => 'Giai đoạn',
+        'columns' => [
+            'id' => 'Id',
+            'title' => 'Tiêu đề',
+            'description' => 'Mô tả',
+            'status' => 'Trạng thái',
+            'leader_id' => 'Leader',
+            'member_id' => 'Thành viên',
+            'member' => 'Thành viên',
+        ],
+        'button' => [
+//            'add_new' => 'Tạo mới dự án',
+        ],
+
+        'create-success'    => 'Dự án đã được tạo thành công.',
+        'create-failed'     => 'Thêm mới Dự án không thành công.',
+        'update-success'    => 'Dự án đã được cập nhật thành công.',
+        'update-failed'     => 'Dự án cập nhật không thành công.',
+        'destroy-success'   => 'Dự án đã được xóa thành công.',
+        'destroy-failed'    => 'Dự án không thể bị xóa.',
+        'not-found'         => 'Không tìm thấy dự án',
+        'no-result-found'   => 'Không tìm thấy kết quả',
+        'index' => [
+            'title'      => 'Dự án',
+            'list'       => 'Danh sách Dự án',
+            'create-btn' => 'Tạo Dự án',
+            'datagrid' => [
+                'id'          => 'ID',
+                'title'       => 'Tiêu đề Dự án',
+                'description' => 'Mô tả',
+                'leader'      => 'Quản lý',
+                'member'      => 'Thành viên',
+                'created-at'  => 'Ngày tạo',
+                'no'          => 'Không',
+                'yes'         => 'Có',
+                'delete'      => 'Xóa',
+                'mass-delete' => 'Xóa hàng loạt',
+                'mass-update' => 'Cập nhật hàng loạt',
+                'status'      => 'Trạng thái',
+            ],
+        ],
+
+        'create' => [
+            'title'          => 'Tạo dự án',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của dự án',
+        ],
+
+        'edit' => [
+            'title'          => 'Chỉnh sửa dự án',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của dự án',
+        ],
+
+        'view' => [
+            'title' => 'Chi tiết dự án',
+        ],
+    ],
+    'phase' => [
+        'title' => 'Giai đoạn',
+        'list' => 'Danh sách Giai đoạn',
+        'phase_title' => 'Giai đoạn',
+        'columns' => [
+            'id' => 'Id',
+            'title' => 'Tiêu đề',
+            'description' => 'Mô tả',
+            'status' => 'Trạng thái',
+            'start_date' => 'Ngày bắt đầu',
+            'end_date' => 'Ngày kết thúc',
+            'project_id' => 'Dự án',
+        ],
+        'button' => [
+//            'add_new' => 'Tạo mới Giai đoạn',
+        ],
+
+        'create-success'    => 'Giai đoạn đã được tạo thành công.',
+        'create-failed'     => 'Thêm mới Giai đoạn không thành công.',
+        'update-success'    => 'Giai đoạn đã được cập nhật thành công.',
+        'update-failed'     => 'Giai đoạn cập nhật không thành công.',
+        'destroy-success'   => 'Giai đoạn đã được xóa thành công.',
+        'destroy-failed'    => 'Giai đoạn không thể bị xóa.',
+        'not-found'         => 'Không tìm thấy Giai đoạn',
+        'no-result-found'   => 'Không tìm thấy kết quả',
+        'index' => [
+            'title'      => 'Giai đoạn',
+            'list'       => 'Danh sách Giai đoạn',
+            'create-btn' => 'Tạo Giai đoạn',
+            'datagrid' => [
+                'id'          => 'ID',
+                'title'       => 'Tiêu đề Giai đoạn',
+                'description' => 'Mô tả',
+                'start_date'  => 'Ngày bắt đầu',
+                'end_date'    => 'Ngày kết thúc',
+                'project'     => 'Dự án',
+                'created-at'  => 'Ngày tạo',
+                'no'          => 'Không',
+                'yes'         => 'Có',
+                'delete'      => 'Xóa',
+                'mass-delete' => 'Xóa hàng loạt',
+                'mass-update' => 'Cập nhật hàng loạt',
+                'status'      => 'Trạng thái',
+            ],
+        ],
+
+        'create' => [
+            'title'          => 'Tạo Giai đoạn',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của Giai đoạn',
+        ],
+
+        'edit' => [
+            'title'          => 'Chỉnh sửa Giai đoạn',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của Giai đoạn',
+        ],
+
+        'view' => [
+            'title' => 'Chi tiết Giai đoạn',
+        ],
+    ],
+
+    'task' => [
+        'title' => 'Task',
+        'list' => 'Danh sách Task',
+        'phase_title' => 'Giai đoạn',
+        'columns' => [
+            'id' => 'Id',
+            'title' => 'Tiêu đề',
+            'description' => 'Mô tả',
+            'step' => 'Bước',
+            'status' => 'Trạng thái',
+            'priority' => 'Uu tiên',
+            'assignee' => 'Người thực hiện',
+            'project' => 'Dự án',
+            'phase' => 'Giai đoạn',
+            'task' => 'Task',
+            'sub_task' => 'Subtask'
+        ],
+        'button' => [
+//            'add_new' => 'Tạo mới Task',
+        ],
+
+        'create-success'    => 'Task đã được tạo thành công.',
+        'create-failed'     => 'Thêm mới Task không thành công.',
+        'update-success'    => 'Task đã được cập nhật thành công.',
+        'update-failed'     => 'Task cập nhật không thành công.',
+        'destroy-success'   => 'Task đã được xóa thành công.',
+        'destroy-failed'    => 'Task không thể bị xóa.',
+        'not-found'         => 'Không tìm thấy Task',
+        'no-result-found'   => 'Không tìm thấy kết quả',
+        'index' => [
+            'title'      => 'Task',
+            'list'       => 'Danh sách Task',
+            'create-btn' => 'Tạo Task',
+            'datagrid' => [
+                'id'          => 'ID',
+                'title'       => 'Tiêu đề',
+                'description' => 'Mô tả',
+                'step'        => 'Bước',
+                'priority' => 'Uu tiên',
+                'leader' => 'Người điều phối',
+                'assignee' => 'Người thực hiện',
+                'project' => 'Dự án',
+                'phase' => 'Giai đoạn',
+                'task' => 'Task',
+                'sub_task' => 'Subtask',
+                'created-at'  => 'Ngày tạo',
+                'start_date'  => 'Ngày bắt đầu',
+                'end_date'  => 'Ngày kết thúc',
+                'no'          => 'Không',
+                'yes'         => 'Có',
+                'delete'      => 'Xóa',
+                'mass-delete' => 'Xóa hàng loạt',
+                'mass-update' => 'Cập nhật hàng loạt',
+                'status'      => 'Trạng thái',
+            ],
+        ],
+
+        'create' => [
+            'title'          => 'Tạo Task',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của Task',
+        ],
+
+        'edit' => [
+            'title'          => 'Chỉnh sửa Task',
+            'save-btn'       => 'Lưu',
+            'details'        => 'Chi tiết',
+            'details-info'   => 'Nhập thông tin cơ bản của Task',
+        ],
+
+        'view' => [
+            'title' => 'Chi tiết Task',
         ],
     ],
 
