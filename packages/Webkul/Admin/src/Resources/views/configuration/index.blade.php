@@ -36,6 +36,7 @@
 
     <!-- Page Content -->
     <div class="grid gap-y-8">
+{{--        @dd(system_config()->getItems())--}}
         @foreach (system_config()->getItems() as $item)
             <div>
                 <div class="grid gap-1">

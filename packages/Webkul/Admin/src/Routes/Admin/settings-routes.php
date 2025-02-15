@@ -166,6 +166,8 @@ Route::prefix('settings')->group(function () {
         Route::post('mass-update', 'massUpdate')->name('admin.settings.users.mass_update');
 
         Route::post('mass-destroy', 'massDestroy')->name('admin.settings.users.mass_delete');
+
+        Route::get('get-member-by-leader', 'getMemberByLeader')->name('admin.settings.users.getMemberByLeader');
     });
 
     /**
