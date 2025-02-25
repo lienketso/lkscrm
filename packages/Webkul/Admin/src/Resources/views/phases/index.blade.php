@@ -12,7 +12,7 @@
         <div class="flex flex-col gap-2">
             <div class="flex cursor-pointer items-center">
                 <!-- Bredcrumbs -->
-                <x-admin::breadcrumbs name="campaign" />
+                <x-admin::breadcrumbs name="phase" />
             </div>
 
             <div class="text-xl font-bold dark:text-white">

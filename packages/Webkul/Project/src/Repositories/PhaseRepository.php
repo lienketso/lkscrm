@@ -18,6 +18,10 @@ class PhaseRepository extends Repository
 
     public function getPhaseByProjectInput($project_id)
     {
+        if (!$project_id)
+        {
+            return [];
+        }
         $query = $this->getModel()->when($project_id, function ($sq) use ($project_id) {
             $sq->where('project_id', $project_id);
         });
