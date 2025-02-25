@@ -3,6 +3,7 @@
 namespace Webkul\TaskPrioritySetting\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Webkul\TaskPrioritySetting\Repositories\TaskPrioritySettingRepository;
 
 class MakeExampleTaskPrioritySettingSeeder extends Seeder
@@ -20,21 +21,21 @@ class MakeExampleTaskPrioritySettingSeeder extends Seeder
      */
     public function run()
     {
-//        Model::unguard();
+        DB::table('task_priority_settings')->truncate();
 
         // Add seeder code here
         $dataSeeder = [
             [
                 'title' => 'Low',
-                'css_class' => 'gray',
+                'css_class' => 'label-warning',
                 'order' => '1',
             ], [
                 'title' => 'Medium',
-                'css_class' => 'warning',
+                'css_class' => 'label-primary',
                 'order' => '2',
             ], [
                 'title' => 'High',
-                'css_class' => 'p',
+                'css_class' => 'label-inactive',
                 'order' => '3',
             ]
         ];

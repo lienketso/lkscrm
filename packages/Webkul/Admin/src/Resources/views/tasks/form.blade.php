@@ -76,16 +76,22 @@
                             @lang('admin::app.task.index.datagrid.assignee')
                         </x-admin::form.control-group.label>
 
-                        <x-admin::form.control-group.control
-                                type="select"
-                                name="assignee_id"
-                                rules="required"
-                        >
-                            <option selected>Chọn nguời thực hiện</option>
+{{--                        <x-admin::form.control-group.control--}}
+{{--                                type="select"--}}
+{{--                                name="assignee_id"--}}
+{{--                                rules="required"--}}
+{{--                        >--}}
+{{--                        <option>Chọn nguời thực hiện</option>--}}
+{{--                        @foreach ($users as $item)--}}
+{{--                            <option @if((old('assignee_id', $model->id ? $model->assignee_id : '') ?? '') == $item['id']) selected @endif value="{{ $item['id'] }}">{{ $item['name'] }}</option>--}}
+{{--                        @endforeach--}}
+{{--                        </x-admin::form.control-group.control>--}}
+                        <select name="assignee_id" class="border border-red-500 custom-select w-full rounded border border-gray-200 px-2.5 py-2 text-sm font-normal text-gray-800 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400">
+                            <option>Chọn nguời thực hiện</option>
                             @foreach ($users as $item)
                                 <option @if((old('assignee_id', $model->id ? $model->assignee_id : '') ?? '') == $item['id']) selected @endif value="{{ $item['id'] }}">{{ $item['name'] }}</option>
                             @endforeach
-                        </x-admin::form.control-group.control>
+                        </select>
 
                         <x-admin::form.control-group.error control-name="assignee_id" />
                     </x-admin::form.control-group>
@@ -130,16 +136,23 @@
                                 @lang('admin::app.task.index.datagrid.priority')
                             </x-admin::form.control-group.label>
 
-                            <x-admin::form.control-group.control
-                                    type="select"
-                                    name="priority_id"
-                                    rules="required"
-                            >
-                                <option selected>Chọn độ ưu tiên</option>
+{{--                            <x-admin::form.control-group.control--}}
+{{--                                    type="select"--}}
+{{--                                    name="priority_id"--}}
+{{--                                    rules="required"--}}
+{{--                            >--}}
+{{--                                <option>Chọn độ ưu tiên</option>--}}
+{{--                                @foreach ($taskPriority as $item)--}}
+{{--                                    <option @if((old('priority_id', $model->id ? $model->priority_id : '') ?? '') == $item['id']) selected @endif value="{{ $item['id'] }}">{{ $item['title'] }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </x-admin::form.control-group.control>--}}
+
+                            <select name="priority_id" class="border border-red-500 custom-select w-full rounded border border-gray-200 px-2.5 py-2 text-sm font-normal text-gray-800 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400">
+                                <option>Chọn độ ưu tiên</option>
                                 @foreach ($taskPriority as $item)
                                     <option @if((old('priority_id', $model->id ? $model->priority_id : '') ?? '') == $item['id']) selected @endif value="{{ $item['id'] }}">{{ $item['title'] }}</option>
                                 @endforeach
-                            </x-admin::form.control-group.control>
+                            </select>
 
                             <x-admin::form.control-group.error control-name="priority_id" />
                         </x-admin::form.control-group>
@@ -151,18 +164,25 @@
                                 @lang('admin::app.task.index.datagrid.project')
                             </x-admin::form.control-group.label>
 
-                            <x-admin::form.control-group.control
-                                    type="select"
-                                    name="project_id"
-                                    rules="required"
-                            >
-                                <option selected>Chọn dự án</option>
+{{--                            <x-admin::form.control-group.control--}}
+{{--                                    type="select"--}}
+{{--                                    name="project_id"--}}
+{{--                                    rules="required"--}}
+{{--                            >--}}
+{{--                                <option>Chọn dự án</option>--}}
+{{--                                @foreach ($projecs as $item)--}}
+{{--                                    <option @if((old('project_id', $model->id ? $model->project_id : '') ?? '') == $item['id']) selected @endif value="{{ $item['id'] }}">{{ $item['title'] }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </x-admin::form.control-group.control>--}}
+
+                            <select name="project_id" class="border border-red-500 custom-select w-full rounded border border-gray-200 px-2.5 py-2 text-sm font-normal text-gray-800 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400">
+                                <option>Chọn dự án</option>
                                 @foreach ($projecs as $item)
                                     <option @if((old('project_id', $model->id ? $model->project_id : '') ?? '') == $item['id']) selected @endif value="{{ $item['id'] }}">{{ $item['title'] }}</option>
                                 @endforeach
-                            </x-admin::form.control-group.control>
+                            </select>
 
-                            <x-admin::form.control-group.error control-name="step" />
+                            <x-admin::form.control-group.error control-name="project_id" />
                         </x-admin::form.control-group>
 
                         <x-admin::form.control-group class="flex-1">
@@ -170,16 +190,23 @@
                                 @lang('admin::app.task.index.datagrid.phase')
                             </x-admin::form.control-group.label>
 
-                            <x-admin::form.control-group.control
-                                    type="select"
-                                    name="phase_id"
-                                    rules="required"
-                            >
-                                <option selected>Chọn dự án</option>
+{{--                            <x-admin::form.control-group.control--}}
+{{--                                    type="select"--}}
+{{--                                    name="phase_id"--}}
+{{--                                    rules="required"--}}
+{{--                            >--}}
+{{--                                <option>Chọn phase</option>--}}
+{{--                                @foreach ($phases as $item)--}}
+{{--                                    <option @if((old('phase_id', $model->id ? $model->phase_id : '') ?? '') == $item['id']) selected @endif value="{{ $item['id'] }}">{{ $item['title'] }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </x-admin::form.control-group.control>--}}
+
+                            <select name="phase_id" class="border border-red-500 custom-select w-full rounded border border-gray-200 px-2.5 py-2 text-sm font-normal text-gray-800 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400">
+                                <option>Chọn phase</option>
                                 @foreach ($phases as $item)
                                     <option @if((old('phase_id', $model->id ? $model->phase_id : '') ?? '') == $item['id']) selected @endif value="{{ $item['id'] }}">{{ $item['title'] }}</option>
                                 @endforeach
-                            </x-admin::form.control-group.control>
+                            </select>
 
                             <x-admin::form.control-group.error control-name="phase_id" />
                         </x-admin::form.control-group>
@@ -218,6 +245,33 @@
                             <x-admin::form.control-group.error control-name="end_date" />
                         </x-admin::form.control-group>
                     </div>
+
+                    @if($model->id)
+                        <x-admin::form.control-group class="flex-1">
+                            <x-admin::form.control-group.label>
+                                @lang('admin::app.task.index.datagrid.status')
+                            </x-admin::form.control-group.label>
+
+{{--                            <x-admin::form.control-group.control--}}
+{{--                                    type="select"--}}
+{{--                                    name="status_id"--}}
+{{--                            >--}}
+{{--                                <option>Chọn trạng thái</option>--}}
+{{--                                @foreach ($taskStatus as $item)--}}
+{{--                                    <option @if((old('status_id', $model->id ? $model->status_id : '') ?? '') == $item['id']) selected @endif value="{{ $item['id'] }}">{{ $item['title'] }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </x-admin::form.control-group.control>--}}
+
+                            <select name="status_id" class="border border-red-500 custom-select w-full rounded border border-gray-200 px-2.5 py-2 text-sm font-normal text-gray-800 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400">
+                                <option>Chọn trạng thái</option>
+                                @foreach ($taskStatus as $item)
+                                    <option @if((old('status_id', $model->id ? $model->status_id : '') ?? '') == $item['id']) selected @endif value="{{ $item['id'] }}">{{ $item['title'] }}</option>
+                                @endforeach
+                            </select>
+
+                            <x-admin::form.control-group.error control-name="status_id" />
+                        </x-admin::form.control-group>
+                    @endif
 
                     {!! view_render_event('admin.campaign.create.form_controls.after') !!}
                 </div>

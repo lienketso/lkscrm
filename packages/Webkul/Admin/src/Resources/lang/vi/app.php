@@ -2435,7 +2435,9 @@ return [
             'project' => 'Dự án',
             'phase' => 'Giai đoạn',
             'task' => 'Task',
-            'sub_task' => 'Subtask'
+            'sub_task' => 'Subtask',
+            'start_date'  => 'Ngày bắt đầu',
+            'end_date'  => 'Ngày kết thúc',
         ],
         'button' => [
 //            'add_new' => 'Tạo mới Task',
@@ -2465,6 +2467,8 @@ return [
                 'phase' => 'Giai đoạn',
                 'task' => 'Task',
                 'sub_task' => 'Subtask',
+                'parent_task' => 'Task cha',
+                'parent_task_title' => 'Task cha (bỏ qua nếu muốn tạo task cha)',
                 'created-at'  => 'Ngày tạo',
                 'start_date'  => 'Ngày bắt đầu',
                 'end_date'  => 'Ngày kết thúc',
