@@ -15,4 +15,9 @@ class TaskRepository extends Repository
     {
         return 'Webkul\Task\Contracts\Task';
     }
+
+    public function getTaskListByFilters($filters)
+    {
+        return $this->model->whereNull('parent_id')->with(['subTasks', 'priority', 'status', 'assignee', 'project', 'phase'])->get();
+    }
 }

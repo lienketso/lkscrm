@@ -15,4 +15,9 @@ class TaskStatusSettingRepository extends Repository
     {
         return 'Webkul\TaskStatusSetting\Contracts\TaskStatusSetting';
     }
+
+    public function getTaskStatusSettingInput()
+    {
+        return $this->getModel()->get(['id', 'title'])->toArray();
+    }
 }

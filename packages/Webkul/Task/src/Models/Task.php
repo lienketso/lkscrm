@@ -4,7 +4,12 @@ namespace Webkul\Task\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Webkul\Project\Models\PhaseProxy;
+use Webkul\Project\Models\ProjectProxy;
 use Webkul\Task\Contracts\Task as TaskContract;
+use Webkul\TaskPrioritySetting\Models\TaskPrioritySettingProxy;
+use Webkul\TaskStatusSetting\Models\TaskStatusSettingProxy;
+use Webkul\User\Models\UserProxy;
 
 class Task extends Model implements TaskContract
 {
@@ -23,4 +28,60 @@ class Task extends Model implements TaskContract
         'start_date',
         'end_date'
     ];
+
+    public function scopeParentTasks($query)
+    {
+        return $query->whereNull('parent_id');
+    }
+
+    public function isParentTask(): bool
+    {
+        return is_null($this->parent_id);
+    }
+
+    public function isSubTask(): bool
+    {
+        return !$this->isParentTask();
+    }
+
+    public function priority()
+    {
+        return $this->hasOne(TaskPrioritySettingProxy::modelClass(), 'id', 'priority_id');
+    }
+
+    public function status()
+    {
+        return $this->hasOne(TaskStatusSettingProxy::modelClass(), 'id', 'status_id');
+    }
+
+    public function assignee()
+    {
+        return $this->hasOne(UserProxy::modelClass(), 'id', 'assignee_id');
+    }
+
+    public function project()
+    {
+        return $this->hasOne(ProjectProxy::modelClass(), 'id', 'phase_id');
+    }
+
+    // Quan hệ với Leader thông qua Project
+    public function leader()
+    {
+        return $this->hasOneThrough(UserProxy::modelClass(), ProjectProxy::modelClass(), 'id', 'id', 'project_id', 'leader_id');
+    }
+
+    public function phase()
+    {
+        return $this->hasOne(PhaseProxy::modelClass(), 'id', 'project_id');
+    }
+
+    public function parentTask()
+    {
+        return $this->hasOne(TaskProxy::modelClass(), 'id', 'parent_id');
+    }
+
+    public function subTasks()
+    {
+        return $this->hasMany(TaskProxy::modelClass(), 'parent_id', 'id');
+    }
 }
