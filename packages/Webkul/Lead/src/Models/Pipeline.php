@@ -18,6 +18,15 @@ class Pipeline extends Model implements PipelineContract
         'name',
         'rotten_days',
         'is_default',
+        'type',
+    ];
+
+    const CUSTOMER_TYPE = 1;
+    const LEAD_TYPE = 2;
+
+    const ARR_TYPE = [
+        self::CUSTOMER_TYPE => 'Khách hàng hiện hữu',
+        self::LEAD_TYPE => 'Khách hàng tiềm năng',
     ];
 
     /**

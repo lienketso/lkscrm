@@ -69,6 +69,29 @@
 
                 {!! view_render_event('admin.settings.pipelines.create.form.name.after') !!}
 
+                {!! view_render_event('admin.settings.pipelines.create.form.type.before') !!}
+
+                <x-admin::form.control-group>
+                    <x-admin::form.control-group.label class="required">
+                        @lang('admin::app.settings.pipelines.create.type')
+                    </x-admin::form.control-group.label>
+
+                    <x-admin::form.control-group.control
+                            type="select"
+                            name="type"
+                            rules="required"
+                            :label="trans('admin::app.settings.pipelines.create.type')"
+                    >
+                        @foreach(\Webkul\Lead\Models\Pipeline::ARR_TYPE as $key => $status)
+                            <option @if(old('type') == $key) selected @endif value="{{$key}}">{{$status}}</option>
+                        @endforeach
+                    </x-admin::form.control-group.control>
+
+                    <x-admin::form.control-group.error control-name="type" />
+                </x-admin::form.control-group>
+
+                {!! view_render_event('admin.settings.pipelines.create.form.type.after') !!}
+
                 {!! view_render_event('admin.settings.pipelines.create.form.rotten_days.before') !!}
 
                 <!-- Rotten-Days -->

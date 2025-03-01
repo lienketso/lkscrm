@@ -19,6 +19,7 @@ use Webkul\Admin\Http\Resources\StageResource;
 use Webkul\Attribute\Repositories\AttributeRepository;
 use Webkul\Contact\Repositories\PersonRepository;
 use Webkul\DataGrid\Enums\DateRangeOptionEnum;
+use Webkul\Lead\Models\Pipeline;
 use Webkul\Lead\Repositories\LeadRepository;
 use Webkul\Lead\Repositories\PipelineRepository;
 use Webkul\Lead\Repositories\ProductRepository;
@@ -62,7 +63,7 @@ class LeadController extends Controller
         if (request('pipeline_id')) {
             $pipeline = $this->pipelineRepository->find(request('pipeline_id'));
         } else {
-            $pipeline = $this->pipelineRepository->getDefaultPipeline();
+            $pipeline = $this->pipelineRepository->getDefaultPipeline(Pipeline::LEAD_TYPE);
         }
 
         return view('admin::leads.index', [
@@ -87,7 +88,7 @@ class LeadController extends Controller
         } else {
             $stages = $pipeline->stages;
         }
-
+        $data = [];
         foreach ($stages as $stage) {
             /**
              * We have to create a new instance of the lead repository every time, which is

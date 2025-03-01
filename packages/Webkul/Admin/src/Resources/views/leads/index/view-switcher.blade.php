@@ -12,7 +12,7 @@
                 <span class="whitespace-nowrap">
                     {{ $pipeline->name }}
                 </span>
-                
+
                 <span class="icon-down-arrow text-2xl"></span>
             </button>
 
@@ -30,9 +30,8 @@
             </div>
 
             {!! view_render_event('admin.leads.index.view_switcher.pipeline.content.header.after') !!}
-            
             <!-- Pipeline Links -->
-            @foreach (app('Webkul\Lead\Repositories\PipelineRepository')->all() as $tempPipeline)
+            @foreach (app('Webkul\Lead\Repositories\PipelineRepository')->where('type', \Webkul\Lead\Models\Pipeline::LEAD_TYPE)->get() as $tempPipeline)
                 {!! view_render_event('admin.leads.index.view_switcher.pipeline.content.before', ['tempPipeline' => $tempPipeline]) !!}
 
                 <a
@@ -56,7 +55,7 @@
                 target="_blank"
                 class="flex items-center justify-between border-t border-gray-300 px-3 py-2.5 text-brandColor dark:border-gray-800"
             >
-                <span class="font-medium">                    
+                <span class="font-medium">
                     @lang('admin::app.leads.index.view-switcher.create-new-pipeline')
                 </span>
             </a>

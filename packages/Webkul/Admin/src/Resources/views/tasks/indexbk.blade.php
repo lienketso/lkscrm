@@ -115,7 +115,7 @@
                                 >
                                     <img
                                             class="h-9 w-9"
-                                            :src="record.assignee.image"
+                                            :src="record.assignee_img"
                                             alt="record.assignee_name"
                                     />
                                 </div>
@@ -205,7 +205,7 @@
                                                     >
                                                         <img
                                                                 class="h-9 w-9"
-                                                                :src="record.assignee.image"
+                                                                :src="record.assignee_img"
                                                                 alt="record.assignee_name"
                                                         />
                                                     </div>
