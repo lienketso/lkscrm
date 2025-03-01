@@ -1186,6 +1186,7 @@ return [
                     'name'        => 'Name',
                     'no'          => 'No',
                     'rotten-days' => 'Rotten Days',
+                    'type'        => 'Type',
                     'yes'         => 'Yes',
                 ],
             ],
