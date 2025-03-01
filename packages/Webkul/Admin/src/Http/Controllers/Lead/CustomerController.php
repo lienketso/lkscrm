@@ -97,7 +97,7 @@ class CustomerController extends Controller
         } else {
             $stages = $pipeline->stages;
         }
-
+        $data = [];
         foreach ($stages as $stage) {
             /**
              * We have to create a new instance of the lead repository every time, which is
