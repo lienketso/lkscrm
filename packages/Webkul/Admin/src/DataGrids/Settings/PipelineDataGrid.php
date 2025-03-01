@@ -5,6 +5,7 @@ namespace Webkul\Admin\DataGrids\Settings;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Webkul\DataGrid\DataGrid;
+use Webkul\Lead\Models\Pipeline;
 
 class PipelineDataGrid extends DataGrid
 {
@@ -18,6 +19,7 @@ class PipelineDataGrid extends DataGrid
                 'lead_pipelines.id',
                 'lead_pipelines.name',
                 'lead_pipelines.rotten_days',
+                'lead_pipelines.type',
                 'lead_pipelines.is_default',
             );
 
@@ -52,6 +54,14 @@ class PipelineDataGrid extends DataGrid
             'label'    => trans('admin::app.settings.pipelines.index.datagrid.rotten-days'),
             'type'     => 'string',
             'sortable' => true,
+        ]);
+
+        $this->addColumn([
+            'index'    => 'type',
+            'label'    => trans('admin::app.settings.pipelines.index.datagrid.type'),
+            'type'     => 'string',
+            'sortable' => false,
+            'closure'    => fn ($value) => $value->type ? Pipeline::ARR_TYPE[$value->type] : '',
         ]);
 
         $this->addColumn([
