@@ -5,6 +5,7 @@ namespace Webkul\Lead\Repositories;
 use Illuminate\Container\Container;
 use Illuminate\Support\Str;
 use Webkul\Core\Eloquent\Repository;
+use Webkul\Lead\Models\Pipeline;
 
 class PipelineRepository extends Repository
 {
@@ -101,14 +102,9 @@ class PipelineRepository extends Repository
      *
      * @return \Webkul\Lead\Contracts\Pipeline
      */
-    public function getDefaultPipeline()
+    public function getDefaultPipeline($type = Pipeline::CUSTOMER_TYPE)
     {
-        $pipeline = $this->findOneByField('is_default', 1);
-
-        if (! $pipeline) {
-            $pipeline = $this->first();
-        }
-
-        return $pipeline;
+        return $this->where(['type' => $type, 'is_default' => 1])->first()
+            ?? $this->where('type', $type)->first() ?? $this->first();
     }
 }
