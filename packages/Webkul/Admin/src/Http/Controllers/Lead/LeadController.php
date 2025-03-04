@@ -80,7 +80,7 @@ class LeadController extends Controller
         if (request()->query('pipeline_id')) {
             $pipeline = $this->pipelineRepository->find(request()->query('pipeline_id'));
         } else {
-            $pipeline = $this->pipelineRepository->getDefaultPipeline();
+            $pipeline = $this->pipelineRepository->getDefaultPipeline(Pipeline::LEAD_TYPE);
         }
 
         if ($stageId = request()->query('pipeline_stage_id')) {
@@ -164,7 +164,7 @@ class LeadController extends Controller
 
         //     $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
         // } else {
-        //     $pipeline = $this->pipelineRepository->getDefaultPipeline();
+        //     $pipeline = $this->pipelineRepository->getDefaultPipeline(Pipeline::LEAD_TYPE);
 
         //     $stage = $pipeline->stages()->first();
 
@@ -176,7 +176,7 @@ class LeadController extends Controller
         if (isset($data['lead_pipeline_id']) && $data['lead_pipeline_id']) {
             $pipeline = $this->pipelineRepository->findOrFail($data['lead_pipeline_id']);
         } else {
-            $pipeline = $this->pipelineRepository->getDefaultPipeline();
+            $pipeline = $this->pipelineRepository->getDefaultPipeline(Pipeline::LEAD_TYPE);
         }
 
         $stage = $pipeline->stages()->first();
@@ -238,7 +238,7 @@ class LeadController extends Controller
 
         //     $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
         // } else {
-        //     $pipeline = $this->pipelineRepository->getDefaultPipeline();
+        //     $pipeline = $this->pipelineRepository->getDefaultPipeline(Pipeline::LEAD_TYPE);
 
         //     $stage = $pipeline->stages()->first();
 
@@ -250,7 +250,7 @@ class LeadController extends Controller
         if (isset($data['lead_pipeline_id']) && $data['lead_pipeline_id']) {
             $pipeline = $this->pipelineRepository->findOrFail($data['lead_pipeline_id']);
         } else {
-            $pipeline = $this->pipelineRepository->getDefaultPipeline();
+            $pipeline = $this->pipelineRepository->getDefaultPipeline(Pipeline::LEAD_TYPE);
         }
 
         $stage = $pipeline->stages()->first();

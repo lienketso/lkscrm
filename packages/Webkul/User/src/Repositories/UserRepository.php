@@ -51,9 +51,7 @@ class UserRepository extends Repository
 
     public function getMemberByLeader($leaderId)
     {
-        $query = $this->getModel()->when($leaderId, function ($sq) use ($leaderId) {
-            $sq->where('leader_id', $leaderId);
-        });
-        return $query->get(['id', 'name', 'email'])->toArray();
+        if (!$leaderId) return [];
+        return $this->getModel()->where('leader_id', $leaderId)->get(['id', 'name', 'email'])->toArray();
     }
 }

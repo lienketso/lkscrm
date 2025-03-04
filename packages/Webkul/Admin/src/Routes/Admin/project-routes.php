@@ -10,15 +10,14 @@ Route::controller(ProjectController::class)->prefix('projects')->group(function 
     Route::get('create', 'create')->name('admin.projects.create');
     Route::post('store', 'store')->name('admin.projects.store');
     Route::get('{id}/edit', 'edit')->name('admin.projects.edit');
-    Route::put('{id}/update', 'update')->name('admin.projects.update');
+    Route::put('update/{id}', 'update')->name('admin.projects.update');
+    Route::get('get-member-by-leader', 'getMemberByLeader')->name('admin.projects.getMemberByLeader');
 });
 
 Route::controller(PhaseController::class)->prefix('phases')->group(function () {
-
-    Route::get('', 'index')->name('admin.phases.index');
-    Route::get('create', 'create')->name('admin.phases.create');
+    Route::get('list/{projectId}', 'index')->name('admin.phases.index');
     Route::post('store', 'store')->name('admin.phases.store');
     Route::get('{id}/edit', 'edit')->name('admin.phases.edit');
-    Route::put('{id}/update', 'update')->name('admin.phases.update');
+    Route::put('update/{id}', 'update')->name('admin.phases.update');
 
 });

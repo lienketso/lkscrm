@@ -16,7 +16,7 @@ class PhaseDataGrid extends DataGrid
      */
     public function __construct()
     {
-        // do something
+
     }
 
     /**
@@ -24,20 +24,22 @@ class PhaseDataGrid extends DataGrid
      */
     public function prepareQueryBuilder(): Builder
     {
+        $projectId = basename(request()->url());
         $queryBuilder = DB::table('phases')
             ->leftJoin('projects', 'projects.id', '=', 'phases.project_id')
-            ->where('phases.deleted_at', null)
-            ->select(
-                'projects.id as project_id',
-                'projects.title as project_name',
-                'phases.id',
-                'phases.title',
-                'phases.start_date',
-                'phases.end_date',
-                'phases.status',
-                'phases.created_at',
-            );
-        return $queryBuilder;
+            ->whereNull('phases.deleted_at')
+            ->where('project_id', '=', $projectId);
+
+        return $queryBuilder->select(
+            'projects.id as project_id',
+            'projects.title as project_name',
+            'phases.id',
+            'phases.title',
+            'phases.start_date',
+            'phases.end_date',
+            'phases.status',
+            'phases.created_at',
+        )->orderBy('created_at', 'DESC');
     }
 
     /**
@@ -45,14 +47,6 @@ class PhaseDataGrid extends DataGrid
      */
     public function prepareColumns(): void
     {
-        $this->addColumn([
-            'index'      => 'id',
-            'label'      => trans('admin::app.phase.index.datagrid.id'),
-            'type'       => 'string',
-            'sortable'   => false,
-            'filterable' => true,
-        ]);
-
         $this->addColumn([
             'index'      => 'title',
             'label'      => trans('admin::app.phase.index.datagrid.title'),
@@ -73,7 +67,7 @@ class PhaseDataGrid extends DataGrid
             'index'      => 'start_date',
             'label'      => trans('admin::app.phase.index.datagrid.start_date'),
             'type'       => 'string',
-            'sortable'   => true,
+            'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
                 return date('d/m/Y', strtotime($row->start_date));
@@ -84,7 +78,7 @@ class PhaseDataGrid extends DataGrid
             'index'      => 'end_date',
             'label'      => trans('admin::app.phase.index.datagrid.end_date'),
             'type'       => 'string',
-            'sortable'   => true,
+            'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
                 return date('d/m/Y', strtotime($row->end_date));
@@ -99,7 +93,14 @@ class PhaseDataGrid extends DataGrid
             'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
-                return Phase::STATUS[$row->status];
+                $status = Phase::STATUS[$row->status];
+                $statusCssClass = $row->status == Phase::ACTIVE ? 'label-active' : 'label-inactive';
+                return <<<HTML
+                        <span class="$statusCssClass"
+                            >
+                                $status
+                            </span>
+                    HTML;
             },
         ]);
 
@@ -107,7 +108,7 @@ class PhaseDataGrid extends DataGrid
             'index'      => 'created_at',
             'label'      => trans('admin::app.phase.index.datagrid.created-at'),
             'type'       => 'string',
-            'sortable'   => true,
+            'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
                 return date('d/m/Y H:i:s', strtotime($row->created_at));
@@ -127,12 +128,13 @@ class PhaseDataGrid extends DataGrid
 //                 'method' => 'GET',
 //                 'url'    => fn ($row) => route('admin.projects.view', $row->id),
 //             ]);
-//             $this->addAction([
-//                 'icon'   => 'icon-edit',
-//                 'title'  => trans('admin::app.project.edit.title'),
-//                 'method' => 'GET',
-//                 'url'    => fn ($row) => route('admin.projects.edit', $row->id),
-//             ]);
+             $this->addAction([
+                 'index'  => 'edit',
+                 'icon'   => 'icon-edit',
+                 'title'  => trans('admin::app.phase.edit.title'),
+                 'method' => 'GET',
+                 'url'    => fn ($row) => route('admin.phases.edit', $row->id),
+             ]);
          }
     }
 
