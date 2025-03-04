@@ -58,7 +58,7 @@ class TmpCustomer extends Command
             $serviceKiotViet = new KiotVietService(); 
             $page = 1;
             $size = 100;
-            while (true) {
+            while ($page < 6) {
                 $data = $serviceKiotViet->getCustomerFromKiotViet($page, $size);
                 if ($data->data && count($data->data) > 0) {
                     foreach ($data->data as $k => $item) {
