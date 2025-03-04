@@ -36,7 +36,6 @@ class TaskDataGrid extends DataGrid
             ->select(
                 'tasks.id',
                 'tasks.title',
-                'tasks.step',
                 'tasks.parent_id', // Thêm parent_id để xác định cha - con
                 'tasks.start_date',
                 'tasks.end_date',
