@@ -18,11 +18,13 @@ class Project extends Model implements ProjectContract
         'title',
         'description',
         'leader_id',
-        'status'
+        'status',
+        'start_date',
+        'end_date'
     ];
 
     const ACTIVE = 1;
-    const INACTIVE = 2;
+    const INACTIVE = 0;
 
     const STATUS = [
         self::ACTIVE => 'Hoạt động',
