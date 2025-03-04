@@ -26,15 +26,17 @@ class ProjectDataGrid extends DataGrid
     {
         $queryBuilder = DB::table('projects')
             ->leftJoin('users', 'users.id', '=', 'projects.leader_id')
-            ->where('projects.deleted_at', null)
+            ->whereNull('projects.deleted_at')
             ->select(
                 'users.id as leader_id',
                 'users.name as leader_name',
+                'users.image as leader_image',
                 'projects.id',
                 'projects.title',
+                'projects.description',
                 'projects.status',
                 'projects.created_at',
-            );
+            )->orderBy('created_at', 'DESC');
         return $queryBuilder;
     }
 
@@ -43,17 +45,18 @@ class ProjectDataGrid extends DataGrid
      */
     public function prepareColumns(): void
     {
+
         $this->addColumn([
-            'index'      => 'id',
-            'label'      => trans('admin::app.project.index.datagrid.id'),
+            'index'      => 'title',
+            'label'      => trans('admin::app.project.index.datagrid.title'),
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
         ]);
 
         $this->addColumn([
-            'index'      => 'title',
-            'label'      => trans('admin::app.project.index.datagrid.title'),
+            'index'      => 'description',
+            'label'      => trans('admin::app.project.index.datagrid.description'),
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
@@ -65,6 +68,33 @@ class ProjectDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
+            'closure'    => function ($row) {
+                if ($row->leader_image) {
+                    $html = <<<HTML
+                    <div class="border-3 mr-2 inline-block h-9 w-9 overflow-hidden rounded-full border-gray-800 text-center align-middle">
+                        <img class="h-9 w-9" :src="$row->leader_image" alt="$row->leader_name" />
+                    </div>
+                HTML;
+                } else {
+                    $firstLetter = strtoupper($row->leader_name[0]);
+                    $html = <<<HTML
+                    <div class="profile-info-icon">
+                        <button class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-blue-400 text-sm font-semibold leading-6 text-white transition-all hover:bg-blue-500 focus:bg-blue-500">
+                            $firstLetter
+                        </button>
+                    </div>
+                    <div class="text-sm">
+                        $row->leader_name
+                    </div>
+                HTML;
+                }
+
+                return <<<HTML
+                        <div class="flex items-center gap-2.5">
+                           $html
+                        </div> 
+                HTML;
+            },
         ]);
 
         $this->addColumn([
@@ -74,7 +104,14 @@ class ProjectDataGrid extends DataGrid
             'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
-                return Project::STATUS[$row->status];
+            $status = Project::STATUS[$row->status];
+            $statusCssClass = $row->status == Project::ACTIVE ? 'label-active' : 'label-inactive';
+                return <<<HTML
+                        <span class="$statusCssClass"
+                            >
+                                $status
+                            </span>
+                    HTML;
             },
         ]);
 
@@ -82,7 +119,7 @@ class ProjectDataGrid extends DataGrid
             'index'      => 'created_at',
             'label'      => trans('admin::app.project.index.datagrid.created-at'),
             'type'       => 'string',
-            'sortable'   => true,
+            'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
                 return date('d/m/Y H:i:s', strtotime($row->created_at));
@@ -96,18 +133,20 @@ class ProjectDataGrid extends DataGrid
     public function prepareActions(): void
     {
          if (bouncer()->hasPermission('project.view')) {
-//             $this->addAction([
-//                 'icon'   => 'icon-eye',
-//                 'title'  => trans('admin::app.project.view.title'),
-//                 'method' => 'GET',
-//                 'url'    => fn ($row) => route('admin.projects.view', $row->id),
-//             ]);
-//             $this->addAction([
-//                 'icon'   => 'icon-edit',
-//                 'title'  => trans('admin::app.project.edit.title'),
-//                 'method' => 'GET',
-//                 'url'    => fn ($row) => route('admin.projects.edit', $row->id),
-//             ]);
+             $this->addAction([
+                 'index'  => 'listPhase',
+                 'icon'   => 'icon-list',
+                 'title'  => trans('admin::app.project.view.phase'),
+                 'method' => 'GET',
+                 'url'    => fn ($row) => route('admin.phases.index', $row->id),
+             ]);
+             $this->addAction([
+                 'index'  => 'edit',
+                 'icon'   => 'icon-edit',
+                 'title'  => trans('admin::app.project.edit.title'),
+                 'method' => 'GET',
+                 'url'    => fn ($row) => route('admin.projects.edit', $row->id),
+             ]);
          }
     }
 

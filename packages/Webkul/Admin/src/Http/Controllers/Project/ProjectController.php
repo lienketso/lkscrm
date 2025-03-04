@@ -2,6 +2,7 @@
 
 namespace Webkul\Admin\Http\Controllers\Project;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Webkul\Admin\DataGrids\Project\ProjectDataGrid;
@@ -23,8 +24,8 @@ class ProjectController extends Controller
         if (request()->ajax()) {
             return datagrid(ProjectDataGrid::class)->process();
         }
-
-        return view('admin::projects.index');
+        $leaders = $this->userRepo->getLeaderListSelectInput();
+        return view('admin::projects.index', compact('leaders'));
     }
 
     public function create()
@@ -43,26 +44,32 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         try {
-            $formData = $request->only(['title', 'description', 'leader_id', 'member_id']);
+            $formData = $request->only(['title', 'description', 'leader_id', 'start_date', 'end_date', 'status']);
             DB::beginTransaction();
             $rs = $this->projectRepo->create($formData);
             if (!$rs) {
-                session()->flash('error', trans('admin::app.project.create-failed'));
-                return redirect()->route('admin.projects.index');
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.project.create-failed'),
+                ], 500);
             }
 
             if (count($request->input('member_id', [])))
             {
-                $rs->members()->attach($request->input('member_id', []));
+                $rs->members()->attach($request->input('member_id'));
             }
 
             DB::commit();
-            session()->flash('success', trans('admin::app.project.create-success'));
-            return redirect()->route('admin.projects.index');
+            return new JsonResponse([
+                'data' => $rs,
+                'message' => trans('admin::app.project.create-success'),
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('error', trans('admin::app.project.create-failed'));
-            return redirect()->route('admin.projects.index');
+            return new JsonResponse([
+                'data' => null,
+                'message' => trans('admin::app.project.create-failed'),
+            ], 500);
         }
     }
 
@@ -70,12 +77,16 @@ class ProjectController extends Controller
     {
         try {
             $model = $this->projectRepo->findOrFail($id);
-            $leaders = $this->userRepo->getLeaderListSelectInput();
-            $members = $this->userRepo->getMemberByLeader(1);
-            return view('admin::projects.form', compact('leaders', 'model', 'members'));
+//            $model->member = [2,3];
+            return new JsonResponse([
+                'data' => $model,
+                'message' => null,
+            ]);
         } catch (\Exception $e) {
-            session()->flash('error', trans('admin::app.project.update-failed'));
-            return redirect()->route('admin.projects.index');
+            return new JsonResponse([
+                'data' => null,
+                'message' => trans('admin::app.project.update-failed'),
+            ], 500);
         }
     }
 
@@ -83,26 +94,47 @@ class ProjectController extends Controller
     {
         try {
             $model = $this->projectRepo->findOrFail($id);
-            $formData = $request->only(['title', 'description', 'leader_id']);
+            $formData = $request->only(['title', 'description', 'leader_id', 'start_date', 'end_date', 'status']);
             DB::beginTransaction();
             $rs = $this->projectRepo->update($formData, $model->id);
             if (!$rs) {
-                session()->flash('error', trans('admin::app.project.update-failed'));
-                return redirect()->route('admin.projects.index');
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.project.update-failed'),
+                ], 500);
             }
 
             if (count($request->input('member_id', [])))
             {
-                $rs->members()->sync($request->input('member_id', []));
+                $rs->members()->sync($request->input('member_id'));
             }
 
             DB::commit();
-            session()->flash('success', trans('admin::app.project.update-success'));
-            return redirect()->route('admin.projects.index');
+            return new JsonResponse([
+                'data' => $rs,
+                'message' => trans('admin::app.project.update-success'),
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('error', trans('admin::app.project.update-failed'));
-            return redirect()->route('admin.projects.index');
+            return new JsonResponse([
+                'data' => null,
+                'message' => trans('admin::app.project.update-failed'),
+            ], 500);
+        }
+    }
+
+    public function getMemberByLeader(Request $request)
+    {
+        try {
+            $leaderId = $request->query('leader_id');
+            $members = $this->userRepo->getMemberByLeader($leaderId);
+            return new JsonResponse([
+                'data' => $members
+            ], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'message' => trans('admin::app.an_error_occurred'),
+            ], 500);
         }
     }
 }

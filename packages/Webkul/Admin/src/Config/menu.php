@@ -315,22 +315,9 @@ return [
     [
         'key'        => 'project',
         'name'       => 'admin::app.project.title',
-        'route'      => 'admin.phases.index',
-        'params'     => ['route' => 'compose'],
-        'sort'       => 10,
-        'icon-class' => 'icon-quote',
-    ], [
-        'key'        => 'project.list',
-        'name'       => 'admin::app.project.list',
         'route'      => 'admin.projects.index',
-        'sort'       => 1,
-        'icon-class' => '',
-    ], [
-        'key'        => 'project.phase',
-        'name'       => 'admin::app.project.phase_title',
-        'route'      => 'admin.phases.index',
-        'sort'       => 2,
-        'icon-class' => '',
+        'sort'       => 10,
+        'icon-class' => 'icon-activity',
     ],
 
     /**
@@ -340,8 +327,7 @@ return [
         'key'        => 'task',
         'name'       => 'admin::app.task.title',
         'route'      => 'admin.tasks.index',
-//        'params'     => ['route' => 'compose'],
-        'sort'       => 10,
-        'icon-class' => 'icon-quote',
+        'sort'       => 11,
+        'icon-class' => 'icon-note',
     ]
 ];

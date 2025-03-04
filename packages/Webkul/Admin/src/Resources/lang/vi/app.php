@@ -2313,6 +2313,8 @@ return [
         'create-failed'     => 'Thêm mới Dự án không thành công.',
         'update-success'    => 'Dự án đã được cập nhật thành công.',
         'update-failed'     => 'Dự án cập nhật không thành công.',
+        'update-status-success'    => 'Cập nhật trạng thái task thành công.',
+        'update-status-failed'     => 'Cập nhật trạng thái task thất bại.',
         'destroy-success'   => 'Dự án đã được xóa thành công.',
         'destroy-failed'    => 'Dự án không thể bị xóa.',
         'not-found'         => 'Không tìm thấy dự án',
@@ -2327,6 +2329,8 @@ return [
                 'description' => 'Mô tả',
                 'leader'      => 'Quản lý',
                 'member'      => 'Thành viên',
+                'start_date'  => 'Ngày bắt đầu',
+                'end_date'    => 'Ngày kết thúc',
                 'created-at'  => 'Ngày tạo',
                 'no'          => 'Không',
                 'yes'         => 'Có',
@@ -2353,6 +2357,7 @@ return [
 
         'view' => [
             'title' => 'Chi tiết dự án',
+            'phase' => 'Danh sách phase',
         ],
     ],
     'phase' => [
@@ -2438,6 +2443,8 @@ return [
             'sub_task' => 'Subtask',
             'start_date'  => 'Ngày bắt đầu',
             'end_date'  => 'Ngày kết thúc',
+            'created_by'  => 'Tạo bởi',
+            'category'  => 'Hạng mục'
         ],
         'button' => [
 //            'add_new' => 'Tạo mới Task',
@@ -2467,6 +2474,7 @@ return [
                 'phase' => 'Giai đoạn',
                 'task' => 'Task',
                 'sub_task' => 'Subtask',
+                'created_by'  => 'Tạo bởi',
                 'parent_task' => 'Task cha',
                 'parent_task_title' => 'Task cha (bỏ qua nếu muốn tạo task cha)',
                 'created-at'  => 'Ngày tạo',
@@ -2478,6 +2486,7 @@ return [
                 'mass-delete' => 'Xóa hàng loạt',
                 'mass-update' => 'Cập nhật hàng loạt',
                 'status'      => 'Trạng thái',
+                'category'    => 'Hạng mục'
             ],
         ],
 

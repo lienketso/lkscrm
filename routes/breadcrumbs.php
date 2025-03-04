@@ -509,13 +509,13 @@ Breadcrumbs::for('project.edit', function (BreadcrumbTrail $trail, $model) {
 // Dashboard > Phase
 Breadcrumbs::for('phase', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
-    $trail->push(trans('admin::app.phase.index.title'), route('admin.phases.index'));
+    $trail->push(trans('admin::app.phase.index.title'), '');
 });
 
 // Dashboard > Phase > Create
 Breadcrumbs::for('phase.create', function (BreadcrumbTrail $trail) {
     $trail->parent('phase');
-    $trail->push(trans('admin::app.phase.create.title'), route('admin.phases.create'));
+    $trail->push(trans('admin::app.phase.create.title'), '');
 });
 
 // Dashboard > Phase > Edit
