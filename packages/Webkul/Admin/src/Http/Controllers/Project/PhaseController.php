@@ -2,6 +2,7 @@
 
 namespace Webkul\Admin\Http\Controllers\Project;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Webkul\Admin\DataGrids\Project\PhaseDataGrid;
@@ -19,13 +20,17 @@ class PhaseController extends Controller
     {
     }
 
-    public function index()
+    public function index($projectId)
     {
         if (request()->ajax()) {
             return datagrid(PhaseDataGrid::class)->process();
         }
-
-        return view('admin::phases.index');
+        $project = $this->projectRepo->find($projectId);
+        if (!$project) {
+            session()->flash('error', trans('admin::app.project.not-found'));
+            return redirect()->route('admin.projects.index');
+        }
+        return view('admin::phases.index', compact('project'));
     }
 
     public function create()
@@ -43,21 +48,66 @@ class PhaseController extends Controller
     public function store(Request $request)
     {
         try {
-            $formData = $request->only(['title', 'description', 'project_id', 'start_date', 'end_date']);
-            DB::beginTransaction();
+            $formData = $request->only(['title', 'description', 'project_id', 'start_date', 'end_date', 'status']);
             $rs = $this->phaseRepo->create($formData);
             if (!$rs) {
-                session()->flash('error', trans('admin::app.phase.create-failed'));
-                return redirect()->route('admin.phases.index');
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.phase.create-failed'),
+                ], 500);
             }
 
-            DB::commit();
-            session()->flash('success', trans('admin::app.phase.create-success'));
-            return redirect()->route('admin.phases.index');
+            return new JsonResponse([
+                'data' => $rs,
+                'message' => trans('admin::app.phase.create-success'),
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('error', trans('admin::app.phase.create-failed'));
-            return redirect()->route('admin.phases.index');
+            return new JsonResponse([
+                'data' => null,
+                'message' => trans('admin::app.phase.create-failed'),
+            ], 500);
+        }
+    }
+
+    public function edit($id)
+    {
+        try {
+            $model = $this->phaseRepo->findOrFail($id);
+            return new JsonResponse([
+                'data' => $model,
+                'message' => null,
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'data' => null,
+                'message' => trans('admin::app.phase.update-failed'),
+            ], 500);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $model = $this->phaseRepo->findOrFail($id);
+            $formData = $request->only(['title', 'description', 'project_id', 'start_date', 'end_date', 'status']);
+            $rs = $this->phaseRepo->update($formData, $model->id);
+            if (!$rs) {
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.phase.update-failed'),
+                ], 500);
+            }
+            return new JsonResponse([
+                'data' => $rs,
+                'message' => trans('admin::app.phase.update-success'),
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return new JsonResponse([
+                'data' => null,
+                'message' => trans('admin::app.phase.update-failed'),
+            ], 500);
         }
     }
 }

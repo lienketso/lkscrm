@@ -11,15 +11,14 @@ use Webkul\TaskStatusSetting\Models\TaskStatusSetting;
 
 class TaskDataGrid extends DataGrid
 {
-    protected $parameters;
     /**
      * Create data grid instance.
      *
      * @return void
      */
-    public function __construct($parameters = [])
+    public function __construct()
     {
-        $this->parameters = $parameters;
+
     }
 
     /**
@@ -27,36 +26,11 @@ class TaskDataGrid extends DataGrid
      */
     public function prepareQueryBuilder(): Builder
     {
-//        $queryBuilder = DB::table('tasks')
-//            ->leftJoin('users as assignee', 'assignee.id', '=', 'tasks.assignee_id')
-//            ->leftJoin('task_priority_settings', 'task_priority_settings.id', '=', 'tasks.priority_id')
-//            ->leftJoin('task_status_settings', 'task_status_settings.id', '=', 'tasks.status_id')
-//            ->leftJoin('projects', 'projects.id', '=', 'tasks.project_id')
-//            ->join('users', 'projects.leader_id', '=', 'users.id')
-//            ->leftJoin('phases', 'phases.id', '=', 'tasks.phase_id')
-//            ->where('tasks.deleted_at', null)
-//            ->select(
-//                'assignee.name as assignee_name',
-//                'assignee.image as assignee_img',
-//                'users.name as leader_name',
-//                'users.image as leader_img',
-//                'task_priority_settings.title as task_priority',
-//                'task_status_settings.css_class as priority_css_class',
-//                'task_status_settings.title as task_status',
-//                'task_status_settings.css_class as status_css_class',
-//                'phases.title as task_phase',
-//                'tasks.id',
-//                'tasks.title',
-//                'tasks.step',
-//                'tasks.start_date',
-//                'tasks.end_date',
-//                'tasks.created_at',
-//            );
-//        return $queryBuilder;
         $query = DB::table('tasks')
             ->leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
             ->leftJoin('users as leaders', 'projects.leader_id', '=', 'leaders.id')
             ->leftJoin('users as assignee', 'tasks.assignee_id', '=', 'assignee.id')
+            ->leftJoin('users as createdBy', 'tasks.created_by', '=', 'createdBy.id')
             ->leftJoin('task_priority_settings', 'task_priority_settings.id', '=', 'tasks.priority_id')
             ->leftJoin('task_status_settings', 'task_status_settings.id', '=', 'tasks.status_id')
             ->select(
@@ -71,6 +45,8 @@ class TaskDataGrid extends DataGrid
                 'leaders.name as leader_name',
                 'assignee.name as assignee_name',
                 'assignee.image as assignee_img',
+                'createdBy.name as createdBy_name',
+                'createdBy.image as createdBy_img',
                 'task_priority_settings.title as task_priority',
                 'task_priority_settings.css_class as priority_css_class',
                 'task_status_settings.title as task_status',
@@ -78,7 +54,7 @@ class TaskDataGrid extends DataGrid
             )
             ->whereNull('tasks.deleted_at')
             ->orderBy('tasks.parent_id') // Sắp xếp theo cha trước
-            ->orderBy('tasks.id');
+            ->orderBy('tasks.created_at', 'DESC');
 
         return $query;
     }
@@ -96,13 +72,13 @@ class TaskDataGrid extends DataGrid
             'sortable'   => false,
             'filterable' => true,
         ]);
-        $this->addColumn([
-            'index'      => 'step',
-            'label'      => trans('admin::app.task.index.datagrid.step'),
-            'type'       => 'string',
-            'sortable'   => false,
-            'filterable' => true,
-        ]);
+//        $this->addColumn([
+//            'index'      => 'step',
+//            'label'      => trans('admin::app.task.index.datagrid.step'),
+//            'type'       => 'string',
+//            'sortable'   => false,
+//            'filterable' => true,
+//        ]);
 
         $this->addColumn([
             'index'      => 'task_status',
@@ -111,7 +87,6 @@ class TaskDataGrid extends DataGrid
             'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
-//            dd($row);
                 return [
                     'status' => $row->task_status,
                     'css_class'  => $row->status_css_class,
@@ -147,13 +122,11 @@ class TaskDataGrid extends DataGrid
             },
         ]);
 
-
-
         $this->addColumn([
             'index'      => 'start_date',
             'label'      => trans('admin::app.task.index.datagrid.start_date'),
             'type'       => 'string',
-            'sortable'   => true,
+            'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
                 return !is_null($row->start_date) ? date('d/m/Y', strtotime($row->start_date)) : "";
@@ -164,10 +137,24 @@ class TaskDataGrid extends DataGrid
             'index'      => 'end_date',
             'label'      => trans('admin::app.task.index.datagrid.end_date'),
             'type'       => 'string',
-            'sortable'   => true,
+            'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
                 return !is_null($row->start_date) ? date('d/m/Y', strtotime($row->end_date)) : "";
+            },
+        ]);
+
+        $this->addColumn([
+            'index'      => 'createdBy',
+            'label'      => trans('admin::app.task.index.datagrid.created_by'),
+            'type'       => 'string',
+            'sortable'   => false,
+            'filterable' => true,
+            'closure'    => function ($row) {
+                return [
+                    'name' => $row->createdBy_name,
+                    'image'  => $row->createdBy_img,
+                ];
             },
         ]);
     }
@@ -228,12 +215,12 @@ class TaskDataGrid extends DataGrid
 
         // Nhóm các task cha
         foreach ($records as $task) {
-            $task->action[] = [
+            $task->actions[] = [
                 'icon'   => 'icon-edit',
                 'index'  => 'edit',
                 'title'  => trans('admin::app.task.edit.title'),
                 'method' => 'GET',
-                'url'    => fn ($row) => route('admin.tasks.edit', $task->id),
+                'url'    => route('admin.tasks.edit', $task->id)
             ];
             if ($task->parent_id === null) {
                 $task->sub_tasks = []; // Tạo mảng chứa subtask

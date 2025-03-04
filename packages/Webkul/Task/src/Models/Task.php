@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Webkul\Project\Models\PhaseProxy;
 use Webkul\Project\Models\ProjectProxy;
 use Webkul\Task\Contracts\Task as TaskContract;
+use Webkul\TaskCategorySetting\Models\TaskCategorySettingProxy;
 use Webkul\TaskPrioritySetting\Models\TaskPrioritySettingProxy;
 use Webkul\TaskStatusSetting\Models\TaskStatusSettingProxy;
 use Webkul\User\Models\UserProxy;
@@ -17,16 +18,17 @@ class Task extends Model implements TaskContract
     protected $table = 'tasks';
     protected $fillable = [
         'title',
-        'step',
         'description',
         'priority_id',
         'status_id',
+        'category_id',
         'assignee_id',
         'project_id',
         'phase_id',
         'parent_id',
         'start_date',
-        'end_date'
+        'end_date',
+        'created_by'
     ];
 
     public function scopeParentTasks($query)
@@ -52,6 +54,11 @@ class Task extends Model implements TaskContract
     public function status()
     {
         return $this->hasOne(TaskStatusSettingProxy::modelClass(), 'id', 'status_id');
+    }
+
+    public function category()
+    {
+        return $this->hasOne(TaskCategorySettingProxy::modelClass(), 'id', 'category_id');
     }
 
     public function assignee()
@@ -83,5 +90,10 @@ class Task extends Model implements TaskContract
     public function subTasks()
     {
         return $this->hasMany(TaskProxy::modelClass(), 'parent_id', 'id');
+    }
+
+    public function createdBy()
+    {
+        return $this->hasOne(UserProxy::modelClass(), 'id', 'created_by');
     }
 }

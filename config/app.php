@@ -216,6 +216,7 @@ return [
         Webkul\User\Providers\UserServiceProvider::class,
         Webkul\TaskStatusSetting\Providers\TaskStatusSettingServiceProvider::class,
         Webkul\TaskPrioritySetting\Providers\TaskPrioritySettingServiceProvider::class,
+        Webkul\TaskCategorySetting\Providers\TaskCategorySettingServiceProvider::class,
         Webkul\Project\Providers\ProjectServiceProvider::class,
         Webkul\Task\Providers\TaskServiceProvider::class,
         Webkul\Warehouse\Providers\WarehouseServiceProvider::class,

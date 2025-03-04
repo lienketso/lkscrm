@@ -73,6 +73,7 @@
             "Webkul\\DataGrid\\": "packages/Webkul/DataGrid/src",
             "Webkul\\TaskPrioritySetting\\": "packages/Webkul/TaskPrioritySetting/src",
             "Webkul\\TaskStatusSetting\\": "packages/Webkul/TaskStatusSetting/src",
+            "Webkul\\TaskCategorySetting\\": "packages/Webkul/TaskCategorySetting/src",
             "Webkul\\Project\\": "packages/Webkul/Project/src",
             "Webkul\\Task\\": "packages/Webkul/Task/src"
         }
