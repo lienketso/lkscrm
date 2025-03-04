@@ -23,7 +23,7 @@ class Phase extends Model implements PhaseContract
     ];
 
     const ACTIVE = 1;
-    const INACTIVE = 2;
+    const INACTIVE = 0;
 
     const STATUS = [
         self::ACTIVE => 'Hoạt động',
