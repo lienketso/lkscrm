@@ -116,6 +116,22 @@ class ProjectDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
+            'index'      => 'member',
+            'label'      => trans('admin::app.project.index.datagrid.member'),
+            'type'       => 'string',
+            'sortable'   => false,
+            'filterable' => true,
+            'closure'    => function ($row) {
+                return DB::table('project_members')
+                    ->join('users', 'users.id', '=', 'project_members.user_id')
+                    ->where('project_members.project_id', $row->id)
+                    ->select('users.id as member_id', 'users.name as member_name', 'users.image as member_image')
+                    ->get();
+            },
+        ]);
+
+
+        $this->addColumn([
             'index'      => 'created_at',
             'label'      => trans('admin::app.project.index.datagrid.created-at'),
             'type'       => 'string',

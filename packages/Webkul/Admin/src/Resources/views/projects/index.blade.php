@@ -84,6 +84,36 @@
                             <p>@{{ record.description }}</p>
                             <div v-html="record.leader_name"></div>
                             <div v-html="record.status"></div>
+                            <p>
+                                <template v-for="member in record.member">
+                                    <div class="flex items-center gap-2.5">
+                                        <div
+                                                class="border-3 mr-2 inline-block h-9 w-9 overflow-hidden rounded-full border-gray-800 text-center align-middle"
+                                                v-if="member.member_image"
+                                        >
+                                            <img
+                                                    class="h-9 w-9"
+                                                    :src="member.member_image"
+                                                    alt="member.member_name"
+                                            />
+                                        </div>
+
+                                        <div
+                                                class="profile-info-icon"
+                                                v-else-if="member.member_name"
+                                        >
+                                            <button class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-blue-400 text-sm font-semibold leading-6 text-white transition-all hover:bg-blue-500 focus:bg-blue-500">
+                                                @{{ member.member_name[0].toUpperCase() }}
+                                            </button>
+                                        </div>
+
+                                        <div class="text-sm">
+                                            @{{ member.member_name }}
+                                        </div>
+                                    </div>
+                                </template>
+                            </p>
+{{--                            <div v-html="record.member"></div>--}}
                             <p>@{{ record.created_at }}</p>
                             <div class="flex justify-end">
                                 <a :title="record.actions.find(action => action.index === 'listPhase').title" :href="record.actions.find(action => action.index === 'listPhase').url">
@@ -220,6 +250,7 @@
                                             v-for="user in members"
                                             :key="user.id"
                                             :value="user.id"
+                                            :selected="selectedMember.includes(user.id)"
                                     >
                                         @{{ user.name }} - @{{ user.email }}
                                     </option>
@@ -332,6 +363,8 @@
 
                 members:  @json([]),
 
+                selectedMember: @json([]),
+
                 task: {},
 
                 project: {},
@@ -369,6 +402,7 @@
               },
 
               openModal () {
+                this.members = []
                 this.project = {}
 
                 this.$refs.projectUpdateAndCreateModal.toggle()
@@ -407,6 +441,7 @@
                 this.$axios.get(action.url)
                   .then(response => {
                     this.project = response.data.data;
+                    this.selectedMember = response.data.selectedMember;
 
                     this.$axios.get(`{{ route('admin.projects.getMemberByLeader') }}?leader_id=${this.project.leader_id}`).then(response => {
                       this.members = response.data.data

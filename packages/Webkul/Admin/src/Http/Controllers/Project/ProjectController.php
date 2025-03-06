@@ -45,6 +45,12 @@ class ProjectController extends Controller
     {
         try {
             $formData = $request->only(['title', 'description', 'leader_id', 'start_date', 'end_date', 'status']);
+            foreach ($formData as $key => $data)
+            {
+                if (is_null($data) || $data == ''){
+                    unset($formData[$key]);
+                }
+            }
             DB::beginTransaction();
             $rs = $this->projectRepo->create($formData);
             if (!$rs) {
@@ -77,9 +83,9 @@ class ProjectController extends Controller
     {
         try {
             $model = $this->projectRepo->findOrFail($id);
-//            $model->member = [2,3];
             return new JsonResponse([
                 'data' => $model,
+                'selectedMember' => $model->members->pluck('id')->all(),
                 'message' => null,
             ]);
         } catch (\Exception $e) {
@@ -95,6 +101,12 @@ class ProjectController extends Controller
         try {
             $model = $this->projectRepo->findOrFail($id);
             $formData = $request->only(['title', 'description', 'leader_id', 'start_date', 'end_date', 'status']);
+            foreach ($formData as $key => $data)
+            {
+                if (is_null($data) || $data == ''){
+                    unset($formData[$key]);
+                }
+            }
             DB::beginTransaction();
             $rs = $this->projectRepo->update($formData, $model->id);
             if (!$rs) {

@@ -68,6 +68,12 @@ class TaskController extends Controller
             $formData = $request->only(['title', 'assignee_id', 'description', 'category_id', 'priority_id', 'project_id', 'phase_id', 'start_date', 'end_date', 'parent_id']);
             $formData['status_id'] = TaskStatusSetting::DEFAULT_STATUS;
             $formData['created_by'] = auth()->id();
+            foreach ($formData as $key => $data)
+            {
+                if (is_null($data) || $data == ''){
+                    unset($formData[$key]);
+                }
+            }
             DB::beginTransaction();
             $rs = $this->taskRepo->create($formData);
             if (!$rs) {
@@ -114,6 +120,12 @@ class TaskController extends Controller
         try {
             $model = $this->taskRepo->findOrFail($id);
             $formData = $request->only(['title', 'assignee_id', 'description', 'category_id', 'priority_id', 'project_id', 'phase_id', 'start_date', 'end_date', 'status_id', 'parent_id']);
+            foreach ($formData as $key => $data)
+            {
+                if (is_null($data) || $data == ''){
+                    unset($formData[$key]);
+                }
+            }
             DB::beginTransaction();
             $rs = $this->taskRepo->update($formData, $model->id);
             if (!$rs) {
