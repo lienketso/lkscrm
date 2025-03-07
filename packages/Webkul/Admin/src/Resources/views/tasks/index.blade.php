@@ -1,6 +1,6 @@
 <x-admin::layouts>
     <x-slot:title>
-        @lang('admin::app.task.index.title')
+        @lang('admin::app.project.index.title'): {{$project->title}} - @lang('admin::app.phase.title'): {{$phase->title}} - @lang('admin::app.task.index.title')
         </x-slot>
 
         <div class="flex flex-col gap-4">
@@ -8,11 +8,11 @@
                 <div class="flex flex-col gap-2">
                     <div class="flex cursor-pointer items-center">
                         <!-- Breadcrumbs -->
-                        <x-admin::breadcrumbs name="task"/>
+                        <x-admin::breadcrumbs name="task" :entity="['project_id' => $project->id, 'phase_id' => $phase->id]"/>
                     </div>
 
                     <div class="text-xl font-bold dark:text-white">
-                        @lang('admin::app.task.index.title')
+                        @lang('admin::app.project.index.title'): {{$project->title}} - @lang('admin::app.phase.title'): {{$phase->title}} - @lang('admin::app.task.index.list')
                     </div>
                 </div>
 
@@ -51,7 +51,7 @@
 
                 <!-- Datagrid -->
                 <x-admin::datagrid
-                        :src="route('admin.tasks.index', '123')"
+                        :src="route('admin.tasks.index', ['project_id' => $project->id, 'phase_id' => $phase->id])"
                         ref="datagrid"
                 >
                     <template #body="{
@@ -453,6 +453,7 @@
                                             v-model="task.assignee_id"
                                             :label="trans('admin::app.task.index.datagrid.assignee')"
                                     >
+                                        <option value="">-- Chọn người thực hiện --</option>
                                         <option
                                                 v-for="user in users"
                                                 :key="user.id"
@@ -478,6 +479,7 @@
                                             v-model="task.parent_id"
                                             :label="trans('admin::app.task.index.datagrid.parent_task')"
                                     >
+                                        <option value="">-- Chọn task cha --</option>
                                         <option
                                                 v-for="pTask in parentTask"
                                                 :key="pTask.id"
@@ -505,6 +507,7 @@
                                                 v-model="task.priority_id"
                                                 :label="trans('admin::app.task.index.datagrid.priority')"
                                         >
+                                            <option value="">-- Chọn độ ưu tiên --</option>
                                             <option
                                                     v-for="priority in taskPriority"
                                                     :key="priority.id"
@@ -531,6 +534,7 @@
                                                 v-model="task.category_id"
                                                 :label="trans('admin::app.task.index.datagrid.category')"
                                         >
+                                            <option value="">-- Chọn hạng mục --</option>
                                             <option
                                                     v-for="category in taskCategory"
                                                     :key="category.id"

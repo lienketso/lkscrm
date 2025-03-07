@@ -351,6 +351,7 @@
                                             v-model="user.leader_id"
                                             :label="trans('admin::app.settings.users.index.create.leader')"
                                     >
+                                        <option value="">-- Chọn leader --</option>
                                         <option
                                                 v-for="leader in leaders"
                                                 :key="leader.id"

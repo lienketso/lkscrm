@@ -222,6 +222,7 @@
                                         rules="required"
                                         :label="trans('admin::app.project.index.datagrid.leader')"
                                 >
+                                    <option value="">-- Chọn leader --</option>
                                     <option
                                             v-for="user in leaders"
                                             :key="user.id"

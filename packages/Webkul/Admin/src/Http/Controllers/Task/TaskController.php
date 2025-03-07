@@ -132,7 +132,7 @@ class TaskController extends Controller
                     unset($formData[$key]);
                 }
             }
-//            dd($formData);
+
             DB::beginTransaction();
             $rs = $this->taskRepo->update($formData, $model->id);
             if (!$rs) {

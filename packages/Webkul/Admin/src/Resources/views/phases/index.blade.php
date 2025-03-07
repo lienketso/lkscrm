@@ -1,6 +1,6 @@
 <x-admin::layouts>
     <x-slot:title>
-        @lang('admin::app.phase.index.title')
+        @lang('admin::app.project.index.title'): {{$project->title}} - @lang('admin::app.phase.index.title')
     </x-slot:title>
 
     <!-- Header -->
@@ -12,11 +12,11 @@
         <div class="flex flex-col gap-2">
             <div class="flex cursor-pointer items-center">
                 <!-- Bredcrumbs -->
-                <x-admin::breadcrumbs name="phase"/>
+                <x-admin::breadcrumbs name="phase" :entity="['project_id' => $project->id]"/>
             </div>
 
             <div class="text-xl font-bold dark:text-white">
-                @lang('admin::app.phase.index.list')
+                @lang('admin::app.project.index.title'): {{$project->title}} - @lang('admin::app.phase.index.list')
             </div>
         </div>
 

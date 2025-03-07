@@ -483,9 +483,9 @@ Breadcrumbs::for('campaign.view', function (BreadcrumbTrail $trail, $campaign) {
 });
 
 // Dashboard > Task
-Breadcrumbs::for('task', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
-    $trail->push(trans('admin::app.task.index.title'), '');
+Breadcrumbs::for('task', function (BreadcrumbTrail $trail, $entity) {
+    $trail->parent('phase', $entity);
+    $trail->push(trans('admin::app.task.index.title'), route('admin.tasks.index', ['project_id' => $entity['project_id'] ?? '', 'phase_id' => $entity['phase_id'] ?? '']));
 });
 
 // Dashboard > Project
@@ -494,32 +494,8 @@ Breadcrumbs::for('project', function (BreadcrumbTrail $trail) {
     $trail->push(trans('admin::app.project.index.title'), route('admin.projects.index'));
 });
 
-// Dashboard > Project > Create
-Breadcrumbs::for('project.create', function (BreadcrumbTrail $trail) {
-    $trail->parent('project');
-    $trail->push(trans('admin::app.project.create.title'), route('admin.projects.create'));
-});
-
-// Dashboard > Project > Edit
-Breadcrumbs::for('project.edit', function (BreadcrumbTrail $trail, $model) {
-    $trail->parent('project');
-    $trail->push(trans('admin::app.project.edit.title'), route('admin.projects.edit', $model->id));
-});
-
 // Dashboard > Phase
-Breadcrumbs::for('phase', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
-    $trail->push(trans('admin::app.phase.index.title'), '');
-});
-
-// Dashboard > Phase > Create
-Breadcrumbs::for('phase.create', function (BreadcrumbTrail $trail) {
-    $trail->parent('phase');
-    $trail->push(trans('admin::app.phase.create.title'), '');
-});
-
-// Dashboard > Phase > Edit
-Breadcrumbs::for('phase.edit', function (BreadcrumbTrail $trail, $model) {
-    $trail->parent('phase');
-    $trail->push(trans('admin::app.phase.edit.title'), route('admin.phases.edit', $model->id));
+Breadcrumbs::for('phase', function (BreadcrumbTrail $trail, $entity) {
+    $trail->parent('project');
+    $trail->push(trans('admin::app.phase.index.title'), route('admin.phases.index', $entity['project_id'] ?? ''));
 });
