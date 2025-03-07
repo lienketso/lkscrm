@@ -485,7 +485,7 @@ Breadcrumbs::for('campaign.view', function (BreadcrumbTrail $trail, $campaign) {
 // Dashboard > Task
 Breadcrumbs::for('task', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
-    $trail->push(trans('admin::app.task.index.title'), route('admin.tasks.index'));
+    $trail->push(trans('admin::app.task.index.title'), '');
 });
 
 // Dashboard > Project

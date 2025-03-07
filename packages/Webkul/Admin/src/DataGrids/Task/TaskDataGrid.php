@@ -24,6 +24,8 @@ class TaskDataGrid extends DataGrid
      */
     public function prepareQueryBuilder(): Builder
     {
+        $projectId = request('project_id');
+        $phaseId = request('phase_id');
         $query = DB::table('tasks')
             ->leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
             ->leftJoin('users as leaders', 'projects.leader_id', '=', 'leaders.id')
@@ -50,6 +52,7 @@ class TaskDataGrid extends DataGrid
                 'task_status_settings.css_class as status_css_class',
             )
             ->whereNull('tasks.deleted_at')
+            ->where(['project_id' => $projectId, 'phase_id' => $phaseId])
             ->orderBy('tasks.parent_id') // Sắp xếp theo cha trước
             ->orderBy('tasks.created_at', 'DESC');
 

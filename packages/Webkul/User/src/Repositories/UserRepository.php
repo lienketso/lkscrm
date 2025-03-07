@@ -44,14 +44,21 @@ class UserRepository extends Repository
         return $userIds;
     }
 
-    public function getLeaderListSelectInput()
+    public function getLeaderListSelectInput($excludeId)
     {
-        return $this->getModel()->whereNull('leader_id')->get(['id', 'name', 'email'])->toArray();
+        $query = $this->getModel()->whereNull('leader_id')->when($excludeId, function ($sQuery, $excludeId) {
+            return $sQuery->whereNot('id', $excludeId);
+        });
+
+        return $query->get(['id', 'name', 'email'])->toArray();
     }
 
     public function getMemberByLeader($leaderId)
     {
-        if (!$leaderId) return [];
+        if (! $leaderId) {
+            return [];
+        }
+
         return $this->getModel()->where('leader_id', $leaderId)->get(['id', 'name', 'email'])->toArray();
     }
 }

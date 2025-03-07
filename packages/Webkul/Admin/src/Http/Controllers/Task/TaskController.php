@@ -32,16 +32,21 @@ class TaskController extends Controller
 
     public function index(Request $request)
     {
+        if (!$request->get('project_id') || !$request->get('phase_id'))
+            return redirect(route('admin.projects.index'));
         if (request()->ajax()) {
             return datagrid(TaskDataGrid::class)->process();
         }
 
-        $projects = $this->projectRepo->getProjectListSelectInput();
+        $project = $this->projectRepo->find($request->get('project_id'));
+        $phase = $this->phaseRepo->findOneWhere(['project_id' => $request->get('project_id'), 'id' => $request->get('phase_id')]);
+        if (!$project || !$phase)
+            return redirect(route('admin.projects.index'));
         $taskPriority = $this->prioritySettingRepo->getTaskPrioritySettingInput();
         $taskStatus = $this->taskStatusSettingRepo->getTaskStatusSettingInput();
         $taskCategory = $this->taskCategorySettingRepo->getTaskCategorySettingInput();
 
-        return view('admin::tasks.index', compact('projects', 'taskPriority', 'taskStatus', 'taskCategory'));
+        return view('admin::tasks.index', compact( 'project', 'phase', 'taskPriority', 'taskStatus', 'taskCategory'));
     }
 
     public function create()
@@ -77,9 +82,10 @@ class TaskController extends Controller
             DB::beginTransaction();
             $rs = $this->taskRepo->create($formData);
             if (!$rs) {
-                session()->flash('error', trans('admin::app.task.create-failed'));
-
-                return redirect()->route('admin.tasks.index');
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.task.create-failed'),
+                ], 500);
             }
 
             DB::commit();
@@ -126,23 +132,27 @@ class TaskController extends Controller
                     unset($formData[$key]);
                 }
             }
+//            dd($formData);
             DB::beginTransaction();
             $rs = $this->taskRepo->update($formData, $model->id);
             if (!$rs) {
-                session()->flash('error', trans('admin::app.task.update-failed'));
-
-                return redirect()->route('admin.tasks.index');
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.task.update-failed'),
+                ], 500);
             }
 
             DB::commit();
-            session()->flash('success', trans('admin::app.task.update-success'));
-
-            return redirect()->route('admin.tasks.index');
+            return new JsonResponse([
+                'data' => $rs,
+                'message' => trans('admin::app.task.update-success'),
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('error', trans('admin::app.task.update-failed'));
-
-            return redirect()->route('admin.tasks.index');
+            return new JsonResponse([
+                'data' => null,
+                'message' => trans('admin::app.task.update-failed'),
+            ], 500);
         }
     }
 
@@ -182,7 +192,8 @@ class TaskController extends Controller
     {
         try {
             $projectId = $request->get('project_id');
-            $parentTask = $this->taskRepo->getTaskListByFilters(['project_id' => $projectId]);
+            $phase_id = $request->get('phase_id');
+            $parentTask = $this->taskRepo->getTaskListByFilters(['project_id' => $projectId, 'phase_id' => $phase_id]);
 
             return new JsonResponse([
                 'data' => $parentTask,

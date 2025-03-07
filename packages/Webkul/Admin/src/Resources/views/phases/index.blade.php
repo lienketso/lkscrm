@@ -87,6 +87,9 @@
                             <div v-html="record.status"></div>
                             <p>@{{ record.created_at }}</p>
                             <div class="flex justify-end">
+                                <a :title="record.actions.find(action => action.index === 'listTask').title" :href="record.actions.find(action => action.index === 'listTask').url">
+                                    <span class="icon-note cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"></span>
+                                </a>
                                 <a :title="record.actions.find(action => action.index === 'edit').title" @click="editModal(record.actions.find(action => action.index === 'edit'))">
                                     <span class="icon-edit cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"></span>
                                 </a>

@@ -113,8 +113,8 @@
                                     </div>
                                 </template>
                             </p>
-{{--                            <div v-html="record.member"></div>--}}
-                            <p>@{{ record.created_at }}</p>
+                            <p>@{{ record.start_date }}</p>
+                            <p>@{{ record.end_date }}</p>
                             <div class="flex justify-end">
                                 <a :title="record.actions.find(action => action.index === 'listPhase').title" :href="record.actions.find(action => action.index === 'listPhase').url">
                                     <span class="icon-list cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"></span>

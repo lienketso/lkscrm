@@ -24,7 +24,7 @@ class ProjectController extends Controller
         if (request()->ajax()) {
             return datagrid(ProjectDataGrid::class)->process();
         }
-        $leaders = $this->userRepo->getLeaderListSelectInput();
+        $leaders = $this->userRepo->getLeaderListSelectInput(null);
         return view('admin::projects.index', compact('leaders'));
     }
 
@@ -32,7 +32,7 @@ class ProjectController extends Controller
     {
         try {
             $model = $this->projectRepo->makeModel();
-            $leaders = $this->userRepo->getLeaderListSelectInput();
+            $leaders = $this->userRepo->getLeaderListSelectInput(null);
             $members = $this->userRepo->getMemberByLeader(1);
             return view('admin::projects.form', compact('leaders', 'model', 'members'));
         } catch (\Exception $e) {

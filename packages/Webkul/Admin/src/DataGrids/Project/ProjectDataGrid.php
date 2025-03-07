@@ -36,6 +36,8 @@ class ProjectDataGrid extends DataGrid
                 'projects.description',
                 'projects.status',
                 'projects.created_at',
+                'projects.start_date',
+                'projects.end_date',
             )->orderBy('created_at', 'DESC');
         return $queryBuilder;
     }
@@ -132,14 +134,25 @@ class ProjectDataGrid extends DataGrid
 
 
         $this->addColumn([
-            'index'      => 'created_at',
-            'label'      => trans('admin::app.project.index.datagrid.created-at'),
+            'index'      => 'start_date',
+            'label'      => trans('admin::app.project.index.datagrid.start_date'),
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
-                return date('d/m/Y H:i:s', strtotime($row->created_at));
-            },
+                return date('d/m/Y', strtotime($row->start_date));
+            }
+        ]);
+
+        $this->addColumn([
+            'index'      => 'end_date',
+            'label'      => trans('admin::app.project.index.datagrid.end_date'),
+            'type'       => 'string',
+            'sortable'   => false,
+            'filterable' => true,
+            'closure'    => function ($row) {
+                return date('d/m/Y', strtotime($row->end_date));
+            }
         ]);
     }
 

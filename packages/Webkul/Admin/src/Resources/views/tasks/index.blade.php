@@ -51,7 +51,7 @@
 
                 <!-- Datagrid -->
                 <x-admin::datagrid
-                        :src="route('admin.tasks.index')"
+                        :src="route('admin.tasks.index', '123')"
                         ref="datagrid"
                 >
                     <template #body="{
@@ -91,8 +91,6 @@
                                 </div>
 
                                 <p>@{{ record.title }}</p>
-
-                                {{--                                <p>@{{ record.step }}</p>--}}
 
                                 <span
                                         :class="record.status_css_class"
@@ -344,7 +342,16 @@
                                         name="id"
                                         v-model="task.id"
                                 />
-
+                                <x-admin::form.control-group.control
+                                        type="hidden"
+                                        name="project_id"
+                                        v-model="project.id"
+                                />
+                                <x-admin::form.control-group.control
+                                        type="hidden"
+                                        name="phase_id"
+                                        v-model="phase.id"
+                                />
                                 {!! view_render_event('admin.tasks.index.form.title.before') !!}
 
                                 <!-- Name -->
@@ -397,16 +404,12 @@
                                                 type="select"
                                                 name="project_id"
                                                 rules="required"
-                                                v-model="task.project_id"
-                                                @change="fetchInputData"
+                                                :value="$project->id"
                                                 :label="trans('admin::app.task.index.datagrid.project')"
+                                                disabled
                                         >
-                                            <option
-                                                    v-for="project in projects"
-                                                    :key="project.id"
-                                                    :value="project.id"
-                                            >
-                                                @{{ project.title }}
+                                            <option value="{{$project->id}}">
+                                                {{$project->title}}
                                             </option>
                                         </x-admin::form.control-group.control>
 
@@ -424,15 +427,12 @@
                                                 type="select"
                                                 name="phase_id"
                                                 rules="required"
-                                                v-model="task.phase_id"
+                                                :value="$phase->id"
                                                 :label="trans('admin::app.task.index.datagrid.phase')"
+                                                disabled
                                         >
-                                            <option
-                                                    v-for="phase in phases"
-                                                    :key="phase.id"
-                                                    :value="phase.id"
-                                            >
-                                                @{{ phase.title }}
+                                            <option value="{{$phase->id}}">
+                                                {{$phase->title}}
                                             </option>
                                         </x-admin::form.control-group.control>
 
@@ -651,16 +651,15 @@
 
                     taskCategory:  @json($taskCategory ?? []),
 
-                    projects:  @json($projects ?? []),
+                    project: @json($project ?? []),
 
-                    phases:  @json([]),
+                    phase:  @json($phase ?? []),
 
                     task: {},
 
                     arrCol: [
                       'mask',
                       'title',
-                      // 'step',
                       'status',
                       'priority',
                       'assignee',
@@ -696,22 +695,15 @@
 
                 methods: {
                   fetchInputData () {
-                    // fetch phase input
-                    this.$axios.get(`{{ route('admin.tasks.getPhaseByProjectInput') }}?project_id=${this.task.project_id}`).then(response => {
-                      this.phases = response.data.data
-                    }).catch(error => {
-                      this.phases = []
-                    })
-
                     // fetch assign input
-                    this.$axios.get(`{{ route('admin.tasks.getAssignByProjectInput') }}?project_id=${this.task.project_id}`).then(response => {
+                    this.$axios.get(`{{ route('admin.tasks.getAssignByProjectInput') }}?project_id={{$project->id}}`).then(response => {
                       this.users = response.data.data
                     }).catch(error => {
                       this.users = []
                     })
 
                     // fetch parent task input
-                    this.$axios.get(`{{ route('admin.tasks.getParentTaskByProjectInput') }}?project_id=${this.task.project_id}`).then(response => {
+                    this.$axios.get(`{{ route('admin.tasks.getParentTaskByProjectInput') }}?project_id={{$project->id}}&phase_id={{$phase->id}}`).then(response => {
                       this.parentTask = response.data.data
                     }).catch(error => {
                       this.parentTask = []
@@ -720,6 +712,8 @@
 
                   openModal () {
                     this.task = {}
+
+                    this.fetchInputData()
 
                     this.$refs.taskUpdateAndCreateModal.toggle()
                   },
@@ -747,7 +741,7 @@
                       if (error.response.status === 422) {
                         setErrors(error.response.data.errors)
                       } else {
-                        this.$emitter.emit('add-flash', { type: 'error', message: response.data.message })
+                        this.$emitter.emit('add-flash', { type: 'error', message: response.data.message ?? '' })
                       }
                     })
                   },
@@ -756,27 +750,7 @@
                     this.$axios.get(action.url)
                       .then(response => {
                         this.task = response.data.data
-
-                        // fetch phase input
-                        this.$axios.get(`{{ route('admin.tasks.getPhaseByProjectInput') }}?project_id=${this.task.project_id}`).then(response => {
-                          this.phases = response.data.data
-                        }).catch(error => {
-                          this.phases = []
-                        })
-                        // fetch assign input
-                        this.$axios.get(`{{ route('admin.tasks.getAssignByProjectInput') }}?project_id=${this.task.project_id}`).then(response => {
-                          this.users = response.data.data
-                        }).catch(error => {
-                          this.users = []
-                        })
-
-                        // fetch parent task input
-                        this.$axios.get(`{{ route('admin.tasks.getParentTaskByProjectInput') }}?project_id=${this.task.project_id}`).then(response => {
-                          this.parentTask = response.data.data
-                        }).catch(error => {
-                          this.parentTask = []
-                        })
-
+                        this.fetchInputData()
                         this.$refs.taskUpdateAndCreateModal.toggle()
                       })
                       .catch(error => {
