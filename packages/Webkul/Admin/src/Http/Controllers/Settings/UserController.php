@@ -40,13 +40,12 @@ class UserController extends Controller
         if (request()->ajax()) {
             return datagrid(UserDataGrid::class)->process();
         }
-        $leaders = $this->userRepository->getLeaderListSelectInput();
 
         $roles = $this->roleRepository->all();
 
         $groups = $this->groupRepository->all();
 
-        return view('admin::settings.users.index', compact('roles', 'groups', 'leaders'));
+        return view('admin::settings.users.index', compact('roles', 'groups'));
     }
 
     /**
@@ -258,6 +257,20 @@ class UserController extends Controller
         return response()->json([
             'message' => trans('admin::app.settings.users.index.mass-delete-success'),
         ]);
+    }
+
+    public function getLeaderInput(Request $request)
+    {
+        try {
+            $leaders = $this->userRepository->getLeaderListSelectInput($request->exclude_id);
+            return new JsonResponse([
+                'data' => $leaders,
+            ], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'message' => trans('admin::app.an_error_occurred'),
+            ], 500);
+        }
     }
 
     public function getMemberByLeader(Request $request)

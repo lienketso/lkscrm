@@ -49,6 +49,12 @@ class PhaseController extends Controller
     {
         try {
             $formData = $request->only(['title', 'description', 'project_id', 'start_date', 'end_date', 'status']);
+            foreach ($formData as $key => $data)
+            {
+                if (is_null($data) || $data == ''){
+                    unset($formData[$key]);
+                }
+            }
             $rs = $this->phaseRepo->create($formData);
             if (!$rs) {
                 return new JsonResponse([
@@ -91,6 +97,12 @@ class PhaseController extends Controller
         try {
             $model = $this->phaseRepo->findOrFail($id);
             $formData = $request->only(['title', 'description', 'project_id', 'start_date', 'end_date', 'status']);
+            foreach ($formData as $key => $data)
+            {
+                if (is_null($data) || $data == ''){
+                    unset($formData[$key]);
+                }
+            }
             $rs = $this->phaseRepo->update($formData, $model->id);
             if (!$rs) {
                 return new JsonResponse([

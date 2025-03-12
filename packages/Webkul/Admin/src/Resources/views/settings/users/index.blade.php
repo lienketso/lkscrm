@@ -351,6 +351,7 @@
                                             v-model="user.leader_id"
                                             :label="trans('admin::app.settings.users.index.create.leader')"
                                     >
+                                        <option value="">-- Chọn leader --</option>
                                         <option
                                                 v-for="leader in leaders"
                                                 :key="leader.id"
@@ -463,14 +464,18 @@
                     return {
                         isProcessing: false,
 
-                        roles: @json($roles),
+                        roles: @json($roles ?? []),
 
-                        groups:  @json($groups),
-
-                        leaders:  @json($leaders),
+                        groups:  @json($groups ?? []),
 
                         user: {},
+
+                        leaders: @json([])
                     };
+                },
+
+                mounted() {
+                    this.fetchLeaders();
                 },
 
                 computed: {
@@ -494,9 +499,19 @@
                 },
         
                 methods: {
+                    fetchLeaders(excludeId) {
+                        this.$axios.get(`{{ route('admin.settings.users.getLeaderInput') }}/?exclude_id=${excludeId ?? ''}`)
+                            .then(response => {
+                                this.leaders = response.data.data;
+                            })
+                            .catch(error => {
+                                return [];
+                            });
+                    },
+
                     openModal() {
                         this.user = {};
-
+                        this.fetchLeaders('');
                         this.$refs.userUpdateAndCreateModal.toggle();
                     },
                     
@@ -532,6 +547,8 @@
                                 this.user = response.data.data;
 
                                 this.user.groups = this.user.groups.map(group => group.id);
+
+                                this.fetchLeaders(this.user.id);
 
                                 this.$refs.userUpdateAndCreateModal.toggle();
                             })

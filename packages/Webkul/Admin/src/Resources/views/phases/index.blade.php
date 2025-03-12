@@ -1,6 +1,6 @@
 <x-admin::layouts>
     <x-slot:title>
-        @lang('admin::app.phase.index.title')
+        @lang('admin::app.project.index.title'): {{$project->title}} - @lang('admin::app.phase.index.title')
     </x-slot:title>
 
     <!-- Header -->
@@ -12,11 +12,11 @@
         <div class="flex flex-col gap-2">
             <div class="flex cursor-pointer items-center">
                 <!-- Bredcrumbs -->
-                <x-admin::breadcrumbs name="phase"/>
+                <x-admin::breadcrumbs name="phase" :entity="['project_id' => $project->id]"/>
             </div>
 
             <div class="text-xl font-bold dark:text-white">
-                @lang('admin::app.phase.index.list')
+                @lang('admin::app.project.index.title'): {{$project->title}} - @lang('admin::app.phase.index.list')
             </div>
         </div>
 
@@ -80,13 +80,16 @@
                                 class="grid items-center gap-2.5 border-b px-4 py-4 text-gray-600 transition-all hover:bg-gray-50 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-950"
                                 :style="`grid-template-columns: repeat(${gridsCount}, minmax(0, 1fr))`"
                         >
-                            <p>@{{ record.title }}</p>
+                            <a class="text-blue-600" :title="record.actions.find(action => action.index === 'listTask').title" :href="record.actions.find(action => action.index === 'listTask').url"> @{{ record.title }}</a>
                             <p>@{{ record.project_name }}</p>
                             <p>@{{ record.start_date }}</p>
                             <p>@{{ record.end_date }}</p>
                             <div v-html="record.status"></div>
                             <p>@{{ record.created_at }}</p>
                             <div class="flex justify-end">
+                                <a :title="record.actions.find(action => action.index === 'listTask').title" :href="record.actions.find(action => action.index === 'listTask').url">
+                                    <span class="icon-note cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"></span>
+                                </a>
                                 <a :title="record.actions.find(action => action.index === 'edit').title" @click="editModal(record.actions.find(action => action.index === 'edit'))">
                                     <span class="icon-edit cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"></span>
                                 </a>

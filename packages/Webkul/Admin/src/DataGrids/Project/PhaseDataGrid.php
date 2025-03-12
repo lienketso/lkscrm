@@ -121,13 +121,15 @@ class PhaseDataGrid extends DataGrid
      */
     public function prepareActions(): void
     {
+        $projectId = basename(request()->url());
          if (bouncer()->hasPermission('project.view')) {
-//             $this->addAction([
-//                 'icon'   => 'icon-eye',
-//                 'title'  => trans('admin::app.project.view.title'),
-//                 'method' => 'GET',
-//                 'url'    => fn ($row) => route('admin.projects.view', $row->id),
-//             ]);
+             $this->addAction([
+                 'index'  => 'listTask',
+                 'icon'   => 'icon-list',
+                 'title'  => trans('admin::app.task.list'),
+                 'method' => 'GET',
+                 'url'    => fn ($row) => route('admin.tasks.index', ['project_id' => $projectId, 'phase_id' => $row->id]),
+             ]);
              $this->addAction([
                  'index'  => 'edit',
                  'icon'   => 'icon-edit',

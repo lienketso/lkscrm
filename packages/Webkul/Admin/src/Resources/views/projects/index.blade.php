@@ -80,11 +80,54 @@
                                 class="grid items-center gap-2.5 border-b px-4 py-4 text-gray-600 transition-all hover:bg-gray-50 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-950"
                                 :style="`grid-template-columns: repeat(${gridsCount}, minmax(0, 1fr))`"
                         >
-                            <p>@{{ record.title }}</p>
+                            <a class="text-blue-600" :title="record.actions.find(action => action.index === 'listPhase').title" :href="record.actions.find(action => action.index === 'listPhase').url">@{{ record.title }}</a>
                             <p>@{{ record.description }}</p>
                             <div v-html="record.leader_name"></div>
                             <div v-html="record.status"></div>
-                            <p>@{{ record.created_at }}</p>
+                            <p>
+                                <template v-if="record.member_type == isAllMember">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="profile-info-icon">
+                                            <button class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-blue-400 text-sm font-semibold leading-6 text-white transition-all hover:bg-blue-500 focus:bg-blue-500">
+                                                A
+                                            </button>
+                                        </div>
+
+                                        <div class="text-sm">
+                                            @lang('admin::app.project.index.all_member')
+                                        </div>
+                                    </div>
+                                </template>
+                                <template v-else v-for="member in record.member">
+                                    <div class="flex items-center gap-2.5">
+                                        <div
+                                                class="border-3 mr-2 inline-block h-9 w-9 overflow-hidden rounded-full border-gray-800 text-center align-middle"
+                                                v-if="member.member_image"
+                                        >
+                                            <img
+                                                    class="h-9 w-9"
+                                                    :src="member.member_image"
+                                                    alt="member.member_name"
+                                            />
+                                        </div>
+
+                                        <div
+                                                class="profile-info-icon"
+                                                v-else-if="member.member_name"
+                                        >
+                                            <button class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-blue-400 text-sm font-semibold leading-6 text-white transition-all hover:bg-blue-500 focus:bg-blue-500">
+                                                @{{ member.member_name[0].toUpperCase() }}
+                                            </button>
+                                        </div>
+
+                                        <div class="text-sm">
+                                            @{{ member.member_name }}
+                                        </div>
+                                    </div>
+                                </template>
+                            </p>
+                            <p>@{{ record.start_date }}</p>
+                            <p>@{{ record.end_date }}</p>
                             <div class="flex justify-end">
                                 <a :title="record.actions.find(action => action.index === 'listPhase').title" :href="record.actions.find(action => action.index === 'listPhase').url">
                                     <span class="icon-list cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"></span>
@@ -192,6 +235,7 @@
                                         rules="required"
                                         :label="trans('admin::app.project.index.datagrid.leader')"
                                 >
+                                    <option value="">-- Chọn leader --</option>
                                     <option
                                             v-for="user in leaders"
                                             :key="user.id"
@@ -203,10 +247,34 @@
 
                                 <x-admin::form.control-group.error control-name="leader_id"/>
                             </x-admin::form.control-group>
-                            {!! view_render_event('admin.projects.index.form.assignee_id.after') !!}
+                            {!! view_render_event('admin.projects.index.form.leader_id.after') !!}
+
+                            {!! view_render_event('admin.tasks.index.form.member_type.before') !!}
+                            <x-admin::form.control-group>
+                                <x-admin::form.control-group.label class="required">
+                                    @lang('admin::app.project.index.datagrid.member_type')
+                                </x-admin::form.control-group.label>
+
+                                <x-admin::form.control-group.control
+                                        type="select"
+                                        name="member_type"
+                                        v-model="project.member_type"
+                                        @change="fetchTypeMember"
+                                        rules="required"
+                                        :label="trans('admin::app.project.index.datagrid.member_type')"
+                                >
+                                    <option value="">-- Chọn kiểu thành viên tham gia --</option>
+                                    @foreach(\Webkul\Project\Models\Project::TYPE as $key => $type)
+                                        <option value="{{$key}}">{{$type}}</option>
+                                    @endforeach
+                                </x-admin::form.control-group.control>
+
+                                <x-admin::form.control-group.error control-name="member_type"/>
+                            </x-admin::form.control-group>
+                            {!! view_render_event('admin.projects.index.form.member_type.after') !!}
 
                             {!! view_render_event('admin.projects.index.form.member_id.before') !!}
-                            <x-admin::form.control-group>
+                            <x-admin::form.control-group v-if="isShowMember">
                                 <x-admin::form.control-group.label>
                                     @lang('admin::app.project.index.datagrid.member')
                                 </x-admin::form.control-group.label>
@@ -220,6 +288,7 @@
                                             v-for="user in members"
                                             :key="user.id"
                                             :value="user.id"
+                                            :selected="selectedMember.includes(user.id)"
                                     >
                                         @{{ user.name }} - @{{ user.email }}
                                     </option>
@@ -317,7 +386,10 @@
                 </form>
             </x-admin::form>
         </script>
-
+        @php
+            $isAllMember = \Webkul\Project\Models\Project::ALL_MEMBER_TYPE;
+            $isGroupMember = \Webkul\Project\Models\Project::GROUP_MEMBER_TYPE;
+        @endphp
         <script type="module">
           app.component('v-project', {
             template: '#project-template',
@@ -332,15 +404,22 @@
 
                 members:  @json([]),
 
+                selectedMember: @json([]),
+
                 task: {},
 
                 project: {},
+
+                isShowMember: false,
+
+                isAllMember: @json($isAllMember),
+
+                isGroupMember: @json($isGroupMember),
               }
             },
 
             computed: {
               gridsCount () {
-                // console.log(this.$refs.datagrid)
                 let count = this.$refs.datagrid.available.columns.length
 
                 if (this.$refs.datagrid.available.actions.length) {
@@ -368,29 +447,34 @@
                 })
               },
 
-              openModal () {
-                this.project = {}
+              fetchTypeMember() {
+                this.isShowMember = (this.project.member_type == this.isGroupMember)
+              },
 
-                this.$refs.projectUpdateAndCreateModal.toggle()
+              openModal () {
+                this.members = [];
+                this.project = {};
+                this.isShowMember = false;
+                this.$refs.projectUpdateAndCreateModal.toggle();
               },
 
               updateOrCreate (params, { resetForm, setErrors }) {
-                const projectForm = new FormData(this.$refs.projectForm)
+                const projectForm = new FormData(this.$refs.projectForm);
 
-                projectForm.append('_method', params.id ? 'put' : 'post')
+                projectForm.append('_method', params.id ? 'put' : 'post');
 
-                this.isProcessing = true
+                this.isProcessing = true;
 
                 this.$axios.post(params.id ? `{{ route('admin.projects.update', '') }}/${params.id}` : "{{ route('admin.projects.store') }}", projectForm).then(response => {
-                  this.isProcessing = false
+                  this.isProcessing = false;
 
-                  this.$refs.projectUpdateAndCreateModal.toggle()
+                  this.$refs.projectUpdateAndCreateModal.toggle();
 
-                  this.$emitter.emit('add-flash', { type: 'success', message: response.data.message ?? '' })
+                  this.$emitter.emit('add-flash', { type: 'success', message: response.data.message ?? '' });
 
-                  this.$refs.datagrid.get()
+                  this.$refs.datagrid.get();
 
-                  resetForm()
+                  resetForm();
 
                 }).catch(error => {
                   this.isProcessing = false
@@ -407,12 +491,15 @@
                 this.$axios.get(action.url)
                   .then(response => {
                     this.project = response.data.data;
+                    this.selectedMember = response.data.selectedMember;
 
                     this.$axios.get(`{{ route('admin.projects.getMemberByLeader') }}?leader_id=${this.project.leader_id}`).then(response => {
                       this.members = response.data.data
                     }).catch(error => {
                       this.members = []
-                    })
+                    });
+
+                    this.isShowMember = (this.project.member_type == this.isGroupMember)
 
                     this.$refs.projectUpdateAndCreateModal.toggle();
                   })
