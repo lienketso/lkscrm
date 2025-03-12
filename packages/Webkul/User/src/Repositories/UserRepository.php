@@ -3,6 +3,7 @@
 namespace Webkul\User\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
+use Webkul\User\Models\User;
 
 class UserRepository extends Repository
 {
@@ -46,19 +47,23 @@ class UserRepository extends Repository
 
     public function getLeaderListSelectInput($excludeId)
     {
-        $query = $this->getModel()->whereNull('leader_id')->when($excludeId, function ($sQuery, $excludeId) {
+        $query = $this->getModel()->where('status', User::ACTIVE)->when($excludeId, function ($sQuery, $excludeId) {
             return $sQuery->whereNot('id', $excludeId);
         });
 
         return $query->get(['id', 'name', 'email'])->toArray();
     }
 
-    public function getMemberByLeader($leaderId)
+    public function getMemberByLeader($groupArr, $excludeId = null)
     {
-        if (! $leaderId) {
+        if (!$groupArr) {
             return [];
         }
 
-        return $this->getModel()->where('leader_id', $leaderId)->get(['id', 'name', 'email'])->toArray();
+        return $this->getModel()->whereHas('groups', function ($subQ) use ($groupArr) {
+            return $subQ->whereIn('id', $groupArr);
+        })->when($excludeId, function ($sQuery, $excludeId) {
+            return $sQuery->whereNot('id', $excludeId);
+        })->where('status', User::ACTIVE)->get(['id', 'name', 'email'])->toArray();
     }
 }

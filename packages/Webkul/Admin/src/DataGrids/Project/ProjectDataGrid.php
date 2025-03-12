@@ -35,6 +35,7 @@ class ProjectDataGrid extends DataGrid
                 'projects.title',
                 'projects.description',
                 'projects.status',
+                'projects.member_type',
                 'projects.created_at',
                 'projects.start_date',
                 'projects.end_date',
@@ -140,7 +141,7 @@ class ProjectDataGrid extends DataGrid
             'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
-                return date('d/m/Y', strtotime($row->start_date));
+                return $row->start_date ? date('d/m/Y', strtotime($row->start_date)) : '';
             }
         ]);
 
@@ -151,7 +152,7 @@ class ProjectDataGrid extends DataGrid
             'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
-                return date('d/m/Y', strtotime($row->end_date));
+                return $row->end_date ? date('d/m/Y', strtotime($row->end_date)) : '';
             }
         ]);
     }

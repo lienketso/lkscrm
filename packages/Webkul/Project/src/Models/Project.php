@@ -19,6 +19,8 @@ class Project extends Model implements ProjectContract
         'description',
         'leader_id',
         'status',
+        'member_type
+        ',
         'start_date',
         'end_date'
     ];
@@ -30,6 +32,26 @@ class Project extends Model implements ProjectContract
         self::ACTIVE => 'Hoạt động',
         self::INACTIVE => 'Không hoạt động',
     ];
+
+    /*
+     * Định nghĩa type (tất cả member đều được join hoặc theo các thành viên thuộc team đó)
+     */
+    const ALL_MEMBER_TYPE = 1;
+    const GROUP_MEMBER_TYPE = 2;
+    const TYPE = [
+        self::ALL_MEMBER_TYPE => 'Tất cả thành viên',
+        self::GROUP_MEMBER_TYPE => 'Theo thành viên của nhóm (leader group)'
+    ];
+
+    public function isAllMember(): bool
+    {
+        return $this->member_type == self::ALL_MEMBER_TYPE;
+    }
+
+    public function isGroupMember(): bool
+    {
+        return $this->member_type == self::ALL_MEMBER_TYPE;
+    }
 
     public function leader(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
@@ -44,5 +66,20 @@ class Project extends Model implements ProjectContract
     public function projectMember(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ProjectMemberProxy::modelClass(), 'user_id', 'id');
+    }
+
+    public function hasProjectAccess($userId)
+    {
+        if ($this->isAllMember()) // member_type là tất cả nhân viên
+        {
+            return true;
+        }
+        $rs = $this->where(function ($subQ) use ($userId) {
+            $subQ->whereHas('members', function ($sq) use ($userId) {
+                $sq->where('user_id', $userId);
+            })->orWhere('leader_id', $userId);
+        });
+        if ($rs) return true;
+        return false;
     }
 }

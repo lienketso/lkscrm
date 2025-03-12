@@ -1,7 +1,7 @@
 <x-admin::layouts>
     <x-slot:title>
         @lang('admin::app.project.index.title'): {{$project->title}} - @lang('admin::app.phase.title'): {{$phase->title}} - @lang('admin::app.task.index.title')
-        </x-slot>
+    </x-slot:title>
 
         <div class="flex flex-col gap-4">
             <div class="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Webkul\Admin\DataGrids\Project\ProjectDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
+use Webkul\Project\Models\Project;
 use Webkul\Project\Repositories\ProjectRepository;
 use Webkul\User\Repositories\UserRepository;
 
@@ -44,7 +45,7 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         try {
-            $formData = $request->only(['title', 'description', 'leader_id', 'start_date', 'end_date', 'status']);
+            $formData = $request->only(['title', 'description', 'leader_id', 'start_date', 'end_date', 'status', 'member_type']);
             foreach ($formData as $key => $data)
             {
                 if (is_null($data) || $data == ''){
@@ -60,7 +61,7 @@ class ProjectController extends Controller
                 ], 500);
             }
 
-            if (count($request->input('member_id', [])))
+            if (count($request->input('member_id', [])) && $formData['member_type'] == Project::GROUP_MEMBER_TYPE) // nếu project thuộc kiểu all member thì không cần chọn thành viên
             {
                 $rs->members()->attach($request->input('member_id'));
             }
@@ -100,7 +101,7 @@ class ProjectController extends Controller
     {
         try {
             $model = $this->projectRepo->findOrFail($id);
-            $formData = $request->only(['title', 'description', 'leader_id', 'start_date', 'end_date', 'status']);
+            $formData = $request->only(['title', 'description', 'leader_id', 'start_date', 'end_date', 'status', 'member_type']);
             foreach ($formData as $key => $data)
             {
                 if (is_null($data) || $data == ''){
@@ -121,6 +122,10 @@ class ProjectController extends Controller
                 $rs->members()->sync($request->input('member_id'));
             }
 
+            if ($formData['member_type'] == Project::ALL_MEMBER_TYPE) { // nếu project thuộc kiểu all member thì không cần chọn thành viên
+                $rs->members()->detach();
+            }
+
             DB::commit();
             return new JsonResponse([
                 'data' => $rs,
@@ -139,7 +144,14 @@ class ProjectController extends Controller
     {
         try {
             $leaderId = $request->query('leader_id');
-            $members = $this->userRepo->getMemberByLeader($leaderId);
+            $user = $this->userRepo->with('groups')->find($leaderId);
+            if (!$user) {
+                return new JsonResponse([
+                    'data' => []
+                ], 200);
+            }
+            $groupArr = $user->groups->pluck('id')->toArray();
+            $members = $this->userRepo->getMemberByLeader($groupArr, $leaderId);
             return new JsonResponse([
                 'data' => $members
             ], 200);
