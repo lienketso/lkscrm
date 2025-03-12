@@ -2304,6 +2304,7 @@ return [
             'leader_id' => 'Leader',
             'member_id' => 'Thành viên',
             'member' => 'Thành viên',
+            'member_type' => 'Kiểu thành viên',
         ],
         'button' => [
 //            'add_new' => 'Tạo mới dự án',
@@ -2323,6 +2324,7 @@ return [
             'title'      => 'Dự án',
             'list'       => 'Danh sách Dự án',
             'create-btn' => 'Tạo Dự án',
+            'all_member' => 'Tất cả nhân viên',
             'datagrid' => [
                 'id'          => 'ID',
                 'title'       => 'Tiêu đề Dự án',
@@ -2338,6 +2340,7 @@ return [
                 'mass-delete' => 'Xóa hàng loạt',
                 'mass-update' => 'Cập nhật hàng loạt',
                 'status'      => 'Trạng thái',
+                'member_type' => 'Kiểu thành viên',
             ],
         ],
 

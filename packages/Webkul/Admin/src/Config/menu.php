@@ -320,14 +320,14 @@ return [
         'icon-class' => 'icon-activity',
     ],
 
-    /**
-     * Task.
-     */
-    [
-        'key'        => 'task',
-        'name'       => 'admin::app.task.title',
-        'route'      => 'admin.tasks.index',
-        'sort'       => 11,
-        'icon-class' => 'icon-note',
-    ]
+//    /**
+//     * Task.
+//     */
+//    [
+//        'key'        => 'task',
+//        'name'       => 'admin::app.task.title',
+//        'route'      => 'admin.tasks.index',
+//        'sort'       => 11,
+//        'icon-class' => 'icon-note',
+//    ]
 ];

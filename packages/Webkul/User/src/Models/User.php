@@ -39,6 +39,13 @@ class User extends Authenticatable implements UserContract
         'remember_token',
     ];
 
+    const ACTIVE = 1;
+    const INACTIVE = 0;
+    const STATUS = [
+        self::ACTIVE => 'Hoạt động',
+        self::INACTIVE => 'Không hoạt động',
+    ];
+
     /**
      * Get image url for the product image.
      */

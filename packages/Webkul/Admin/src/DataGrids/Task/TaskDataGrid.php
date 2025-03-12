@@ -4,9 +4,7 @@ namespace Webkul\Admin\DataGrids\Task;
 
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Webkul\DataGrid\DataGrid;
-use Webkul\Project\Models\Project;
 use Webkul\TaskStatusSetting\Models\TaskStatusSetting;
 
 class TaskDataGrid extends DataGrid
@@ -26,6 +24,8 @@ class TaskDataGrid extends DataGrid
      */
     public function prepareQueryBuilder(): Builder
     {
+        $projectId = request('project_id');
+        $phaseId = request('phase_id');
         $query = DB::table('tasks')
             ->leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
             ->leftJoin('users as leaders', 'projects.leader_id', '=', 'leaders.id')
@@ -52,6 +52,7 @@ class TaskDataGrid extends DataGrid
                 'task_status_settings.css_class as status_css_class',
             )
             ->whereNull('tasks.deleted_at')
+            ->where(['project_id' => $projectId, 'phase_id' => $phaseId])
             ->orderBy('tasks.parent_id') // Sắp xếp theo cha trước
             ->orderBy('tasks.created_at', 'DESC');
 
@@ -71,13 +72,6 @@ class TaskDataGrid extends DataGrid
             'sortable'   => false,
             'filterable' => true,
         ]);
-//        $this->addColumn([
-//            'index'      => 'step',
-//            'label'      => trans('admin::app.task.index.datagrid.step'),
-//            'type'       => 'string',
-//            'sortable'   => false,
-//            'filterable' => true,
-//        ]);
 
         $this->addColumn([
             'index'      => 'task_status',
@@ -85,12 +79,6 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
-            'closure'    => function ($row) {
-                return [
-                    'status' => $row->task_status,
-                    'css_class'  => $row->status_css_class,
-                ];
-            },
         ]);
 
         $this->addColumn([
@@ -99,12 +87,6 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
-            'closure'    => function ($row) {
-                return [
-                    'status' => $row->task_priority,
-                    'css_class'  => $row->priority_css_class,
-                ];
-            },
         ]);
 
         $this->addColumn([
@@ -113,12 +95,6 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
-            'closure'    => function ($row) {
-                return [
-                    'name' => $row->assignee_name,
-                    'image'  => $row->assignee_img,
-                ];
-            },
         ]);
 
         $this->addColumn([
@@ -127,9 +103,6 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
-            'closure'    => function ($row) {
-                return !is_null($row->start_date) ? date('d/m/Y', strtotime($row->start_date)) : "";
-            },
         ]);
 
         $this->addColumn([
@@ -138,9 +111,6 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
-            'closure'    => function ($row) {
-                return !is_null($row->start_date) ? date('d/m/Y', strtotime($row->end_date)) : "";
-            },
         ]);
 
         $this->addColumn([
@@ -149,12 +119,6 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
-            'closure'    => function ($row) {
-                return [
-                    'name' => $row->createdBy_name,
-                    'image'  => $row->createdBy_img,
-                ];
-            },
         ]);
     }
 
@@ -221,6 +185,8 @@ class TaskDataGrid extends DataGrid
                 'method' => 'GET',
                 'url'    => route('admin.tasks.edit', $task->id)
             ];
+            $task->start_date = !is_null($task->start_date) ? date('d/m/Y', strtotime($task->start_date)) : "";
+            $task->end_date = !is_null($task->end_date) ? date('d/m/Y', strtotime($task->end_date)) : "";
             if ($task->parent_id === null) {
                 $task->sub_tasks = []; // Tạo mảng chứa subtask
                 $taskList[$task->id] = $task;
@@ -236,6 +202,5 @@ class TaskDataGrid extends DataGrid
 
         return array_values($taskList);
     }
-
 
 }
