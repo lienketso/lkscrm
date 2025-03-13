@@ -85,20 +85,7 @@
                             <div v-html="record.leader_name"></div>
                             <div v-html="record.status"></div>
                             <p>
-                                <template v-if="record.member_type == isAllMember">
-                                    <div class="flex items-center gap-2.5">
-                                        <div class="profile-info-icon">
-                                            <button class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-blue-400 text-sm font-semibold leading-6 text-white transition-all hover:bg-blue-500 focus:bg-blue-500">
-                                                A
-                                            </button>
-                                        </div>
-
-                                        <div class="text-sm">
-                                            @lang('admin::app.project.index.all_member')
-                                        </div>
-                                    </div>
-                                </template>
-                                <template v-else v-for="member in record.member">
+                                <template v-for="member in record.member">
                                     <div class="flex items-center gap-2.5">
                                         <div
                                                 class="border-3 mr-2 inline-block h-9 w-9 overflow-hidden rounded-full border-gray-800 text-center align-middle"
@@ -160,7 +147,7 @@
                 >
                     {!! view_render_event('admin.projects.index.form_controls.before') !!}
 
-                    <x-admin::modal ref="projectUpdateAndCreateModal">
+                    <x-admin::modal ref="projectUpdateAndCreateModal" size="large">
                         <!-- Modal Header -->
                         <x-slot:header>
                             <p class="text-lg font-bold text-gray-800 dark:text-white">
@@ -273,8 +260,36 @@
                             </x-admin::form.control-group>
                             {!! view_render_event('admin.projects.index.form.member_type.after') !!}
 
+                            {!! view_render_event('admin.tasks.index.form.group_id.before') !!}
+                            <x-admin::form.control-group v-if="isShowGroup">
+                                <x-admin::form.control-group.label class="required">
+                                    @lang('admin::app.project.index.datagrid.group')
+                                </x-admin::form.control-group.label>
+
+                                <x-admin::form.control-group.control
+                                        type="select"
+                                        name="group_id"
+                                        v-model="project.group_id"
+                                        @change="fetchMember"
+                                        rules="required"
+                                        :label="trans('admin::app.project.index.datagrid.group')"
+                                >
+                                    <option value="">-- Chọn Nhóm --</option>
+                                    <option
+                                            v-for="group in groups"
+                                            :key="group.id"
+                                            :value="group.id"
+                                    >
+                                        @{{ group.name }}
+                                    </option>
+                                </x-admin::form.control-group.control>
+
+                                <x-admin::form.control-group.error control-name="group_id"/>
+                            </x-admin::form.control-group>
+                            {!! view_render_event('admin.projects.index.form.group_id.after') !!}
+
                             {!! view_render_event('admin.projects.index.form.member_id.before') !!}
-                            <x-admin::form.control-group v-if="isShowMember">
+                            <x-admin::form.control-group>
                                 <x-admin::form.control-group.label>
                                     @lang('admin::app.project.index.datagrid.member')
                                 </x-admin::form.control-group.label>
@@ -400,6 +415,8 @@
 
                 leaders: @json($leaders ?? []),
 
+                groups: @json($groups ?? []),
+
                 phases:  @json([]),
 
                 members:  @json([]),
@@ -410,7 +427,7 @@
 
                 project: {},
 
-                isShowMember: false,
+                isShowGroup: false,
 
                 isAllMember: @json($isAllMember),
 
@@ -440,7 +457,7 @@
 
             methods: {
               fetchMember () {
-                this.$axios.get(`{{ route('admin.projects.getMemberByLeader') }}?leader_id=${this.project.leader_id}`).then(response => {
+                this.$axios.get(`{{ route('admin.projects.getMemberByLeader') }}?leader_id=${this.project.leader_id ?? ''}&group_id=${this.project.group_id ?? ''}&member_type=${this.project.member_type ?? ''}`).then(response => {
                   this.members = response.data.data
                 }).catch(error => {
                   this.members = []
@@ -448,13 +465,15 @@
               },
 
               fetchTypeMember() {
-                this.isShowMember = (this.project.member_type == this.isGroupMember)
+                this.isShowGroup = (this.project.member_type == this.isGroupMember);
+                this.project.group_id = '';
+                this.fetchMember();
               },
 
               openModal () {
                 this.members = [];
                 this.project = {};
-                this.isShowMember = false;
+                this.isShowGroup = false;
                 this.$refs.projectUpdateAndCreateModal.toggle();
               },
 
@@ -493,13 +512,13 @@
                     this.project = response.data.data;
                     this.selectedMember = response.data.selectedMember;
 
-                    this.$axios.get(`{{ route('admin.projects.getMemberByLeader') }}?leader_id=${this.project.leader_id}`).then(response => {
+                    this.$axios.get(`{{ route('admin.projects.getMemberByLeader') }}?leader_id=${this.project.leader_id ?? ''}&group_id=${this.project.group_id ?? ''}&member_type=${this.project.member_type ?? ''}`).then(response => {
                       this.members = response.data.data
                     }).catch(error => {
                       this.members = []
                     });
 
-                    this.isShowMember = (this.project.member_type == this.isGroupMember)
+                    this.isShowGroup = (this.project.member_type == this.isGroupMember)
 
                     this.$refs.projectUpdateAndCreateModal.toggle();
                   })

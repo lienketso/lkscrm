@@ -30,6 +30,10 @@ class PhaseController extends Controller
             session()->flash('error', trans('admin::app.project.not-found'));
             return redirect()->route('admin.projects.index');
         }
+        if (!$this->projectRepo->hasProjectAccess(auth()->id(), $projectId)) {
+            session()->flash('error', trans('admin::app.project.forbidden'));
+            return redirect()->route('admin.projects.index');
+        }
         return view('admin::phases.index', compact('project'));
     }
 

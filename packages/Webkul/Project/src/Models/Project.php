@@ -5,6 +5,7 @@ namespace Webkul\Project\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Webkul\Project\Contracts\Project as ProjectContract;
+use Webkul\User\Models\GroupProxy;
 use Webkul\User\Models\UserProxy;
 
 class Project extends Model implements ProjectContract
@@ -19,8 +20,8 @@ class Project extends Model implements ProjectContract
         'description',
         'leader_id',
         'status',
-        'member_type
-        ',
+        'member_type',
+        'group_id',
         'start_date',
         'end_date'
     ];
@@ -39,8 +40,8 @@ class Project extends Model implements ProjectContract
     const ALL_MEMBER_TYPE = 1;
     const GROUP_MEMBER_TYPE = 2;
     const TYPE = [
-        self::ALL_MEMBER_TYPE => 'Tất cả thành viên',
-        self::GROUP_MEMBER_TYPE => 'Theo thành viên của nhóm (leader group)'
+        self::ALL_MEMBER_TYPE => 'Tất cả các nhóm',
+        self::GROUP_MEMBER_TYPE => 'Thành viên theo từng nhóm'
     ];
 
     public function isAllMember(): bool
@@ -58,6 +59,11 @@ class Project extends Model implements ProjectContract
         return $this->hasOne(UserProxy::modelClass(), 'id', 'leader_id');
     }
 
+    public function group(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(GroupProxy::modelClass(), 'id', 'group_id');
+    }
+
     public function members(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(UserProxy::modelClass(), 'project_members', 'project_id', 'user_id')->whereNull('project_members.deleted_at')->withTimestamps();
@@ -66,20 +72,5 @@ class Project extends Model implements ProjectContract
     public function projectMember(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ProjectMemberProxy::modelClass(), 'user_id', 'id');
-    }
-
-    public function hasProjectAccess($userId)
-    {
-        if ($this->isAllMember()) // member_type là tất cả nhân viên
-        {
-            return true;
-        }
-        $rs = $this->where(function ($subQ) use ($userId) {
-            $subQ->whereHas('members', function ($sq) use ($userId) {
-                $sq->where('user_id', $userId);
-            })->orWhere('leader_id', $userId);
-        });
-        if ($rs) return true;
-        return false;
     }
 }

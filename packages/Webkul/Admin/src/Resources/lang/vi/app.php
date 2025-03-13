@@ -2305,6 +2305,7 @@ return [
             'member_id' => 'Thành viên',
             'member' => 'Thành viên',
             'member_type' => 'Kiểu thành viên',
+            'group_id' => 'Nhóm',
         ],
         'button' => [
 //            'add_new' => 'Tạo mới dự án',
@@ -2319,6 +2320,7 @@ return [
         'destroy-success'   => 'Dự án đã được xóa thành công.',
         'destroy-failed'    => 'Dự án không thể bị xóa.',
         'not-found'         => 'Không tìm thấy dự án',
+        'forbidden'         => 'Bạn không có quyền truy cập dự án này',
         'no-result-found'   => 'Không tìm thấy kết quả',
         'index' => [
             'title'      => 'Dự án',
@@ -2330,6 +2332,7 @@ return [
                 'title'       => 'Tiêu đề Dự án',
                 'description' => 'Mô tả',
                 'leader'      => 'Quản lý',
+                'group'       => 'Nhóm',
                 'member'      => 'Thành viên',
                 'start_date'  => 'Ngày bắt đầu',
                 'end_date'    => 'Ngày kết thúc',

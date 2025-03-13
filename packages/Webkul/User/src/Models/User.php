@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
+use Webkul\Project\Models\ProjectProxy;
 use Webkul\User\Contracts\User as UserContract;
 
 class User extends Authenticatable implements UserContract
@@ -92,6 +93,12 @@ class User extends Authenticatable implements UserContract
     public function groups()
     {
         return $this->belongsToMany(GroupProxy::modelClass(), 'user_groups');
+    }
+
+    public function projects()
+    {
+        return $this->belongsToMany(ProjectProxy::modelClass(), 'project_members', 'user_id', 'project_id')->whereNull('project_members.deleted_at')->withTimestamps();
+//        return $this->belongsToMany(UserProxy::modelClass(), 'project_members', 'project_id', 'user_id')->whereNull('project_members.deleted_at')->withTimestamps();
     }
 
     /**

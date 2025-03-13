@@ -20,4 +20,15 @@ class ProjectRepository extends Repository
     {
         return $this->getModel()->get(['id', 'title'])->toArray();
     }
+
+    public function hasProjectAccess($userId, $projectId): bool
+    {
+        $rs = $this->getModel()->where('id', $projectId)->where(function ($subQ) use ($userId) {
+            $subQ->whereHas('members', function ($sq) use ($userId) {
+                $sq->where('user_id', $userId);
+            })->orWhere('leader_id', $userId);
+        })->first();
+        if ($rs) return true;
+        return false;
+    }
 }

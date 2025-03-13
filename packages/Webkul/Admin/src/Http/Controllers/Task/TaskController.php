@@ -39,6 +39,10 @@ class TaskController extends Controller
         }
 
         $project = $this->projectRepo->find($request->get('project_id'));
+        if (!$this->projectRepo->hasProjectAccess(auth()->id(), $request->get('project_id'))) {
+            session()->flash('error', trans('admin::app.project.forbidden'));
+            return redirect()->route('admin.projects.index');
+        }
         $phase = $this->phaseRepo->findOneWhere(['project_id' => $request->get('project_id'), 'id' => $request->get('phase_id')]);
         if (!$project || !$phase)
             return redirect(route('admin.projects.index'));
@@ -176,7 +180,7 @@ class TaskController extends Controller
         try {
             $projectId = $request->get('project_id');
             $project = $this->projectRepo->find($projectId);
-            $users = $this->userRepo->getMemberByLeader($project->leader_id);
+            $users = $this->userRepo->getAssignByProject($project->id);
 
             return new JsonResponse([
                 'data' => $users,
