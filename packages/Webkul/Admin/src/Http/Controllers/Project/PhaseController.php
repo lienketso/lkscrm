@@ -25,9 +25,13 @@ class PhaseController extends Controller
         if (request()->ajax()) {
             return datagrid(PhaseDataGrid::class)->process();
         }
-        $project = $this->projectRepo->find($projectId);
+        $project = $this->projectRepo->with('leader')->find($projectId);
         if (!$project) {
             session()->flash('error', trans('admin::app.project.not-found'));
+            return redirect()->route('admin.projects.index');
+        }
+        if (! auth()->user()->canProjectAccess($projectId)) {
+            session()->flash('error', trans('admin::app.project.forbidden'));
             return redirect()->route('admin.projects.index');
         }
         return view('admin::phases.index', compact('project'));
@@ -55,6 +59,7 @@ class PhaseController extends Controller
                     unset($formData[$key]);
                 }
             }
+            $formData['created_by'] = auth()->id();
             $rs = $this->phaseRepo->create($formData);
             if (!$rs) {
                 return new JsonResponse([
@@ -80,6 +85,12 @@ class PhaseController extends Controller
     {
         try {
             $model = $this->phaseRepo->findOrFail($id);
+            if (!auth()->user()->canEditAndDeletePhaseById($model->project_id, $id)) {
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.phase.forbidden'),
+                ], 403);
+            }
             return new JsonResponse([
                 'data' => $model,
                 'message' => null,
@@ -96,6 +107,12 @@ class PhaseController extends Controller
     {
         try {
             $model = $this->phaseRepo->findOrFail($id);
+            if (!auth()->user()->canEditAndDeletePhaseById($model->project_id, $id)) {
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.phase.forbidden'),
+                ], 403);
+            }
             $formData = $request->only(['title', 'description', 'project_id', 'start_date', 'end_date', 'status']);
             foreach ($formData as $key => $data)
             {
@@ -119,6 +136,33 @@ class PhaseController extends Controller
             return new JsonResponse([
                 'data' => null,
                 'message' => trans('admin::app.phase.update-failed'),
+            ], 500);
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $model = $this->phaseRepo->findOrFail($id);
+            if (!auth()->user()->canEditAndDeletePhaseById($model->project_id, $id)) {
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.phase.forbidden'),
+                ], 403);
+            }
+            $rs = $model->delete();
+            if(!$rs)
+            {
+                return new JsonResponse([
+                    'message' => trans('admin::app.phase.destroy-failed'),
+                ], 500);
+            }
+            return new JsonResponse([
+                'message' => trans('admin::app.phase.destroy-success'),
+            ], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'message' => trans('admin::app.phase.destroy-failed'),
             ], 500);
         }
     }

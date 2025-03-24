@@ -2675,8 +2675,13 @@ input, textarea, select {
     border-bottom-width: 1px
 }
 
+.border-b-10 {
+    border-bottom-width: 10px;
+    border-bottom-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+
 .border-b-0 {
-    border-bottom-width: 0px
+    border-bottom-width: 0px;
 }
 
 .border-b-2 {
@@ -4918,4 +4923,8 @@ input, textarea, select {
 
 .rtl\:\[\&\>span\>i\]\:left-14 > span > i:where([dir=rtl],[dir=rtl] *) {
     left: 3.5rem
+}
+
+.text-line-through {
+    text-decoration:line-through;
 }

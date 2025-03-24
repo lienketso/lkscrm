@@ -4,8 +4,10 @@ namespace Webkul\Admin\DataGrids\Project;
 
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Webkul\DataGrid\DataGrid;
 use Webkul\Project\Models\Project;
+use Webkul\User\Models\User;
 
 class ProjectDataGrid extends DataGrid
 {
@@ -63,6 +65,9 @@ class ProjectDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
+            'closure'    => function ($row) {
+                return Str::limit($row->description,50);
+            }
         ]);
 
         $this->addColumn([
@@ -71,33 +76,26 @@ class ProjectDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
-            'closure'    => function ($row) {
-                if ($row->leader_image) {
-                    $html = <<<HTML
-                    <div class="border-3 mr-2 inline-block h-9 w-9 overflow-hidden rounded-full border-gray-800 text-center align-middle">
-                        <img class="h-9 w-9" :src="$row->leader_image" alt="$row->leader_name" />
-                    </div>
-                HTML;
-                } else {
-                    $firstLetter = strtoupper($row->leader_name[0]);
-                    $html = <<<HTML
-                    <div class="profile-info-icon">
-                        <button class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-blue-400 text-sm font-semibold leading-6 text-white transition-all hover:bg-blue-500 focus:bg-blue-500">
-                            $firstLetter
-                        </button>
-                    </div>
-                    <div class="text-sm">
-                        $row->leader_name
-                    </div>
-                HTML;
-                }
-
-                return <<<HTML
-                        <div class="flex items-center gap-2.5">
-                           $html
-                        </div> 
-                HTML;
-            },
+//            'closure'    => function ($row) {
+//                if ($row->leader_image) {
+//                    $html = <<<HTML
+//                    <div class="border-3 mr-2 inline-block h-9 w-9 overflow-hidden rounded-full border-gray-800 text-center align-middle">
+//                        <img class="h-9 w-9" :src="$row->leader_image" alt="$row->leader_name" />
+//                    </div>
+//                HTML;
+//                } else {
+//                    $firstLetter = strtoupper($row->leader_name[0]);
+//                    $html = <<<HTML
+//                    <x-admin::multi-avatar v-bind:name="$firstLetter" v-bind:full_name="$row->leader_name" />
+//                HTML;
+//                }
+//
+//                return <<<HTML
+//                        <div class="flex items-center gap-2.5">
+//                           $html
+//                        </div>
+//                HTML;
+//            },
         ]);
 
         $this->addColumn([
@@ -125,11 +123,9 @@ class ProjectDataGrid extends DataGrid
             'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
-                return DB::table('project_members')
-                    ->join('users', 'users.id', '=', 'project_members.user_id')
-                    ->where('project_members.project_id', $row->id)
-                    ->select('users.id as member_id', 'users.name as member_name', 'users.image as member_image')
-                    ->get();
+                return User::whereHas('projects', function ($query) use ($row) {
+                    return $query->where('projects.id', $row->id);
+                })->get();
             },
         ]);
 
@@ -162,7 +158,7 @@ class ProjectDataGrid extends DataGrid
      */
     public function prepareActions(): void
     {
-         if (bouncer()->hasPermission('project.view')) {
+         if (bouncer()->hasPermission('project.create')) {
              $this->addAction([
                  'index'  => 'listPhase',
                  'icon'   => 'icon-list',
@@ -176,6 +172,14 @@ class ProjectDataGrid extends DataGrid
                  'title'  => trans('admin::app.project.edit.title'),
                  'method' => 'GET',
                  'url'    => fn ($row) => route('admin.projects.edit', $row->id),
+             ]);
+
+             $this->addAction([
+                 'index'  => 'delete',
+                 'icon'   => 'icon-delete',
+                 'title'  => trans('admin::app.project.delete.title'),
+                 'method' => 'DELETE',
+                 'url'    => fn ($row) => route('admin.projects.delete', $row->id),
              ]);
          }
     }

@@ -17,7 +17,7 @@
     >
         <div>
             <!-- Toolbar -->
-            <x-admin::datagrid.toolbar>
+            <x-admin::datagrid-custom.toolbar>
                 <x-slot:toolbar-left-before>
                     {{ $toolbarLeftBefore }}
                 </x-slot>
@@ -33,10 +33,10 @@
                 <x-slot:toolbar-right-after>
                     {{ $toolbarRightAfter }}
                 </x-slot>
-            </x-admin::datagrid.toolbar>
+            </x-admin::datagrid-custom.toolbar>
 
             <div class="flex">
-                <x-admin::datagrid.table :isMultiRow="$isMultiRow">
+                <x-admin::datagrid-custom.table :isMultiRow="$isMultiRow">
                     <template #header="{
                         isLoading,
                         available,
@@ -76,7 +76,7 @@
                         >
                         </slot>
                     </template>
-                </x-admin::datagrid.table>
+                </x-admin::datagrid-custom.table>
             </div>
         </div>
     </script>
