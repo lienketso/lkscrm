@@ -32,19 +32,6 @@ class ProjectController extends Controller
         return view('admin::projects.index', compact('leaders', 'groups'));
     }
 
-    public function create()
-    {
-        try {
-            $model = $this->projectRepo->makeModel();
-            $leaders = $this->userRepo->getLeaderListSelectInput(null);
-            $members = $this->userRepo->getMemberByLeader(1);
-            return view('admin::projects.form', compact('leaders', 'model', 'members'));
-        } catch (\Exception $e) {
-            session()->flash('error', trans('admin::app.project.create-failed'));
-            return redirect()->route('admin.projects.index');
-        }
-    }
-
     public function store(Request $request)
     {
         try {
@@ -55,6 +42,7 @@ class ProjectController extends Controller
                     unset($formData[$key]);
                 }
             }
+            $formData['created_by'] = auth()->id();
             DB::beginTransaction();
             $rs = $this->projectRepo->create($formData);
             if (!$rs) {
@@ -86,6 +74,12 @@ class ProjectController extends Controller
     public function edit($id)
     {
         try {
+            if (!auth()->user()->canAddAndDeleteProjectDataById($id)) {
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.project.forbidden'),
+                ], 403);
+            }
             $model = $this->projectRepo->findOrFail($id);
             return new JsonResponse([
                 'data' => $model,
@@ -103,6 +97,12 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            if (!auth()->user()->canAddAndDeleteProjectDataById($id)) {
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.project.forbidden'),
+                ], 403);
+            }
             $model = $this->projectRepo->findOrFail($id);
             $formData = $request->only(['title', 'description', 'leader_id', 'start_date', 'end_date', 'status', 'member_type', 'group_id']);
             foreach ($formData as $key => $data)
@@ -161,6 +161,34 @@ class ProjectController extends Controller
         } catch (\Exception $e) {
             return new JsonResponse([
                 'message' => trans('admin::app.an_error_occurred'),
+            ], 500);
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            if (!auth()->user()->canAddAndDeleteProjectDataById($id)) {
+                return new JsonResponse([
+                    'data' => null,
+                    'message' => trans('admin::app.project.forbidden'),
+                ], 403);
+            }
+            $model = $this->projectRepo->findOrFail($id);
+
+            $rs = $model->delete();
+            if(!$rs)
+            {
+                return new JsonResponse([
+                    'message' => trans('admin::app.project.destroy-failed'),
+                ], 500);
+            }
+            return new JsonResponse([
+                'message' => trans('admin::app.project.destroy-success'),
+            ], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'message' => trans('admin::app.project.destroy-failed'),
             ], 500);
         }
     }

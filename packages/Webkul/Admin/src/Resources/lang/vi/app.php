@@ -2,7 +2,7 @@
 
 return [
     'an_error_occurred' => 'Có lỗi xảy ra, vui lòng thử lại sau',
-    'acl' => [
+    'acl'               => [
         'leads'           => 'Khách hàng tiềm năng',
         'lead'            => 'Khách hàng tiềm năng',
         'customers'       => 'Khách hàng hiện hữu',
@@ -752,7 +752,6 @@ return [
             ],
         ],
 
-
         'roles' => [
             'index' => [
                 'being-used'                => 'Vai trò không thể bị xóa, vì đang được sử dụng trong người dùng quản trị.',
@@ -862,7 +861,6 @@ return [
                 ],
             ],
         ],
-
 
         'workflows' => [
             'index' => [
@@ -983,69 +981,68 @@ return [
             ],
 
             'create' => [
-                'title'                    => 'Tạo biểu mẫu web',
-                'add-attribute-btn'        => 'Thêm nút thuộc tính',
-                'attribute-label-color'    => 'Màu nhãn thuộc tính',
-                'attributes'               => 'Thuộc tính',
-                'attributes-info'          => 'Thêm thuộc tính tùy chỉnh vào biểu mẫu.',
-                'background-color'         => 'Màu nền',
-                'create-lead'              => 'Tạo khách hàng',
-                'customize-webform'        => 'Tùy chỉnh biểu mẫu web',
-                'customize-webform-info'   => 'Tùy chỉnh biểu mẫu của bạn với màu sắc phần tử theo lựa chọn của bạn.',
-                'description'              => 'Mô tả',
-                'display-custom-message'   => 'Hiển thị thông điệp tùy chỉnh',
-                'form-background-color'    => 'Màu nền biểu mẫu',
-                'form-submit-btn-color'    => 'Màu nút gửi biểu mẫu',
-                'form-submit-button-color'  => 'Màu nút gửi biểu mẫu',
-                'form-title-color'         => 'Màu tiêu đề biểu mẫu',
-                'general'                  => 'Chung',
-                'leads'                    => 'Khách hàng',
-                'person'                   => 'Người',
-                'save-btn'                 => 'Lưu biểu mẫu web',
-                'submit-button-label'      => 'Nhãn nút gửi',
-                'submit-success-action'    => 'Hành động thành công khi gửi',
-                'redirect-to-url'          => 'Chuyển hướng đến URL',
-                'choose-value'             => 'Chọn giá trị',
-                'select-file'              => 'Chọn tệp',
-                'select-image'             => 'Chọn hình ảnh',
-                'enter-value'              => 'Nhập giá trị',
-            ],
-
-            'edit' => [
-                'title'                     => 'Chỉnh sửa biểu mẫu web',
+                'title'                     => 'Tạo biểu mẫu web',
                 'add-attribute-btn'         => 'Thêm nút thuộc tính',
                 'attribute-label-color'     => 'Màu nhãn thuộc tính',
                 'attributes'                => 'Thuộc tính',
                 'attributes-info'           => 'Thêm thuộc tính tùy chỉnh vào biểu mẫu.',
                 'background-color'          => 'Màu nền',
-                'code-snippet'              => 'Đoạn mã',
-                'copied'                    => 'Đã sao chép',
-                'copy'                      => 'Sao chép',
                 'create-lead'               => 'Tạo khách hàng',
                 'customize-webform'         => 'Tùy chỉnh biểu mẫu web',
                 'customize-webform-info'    => 'Tùy chỉnh biểu mẫu của bạn với màu sắc phần tử theo lựa chọn của bạn.',
                 'description'               => 'Mô tả',
                 'display-custom-message'    => 'Hiển thị thông điệp tùy chỉnh',
-                'embed'                     => 'Nhúng',
                 'form-background-color'     => 'Màu nền biểu mẫu',
                 'form-submit-btn-color'     => 'Màu nút gửi biểu mẫu',
-                'form-submit-button-color'   => 'Màu nút gửi biểu mẫu',
+                'form-submit-button-color'  => 'Màu nút gửi biểu mẫu',
                 'form-title-color'          => 'Màu tiêu đề biểu mẫu',
                 'general'                   => 'Chung',
-                'preview'                   => 'Xem trước',
+                'leads'                     => 'Khách hàng',
                 'person'                    => 'Người',
-                'public-url'                => 'URL công khai',
-                'redirect-to-url'           => 'Chuyển hướng đến URL',
                 'save-btn'                  => 'Lưu biểu mẫu web',
                 'submit-button-label'       => 'Nhãn nút gửi',
                 'submit-success-action'     => 'Hành động thành công khi gửi',
+                'redirect-to-url'           => 'Chuyển hướng đến URL',
                 'choose-value'              => 'Chọn giá trị',
                 'select-file'               => 'Chọn tệp',
                 'select-image'              => 'Chọn hình ảnh',
                 'enter-value'               => 'Nhập giá trị',
             ],
-        ],
 
+            'edit' => [
+                'title'                      => 'Chỉnh sửa biểu mẫu web',
+                'add-attribute-btn'          => 'Thêm nút thuộc tính',
+                'attribute-label-color'      => 'Màu nhãn thuộc tính',
+                'attributes'                 => 'Thuộc tính',
+                'attributes-info'            => 'Thêm thuộc tính tùy chỉnh vào biểu mẫu.',
+                'background-color'           => 'Màu nền',
+                'code-snippet'               => 'Đoạn mã',
+                'copied'                     => 'Đã sao chép',
+                'copy'                       => 'Sao chép',
+                'create-lead'                => 'Tạo khách hàng',
+                'customize-webform'          => 'Tùy chỉnh biểu mẫu web',
+                'customize-webform-info'     => 'Tùy chỉnh biểu mẫu của bạn với màu sắc phần tử theo lựa chọn của bạn.',
+                'description'                => 'Mô tả',
+                'display-custom-message'     => 'Hiển thị thông điệp tùy chỉnh',
+                'embed'                      => 'Nhúng',
+                'form-background-color'      => 'Màu nền biểu mẫu',
+                'form-submit-btn-color'      => 'Màu nút gửi biểu mẫu',
+                'form-submit-button-color'   => 'Màu nút gửi biểu mẫu',
+                'form-title-color'           => 'Màu tiêu đề biểu mẫu',
+                'general'                    => 'Chung',
+                'preview'                    => 'Xem trước',
+                'person'                     => 'Người',
+                'public-url'                 => 'URL công khai',
+                'redirect-to-url'            => 'Chuyển hướng đến URL',
+                'save-btn'                   => 'Lưu biểu mẫu web',
+                'submit-button-label'        => 'Nhãn nút gửi',
+                'submit-success-action'      => 'Hành động thành công khi gửi',
+                'choose-value'               => 'Chọn giá trị',
+                'select-file'                => 'Chọn tệp',
+                'select-image'               => 'Chọn hình ảnh',
+                'enter-value'                => 'Nhập giá trị',
+            ],
+        ],
 
         'email-template' => [
             'index' => [
@@ -1118,7 +1115,6 @@ return [
                 ],
             ],
         ],
-
 
         'users' => [
             'index' => [
@@ -1237,7 +1233,6 @@ return [
                 'stage-delete-success' => 'Giai đoạn đã được xóa thành công',
             ],
         ],
-
 
         'webhooks' => [
             'index' => [
@@ -1381,7 +1376,6 @@ return [
                 ],
             ],
         ],
-
 
         'attributes' => [
             'index' => [
@@ -1657,7 +1651,6 @@ return [
             'address'        => 'Địa chỉ',
         ],
     ],
-
 
     'leads' => [
         'create-success'    => 'Khách hàng tiềm năng đã được tạo thành công.',
@@ -2047,7 +2040,6 @@ return [
         ],
     ],
 
-
     'dashboard' => [
         'index' => [
             'title' => 'Bảng điều khiển',
@@ -2220,36 +2212,36 @@ return [
     ],
 
     'zalo' => [
-        'title' => 'Zalo',
-        'template_title' => 'Zalo - Tin nhắn mẫu',
+        'title'           => 'Zalo',
+        'template_title'  => 'Zalo - Tin nhắn mẫu',
         'template_detail' => 'Zalo - Chi tiết tin nhắn mẫu',
-        'template' => 'Tin nhắn mẫu',
-        'columns' => [
-            'id' => 'Id',
-            'template_id' => 'ID template',
-            'template_name' => 'Tên template',
-            'status' => 'Trạng thái',
-            'price' => 'Giá',
+        'template'        => 'Tin nhắn mẫu',
+        'columns'         => [
+            'id'               => 'Id',
+            'template_id'      => 'ID template',
+            'template_name'    => 'Tên template',
+            'status'           => 'Trạng thái',
+            'price'            => 'Giá',
             'template_quality' => 'Chất lượng gửi ',
-            'template_tag' => 'Loại nội dung',
+            'template_tag'     => 'Loại nội dung',
         ],
         'button' => [
             'sync_template_from_zalo' => 'Lấy mẫu tin nhắn từ zalo OA',
         ],
-        'sync_template_from_zalo_mes' => 'Vui lòng chờ hệ thống xử lý đồng bộ tin nhắn mẫu từ Zalo'
+        'sync_template_from_zalo_mes' => 'Vui lòng chờ hệ thống xử lý đồng bộ tin nhắn mẫu từ Zalo',
     ],
     'campaign' => [
         'create-success'    => 'Chiến dịch đã được tạo thành công.',
-        'create-failed'    => 'Thêm mới Chiến dịch không thành công.',
+        'create-failed'     => 'Thêm mới Chiến dịch không thành công.',
         'update-success'    => 'Chiến dịch đã được cập nhật thành công.',
         'destroy-success'   => 'Chiến dịch đã được xóa thành công.',
         'destroy-failed'    => 'Chiến dịch không thể bị xóa.',
         'no-result-found'   => 'Không tìm thấy kết quả',
-        'index' => [
+        'index'             => [
             'title'      => 'Chiến dịch',
             'list'       => 'Danh sách chiến dịch',
             'create-btn' => 'Tạo Chiến dịch',
-            'datagrid' => [
+            'datagrid'   => [
                 'id'          => 'ID',
                 'name'        => 'Tên chiến dịch',
                 'description' => 'Mô tả',
@@ -2283,51 +2275,51 @@ return [
             'title' => 'Chi tiết chiến dịch',
         ],
         'common' => [
-            'add-more' => 'Thêm nhiều',
-            'number' => 'Số thứ tự',
-            'date-time' => 'Ngày, giờ',
-            'template' => 'Mẫu tin nhắn',
+            'add-more'        => 'Thêm nhiều',
+            'number'          => 'Số thứ tự',
+            'date-time'       => 'Ngày, giờ',
+            'template'        => 'Mẫu tin nhắn',
             'select-template' => 'Chọn mẫu tin nhắn',
-            'params' => 'Giá trị',
+            'params'          => 'Giá trị',
         ],
     ],
 
     'project' => [
-        'title' => 'Dự án',
-        'list' => 'Danh sách Dự án',
+        'title'       => 'Dự án',
+        'list'        => 'Danh sách Dự án',
         'phase_title' => 'Giai đoạn',
-        'columns' => [
-            'id' => 'Id',
-            'title' => 'Tiêu đề',
+        'columns'     => [
+            'id'          => 'Id',
+            'title'       => 'Tiêu đề',
             'description' => 'Mô tả',
-            'status' => 'Trạng thái',
-            'leader_id' => 'Leader',
-            'member_id' => 'Thành viên',
-            'member' => 'Thành viên',
+            'status'      => 'Trạng thái',
+            'leader_id'   => 'Leader',
+            'member_id'   => 'Thành viên',
+            'member'      => 'Thành viên',
             'member_type' => 'Kiểu thành viên',
-            'group_id' => 'Nhóm',
+            'group_id'    => 'Nhóm',
         ],
         'button' => [
-//            'add_new' => 'Tạo mới dự án',
+            //            'add_new' => 'Tạo mới dự án',
         ],
 
-        'create-success'    => 'Dự án đã được tạo thành công.',
-        'create-failed'     => 'Thêm mới Dự án không thành công.',
-        'update-success'    => 'Dự án đã được cập nhật thành công.',
-        'update-failed'     => 'Dự án cập nhật không thành công.',
+        'create-success'           => 'Dự án đã được tạo thành công.',
+        'create-failed'            => 'Thêm mới Dự án không thành công.',
+        'update-success'           => 'Dự án đã được cập nhật thành công.',
+        'update-failed'            => 'Dự án cập nhật không thành công.',
         'update-status-success'    => 'Cập nhật trạng thái task thành công.',
         'update-status-failed'     => 'Cập nhật trạng thái task thất bại.',
-        'destroy-success'   => 'Dự án đã được xóa thành công.',
-        'destroy-failed'    => 'Dự án không thể bị xóa.',
-        'not-found'         => 'Không tìm thấy dự án',
-        'forbidden'         => 'Bạn không có quyền truy cập dự án này',
-        'no-result-found'   => 'Không tìm thấy kết quả',
-        'index' => [
+        'destroy-success'          => 'Dự án đã được xóa thành công.',
+        'destroy-failed'           => 'Dự án không thể bị xóa.',
+        'not-found'                => 'Không tìm thấy dự án',
+        'forbidden'                => 'Bạn không có quyền truy cập dự án này',
+        'no-result-found'          => 'Không tìm thấy kết quả',
+        'index'                    => [
             'title'      => 'Dự án',
             'list'       => 'Danh sách Dự án',
             'create-btn' => 'Tạo Dự án',
             'all_member' => 'Tất cả nhân viên',
-            'datagrid' => [
+            'datagrid'   => [
                 'id'          => 'ID',
                 'title'       => 'Tiêu đề Dự án',
                 'description' => 'Mô tả',
@@ -2365,22 +2357,26 @@ return [
             'title' => 'Chi tiết dự án',
             'phase' => 'Danh sách phase',
         ],
+
+        'delete' => [
+            'title'          => 'Xoá dự án',
+        ],
     ],
     'phase' => [
-        'title' => 'Giai đoạn',
-        'list' => 'Danh sách Giai đoạn',
+        'title'       => 'Giai đoạn',
+        'list'        => 'Danh sách Giai đoạn',
         'phase_title' => 'Giai đoạn',
-        'columns' => [
-            'id' => 'Id',
-            'title' => 'Tiêu đề',
+        'columns'     => [
+            'id'          => 'Id',
+            'title'       => 'Tiêu đề',
             'description' => 'Mô tả',
-            'status' => 'Trạng thái',
-            'start_date' => 'Ngày bắt đầu',
-            'end_date' => 'Ngày kết thúc',
-            'project_id' => 'Dự án',
+            'status'      => 'Trạng thái',
+            'start_date'  => 'Ngày bắt đầu',
+            'end_date'    => 'Ngày kết thúc',
+            'project_id'  => 'Dự án',
         ],
         'button' => [
-//            'add_new' => 'Tạo mới Giai đoạn',
+            //            'add_new' => 'Tạo mới Giai đoạn',
         ],
 
         'create-success'    => 'Giai đoạn đã được tạo thành công.',
@@ -2391,11 +2387,12 @@ return [
         'destroy-failed'    => 'Giai đoạn không thể bị xóa.',
         'not-found'         => 'Không tìm thấy Giai đoạn',
         'no-result-found'   => 'Không tìm thấy kết quả',
-        'index' => [
+        'forbidden'         => 'Bạn không có quyền truy cập phase này',
+        'index'             => [
             'title'      => 'Giai đoạn',
             'list'       => 'Danh sách Giai đoạn',
             'create-btn' => 'Tạo Giai đoạn',
-            'datagrid' => [
+            'datagrid'   => [
                 'id'          => 'ID',
                 'title'       => 'Tiêu đề Giai đoạn',
                 'description' => 'Mô tả',
@@ -2426,34 +2423,38 @@ return [
             'details-info'   => 'Nhập thông tin cơ bản của Giai đoạn',
         ],
 
+        'delete' => [
+            'title'          => 'Xoá Giai đoạn',
+        ],
+
         'view' => [
             'title' => 'Chi tiết Giai đoạn',
         ],
     ],
 
     'task' => [
-        'title' => 'Task',
-        'list' => 'Danh sách Task',
+        'title'       => 'Task',
+        'list'        => 'Danh sách Task',
         'phase_title' => 'Giai đoạn',
-        'columns' => [
-            'id' => 'Id',
-            'title' => 'Tiêu đề',
+        'columns'     => [
+            'id'          => 'Id',
+            'title'       => 'Tiêu đề',
             'description' => 'Mô tả',
-            'step' => 'Bước',
-            'status' => 'Trạng thái',
-            'priority' => 'Uu tiên',
-            'assignee' => 'Người thực hiện',
-            'project' => 'Dự án',
-            'phase' => 'Giai đoạn',
-            'task' => 'Task',
-            'sub_task' => 'Subtask',
+            'step'        => 'Bước',
+            'status'      => 'Trạng thái',
+            'priority'    => 'Uu tiên',
+            'assignee'    => 'Người thực hiện',
+            'project'     => 'Dự án',
+            'phase'       => 'Giai đoạn',
+            'task'        => 'Task',
+            'sub_task'    => 'Subtask',
             'start_date'  => 'Ngày bắt đầu',
-            'end_date'  => 'Ngày kết thúc',
+            'end_date'    => 'Ngày kết thúc',
             'created_by'  => 'Tạo bởi',
-            'category'  => 'Hạng mục'
+            'category'    => 'Hạng mục',
         ],
         'button' => [
-//            'add_new' => 'Tạo mới Task',
+            //            'add_new' => 'Tạo mới Task',
         ],
 
         'create-success'    => 'Task đã được tạo thành công.',
@@ -2464,35 +2465,39 @@ return [
         'destroy-failed'    => 'Task không thể bị xóa.',
         'not-found'         => 'Không tìm thấy Task',
         'no-result-found'   => 'Không tìm thấy kết quả',
-        'index' => [
+        'forbidden'         => 'Bạn không có quyền truy cập task này',
+        'index'             => [
             'title'      => 'Task',
             'list'       => 'Danh sách Task',
             'create-btn' => 'Tạo Task',
-            'datagrid' => [
-                'id'          => 'ID',
-                'title'       => 'Tiêu đề',
-                'description' => 'Mô tả',
-                'step'        => 'Bước',
-                'priority' => 'Uu tiên',
-                'leader' => 'Người điều phối',
-                'assignee' => 'Người thực hiện',
-                'project' => 'Dự án',
-                'phase' => 'Giai đoạn',
-                'task' => 'Task',
-                'sub_task' => 'Subtask',
-                'created_by'  => 'Tạo bởi',
-                'parent_task' => 'Task cha',
+            'datagrid'   => [
+                'id'                => 'ID',
+                'title'             => 'Tiêu đề',
+                'description'       => 'Mô tả',
+                'step'              => 'Bước',
+                'priority'          => 'Uu tiên',
+                'leader'            => 'Người điều phối',
+                'assignee'          => 'Người thực hiện',
+                'support'           => 'Người hỗ trợ',
+                'project'           => 'Dự án',
+                'phase'             => 'Giai đoạn',
+                'task'              => 'Task',
+                'sub_task'          => 'Subtask',
+                'created_by'        => 'Tạo bởi',
+                'parent_task'       => 'Task cha',
                 'parent_task_title' => 'Task cha (bỏ qua nếu muốn tạo task cha)',
-                'created-at'  => 'Ngày tạo',
-                'start_date'  => 'Ngày bắt đầu',
-                'end_date'  => 'Ngày kết thúc',
-                'no'          => 'Không',
-                'yes'         => 'Có',
-                'delete'      => 'Xóa',
-                'mass-delete' => 'Xóa hàng loạt',
-                'mass-update' => 'Cập nhật hàng loạt',
-                'status'      => 'Trạng thái',
-                'category'    => 'Hạng mục'
+                'created-at'        => 'Ngày tạo',
+                'start_date'        => 'Ngày bắt đầu',
+                'end_date'          => 'Ngày kết thúc',
+                'time_remaining'    => 'Thời gian còn lại',
+                'comment'           => 'Nhận xét',
+                'no'                => 'Không',
+                'yes'               => 'Có',
+                'delete'            => 'Xóa',
+                'mass-delete'       => 'Xóa hàng loạt',
+                'mass-update'       => 'Cập nhật hàng loạt',
+                'status'            => 'Trạng thái',
+                'category'          => 'Hạng mục',
             ],
         ],
 
@@ -2501,6 +2506,7 @@ return [
             'save-btn'       => 'Lưu',
             'details'        => 'Chi tiết',
             'details-info'   => 'Nhập thông tin cơ bản của Task',
+            'subTask'        => 'Tạo SubTask',
         ],
 
         'edit' => [
@@ -2512,7 +2518,28 @@ return [
 
         'view' => [
             'title' => 'Chi tiết Task',
+            'filter_btn' => 'Lọc'
         ],
+
+        'delete' => [
+            'title' => 'Xoá Task',
+        ],
+
+        'comment' => [
+            'title' => 'Nhận xét',
+            'create' => 'Thêm mới nhận xét',
+            'edit' => 'Chỉnh sửa nhận xét',
+            'delete' => 'Xoá nhận xét',
+            'create-success'    => 'Thêm mới Nhận xét thành công.',
+            'create-failed'     => 'Thêm mới nhận xét không thành công.',
+            'update-success'    => 'Nhận xét đã được cập nhật thành công.',
+            'update-failed'     => 'Nhận xét cập nhật không thành công.',
+            'destroy-success'   => 'Nhận xét đã được xóa thành công.',
+            'destroy-failed'    => 'Nhận xét không thể bị xóa.',
+            'not-found'         => 'Không tìm thấy Nhận xét',
+            'forbidden'         => 'Bạn chỉ có thể chỉnh sửa hoặc xoá nhận xét của chính mình.',
+            'forbidden_create'  => 'Bạn không có quyền nhận xét với task này.',
+        ]
     ],
 
 ];

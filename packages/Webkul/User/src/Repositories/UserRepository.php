@@ -70,10 +70,31 @@ class UserRepository extends Repository
         })->where('status', User::ACTIVE)->get(['id', 'name', 'email'])->toArray();
     }
 
-    public function getAssignByProject($projectId)
+    public function getUserSupport($projectId, $excludeId = null)
     {
-        return $this->getModel()->whereHas('projects', function ($subQ) use ($projectId) {
+        $member = $this->getModel()->whereHas('projects', function ($subQ) use ($projectId) {
             return $subQ->where('projects.id', $projectId);
         })->get(['id', 'name', 'email'])->toArray();
+
+        $leader = $this->getModel()->whereHas('leaderProject', function ($subQ) use ($projectId) {
+            return $subQ->where('id', $projectId);
+        })->get(['id', 'name', 'email'])->toArray();
+        return array_merge($member,$leader);
+    }
+
+    public function getAssignByProject($projectId, $excludeId = null)
+    {
+        $member = $this->getModel()->whereHas('projects', function ($subQ) use ($projectId, $excludeId) {
+            return $subQ->where('projects.id', $projectId);
+        })->when($excludeId, function ($sQuery, $excludeId) {
+            return $sQuery->whereNot('id', $excludeId);
+        })->where('status', User::ACTIVE)->get(['id', 'name', 'email'])->toArray();
+
+        $leader = $this->getModel()->whereHas('leaderProject', function ($subQ) use ($projectId, $excludeId) {
+            return $subQ->where('id', $projectId);
+        })->when($excludeId, function ($sQuery, $excludeId) {
+            return $sQuery->whereNot('id', $excludeId);
+        })->where('status', User::ACTIVE)->get(['id', 'name', 'email'])->toArray();
+        return array_merge($member,$leader);
     }
 }

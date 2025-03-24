@@ -6,7 +6,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
+use Webkul\Project\Models\PhaseProxy;
+use Webkul\Project\Models\ProjectMemberProxy;
 use Webkul\Project\Models\ProjectProxy;
+use Webkul\Task\Models\TaskProxy;
 use Webkul\User\Contracts\User as UserContract;
 
 class User extends Authenticatable implements UserContract
@@ -41,9 +44,11 @@ class User extends Authenticatable implements UserContract
     ];
 
     const ACTIVE = 1;
+
     const INACTIVE = 0;
+
     const STATUS = [
-        self::ACTIVE => 'Hoạt động',
+        self::ACTIVE   => 'Hoạt động',
         self::INACTIVE => 'Không hoạt động',
     ];
 
@@ -95,10 +100,14 @@ class User extends Authenticatable implements UserContract
         return $this->belongsToMany(GroupProxy::modelClass(), 'user_groups');
     }
 
-    public function projects()
+    public function projects(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(ProjectProxy::modelClass(), 'project_members', 'user_id', 'project_id')->whereNull('project_members.deleted_at')->withTimestamps();
-//        return $this->belongsToMany(UserProxy::modelClass(), 'project_members', 'project_id', 'user_id')->whereNull('project_members.deleted_at')->withTimestamps();
+    }
+
+    public function taskSupport(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(TaskProxy::modelClass(), 'task_supports', 'user_id', 'task_id')->whereNull('task_supports.deleted_at')->withTimestamps();
     }
 
     /**
@@ -116,8 +125,89 @@ class User extends Authenticatable implements UserContract
         return in_array($permission, $this->role->permissions);
     }
 
-    public function leader(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function leader(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasOne(UserProxy::modelClass(), 'id', 'leader_id');
+        return $this->belongsTo(UserProxy::modelClass(), 'leader_id', 'id');
+    }
+
+    public function leaderProject(): \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\HasMany|User
+    {
+        return $this->hasMany(ProjectProxy::modelClass(), 'leader_id', 'id');
+    }
+
+    /*
+     * Bảng quan hệ n-n với bảng project
+     */
+    public function memberProject(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ProjectMemberProxy::modelClass(), 'user_id', 'id');
+    }
+
+    public function createdProject(): \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\HasMany|User
+    {
+        return $this->hasMany(ProjectProxy::modelClass(), 'created_by', 'id');
+    }
+
+    public function createdPhase(): \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\HasMany|User
+    {
+        return $this->hasMany(PhaseProxy::modelClass(), 'created_by', 'id');
+    }
+
+    public function createdTask(): \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\HasMany|User
+    {
+        return $this->hasMany(TaskProxy::modelClass(), 'created_by', 'id');
+    }
+
+    public function assigneeTask(): \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\HasMany|User
+    {
+        return $this->hasMany(TaskProxy::modelClass(), 'assignee_id', 'id');
+    }
+
+    /*
+     * hàm check xem user có quyền vào xem dữ liệu với project (xem thông tin phase, task không - là leader dự án, người tạo, thành viên của dự án có quyền này)
+     */
+    public function canProjectAccess($projectId): bool
+    {
+        $leaderProject = $this->leaderProject()->where('id', $projectId)->exists(); // leader dự án
+        $createdProject = $this->createdProject()->where('id', $projectId)->exists(); // tạo dự án
+        $memberProject = $this->projects()->where('projects.id', $projectId)->exists(); // thành viên của dự án
+
+        return $leaderProject || $createdProject || $memberProject;
+    }
+
+    /*
+     * hàm check xem user có quyền thao tác với project (thêm phase mới, xoá - edit project không - là leader dự án hoặc người tạo có quyền thao tác)
+     */
+    public function canAddAndDeleteProjectDataById($projectId): bool
+    {
+        $leaderProject = $this->leaderProject()->where('id', $projectId)->exists(); // leader dự án
+        $createdProject = $this->createdProject()->where('id', $projectId)->exists(); // tạo dự án
+
+        return $leaderProject || $createdProject;
+    }
+
+    /*
+     * hàm check xem user có quyền thao tác với phase (edit, xoá phase - là leader, người tạo dự án, người tạo phase có quyền thao tác)
+     */
+    public function canEditAndDeletePhaseById($projectId, $phaseId): bool
+    {
+        $leaderProject = $this->leaderProject()->where('id', $projectId)->exists(); // leader dự án
+        $createdProject = $this->createdProject()->where('id', $projectId)->exists(); // tạo dự án
+        $createdPhase = $this->createdPhase()->where('id', $phaseId)->exists(); // tạo phase
+
+        return $leaderProject || $createdProject || $createdPhase;
+    }
+
+    /*
+     * hàm check xem user có quyền thao tác với task (edit, xoá task - là leader, người tạo dự án, người được giao hoặc người tạo task có quyền thao tác)
+     */
+    public function canEditAndDeleteTaskById($projectId, $taskId): bool
+    {
+        $leaderProject = $this->leaderProject()->where('id', $projectId)->exists(); // leader dự án
+        $createdProject = $this->createdProject()->where('id', $projectId)->exists(); // tạo dự án
+        $createdTask = $this->createdTask()->where('id', $taskId)->exists(); // tạo task
+        $assigneeTask = $this->assigneeTask()->where('id', $taskId)->exists(); // được giao task
+        $taskSupport = $this->taskSupport()->where('tasks.id', $taskId)->exists(); // hỗ trợ task
+        return $leaderProject || $createdProject || $createdTask || $assigneeTask || $taskSupport;
     }
 }

@@ -77,59 +77,76 @@
                         <div
                                 v-for="record in available.records"
                                 :key="record.id"
-                                class="grid items-center gap-2.5 border-b px-4 py-4 text-gray-600 transition-all hover:bg-gray-50 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-950"
+                                class="grid items-center gap-2 border-b px-4 py-4 text-gray-600 transition-all hover:bg-gray-50 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-950"
                                 :style="`grid-template-columns: repeat(${gridsCount}, minmax(0, 1fr))`"
                         >
                             <a class="text-blue-600" :title="record.actions.find(action => action.index === 'listPhase').title" :href="record.actions.find(action => action.index === 'listPhase').url">@{{ record.title }}</a>
-                            <p>@{{ record.description }}</p>
-                            <div v-html="record.leader_name"></div>
+                            <p v-bind:title="record.description">@{{ record.description }}</p>
+                            <div class="flex items-center gap-1.5">
+                                <div
+                                        class="border-3 inline-block h-6 w-6 overflow-hidden rounded-full border-gray-800 text-center align-middle"
+                                        v-if="record.leader_image"
+                                        :title="`record.leader_name`"
+                                >
+                                    <img
+                                            class="h-6 w-6"
+                                            :src="record.leader_image"
+                                            alt="record.leader_name"
+                                    />
+                                </div>
+
+                                <div
+                                        v-else-if="record.leader_name"
+                                >
+                                    <x-admin::multi-avatar v-bind:name="record.leader_name[0].toUpperCase()" v-bind:full_name="record.leader_name" />
+                                </div>
+                                <div v-if="record.leader_name" class="text-sm">
+                                    @{{ record.leader_name }}
+                                </div>
+                            </div>
                             <div v-html="record.status"></div>
-                            <p>
+                            <div class="flex items-center gap-1">
                                 <template v-for="member in record.member">
-                                    <div class="flex items-center gap-2.5">
+                                    <div class="flex items-center gap-1.5">
                                         <div
-                                                class="border-3 mr-2 inline-block h-9 w-9 overflow-hidden rounded-full border-gray-800 text-center align-middle"
-                                                v-if="member.member_image"
+                                                class="border-3 inline-block h-6 w-6 overflow-hidden rounded-full border-gray-800 text-center align-middle"
+                                                v-if="member.image"
                                         >
                                             <img
-                                                    class="h-9 w-9"
-                                                    :src="member.member_image"
-                                                    alt="member.member_name"
+                                                    class="h-6 w-6"
+                                                    :src="member.image"
+                                                    alt="member.name"
                                             />
                                         </div>
 
                                         <div
-                                                class="profile-info-icon"
-                                                v-else-if="member.member_name"
+                                                class="flex"
+                                                v-else-if="member.name"
                                         >
-                                            <button class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-blue-400 text-sm font-semibold leading-6 text-white transition-all hover:bg-blue-500 focus:bg-blue-500">
-                                                @{{ member.member_name[0].toUpperCase() }}
-                                            </button>
-                                        </div>
-
-                                        <div class="text-sm">
-                                            @{{ member.member_name }}
+                                            <x-admin::multi-avatar v-bind:name="member.name[0].toUpperCase()" v-bind:full_name="member.name" />
                                         </div>
                                     </div>
                                 </template>
-                            </p>
+                            </div>
                             <p>@{{ record.start_date }}</p>
                             <p>@{{ record.end_date }}</p>
                             <div class="flex justify-end">
                                 <a :title="record.actions.find(action => action.index === 'listPhase').title" :href="record.actions.find(action => action.index === 'listPhase').url">
-                                    <span class="icon-list cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"></span>
+                                    <span class="cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"
+                                          :class="record.actions.find(action => action.index === 'listPhase')?.icon"></span>
                                 </a>
                                 <a :title="record.actions.find(action => action.index === 'edit').title" @click="editModal(record.actions.find(action => action.index === 'edit'))">
-                                    <span class="icon-edit cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"></span>
+                                    <span class="cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"
+                                          :class="record.actions.find(action => action.index === 'edit')?.icon"></span>
                                 </a>
 
-                                {{--                                <a @click="performAction(record.actions.find(action => action.index === 'delete'))">--}}
-                                {{--                                    <span--}}
-                                {{--                                            :class="record.actions.find(action => action.index === 'delete')?.icon"--}}
-                                {{--                                            class="cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"--}}
-                                {{--                                    >--}}
-                                {{--                                    </span>--}}
-                                {{--                                </a>--}}
+                                <a @click="deleteProject(record.actions.find(action => action.index === 'delete'))">
+                                    <span
+                                            :class="record.actions.find(action => action.index === 'delete')?.icon"
+                                            class="cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"
+                                    >
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </template>
@@ -501,7 +518,7 @@
                   if (error.response.status === 422) {
                     setErrors(error.response.data.errors)
                   } else {
-                    this.$emitter.emit('add-flash', { type: 'error', message: response.data.message })
+                    this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message ?? 'Có lỗi xảy ra vui lòng thử lại sau.' })
                   }
                 })
               },
@@ -523,7 +540,27 @@
                     this.$refs.projectUpdateAndCreateModal.toggle();
                   })
                   .catch(error => {
+                    this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message ?? 'Có lỗi xảy ra vui lòng thử lại sau.' })
                   });
+              },
+
+              deleteProject(action) {
+                this.$emitter.emit('open-confirm-modal', {
+                  message: 'Tất cả dũ liệu bao gồm Project, Phase, Task sẽ bị xoá. Bạn có chắc chắn muốn thực hiện hành động này?',
+                  agree: () => {
+                    this.$axios.post(`${action.url}`, {
+                      _method: `${action.method}`,
+                    })
+                      .then(response => {
+                        this.$refs.datagrid.get();
+
+                        this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
+                      })
+                      .catch(error => {
+                        this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message ?? 'Có lỗi xảy ra vui lòng thử lại sau.' })
+                      });
+                  },
+                });
               },
             },
           })
