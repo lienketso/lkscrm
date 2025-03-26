@@ -14,10 +14,7 @@ class PhaseDataGrid extends DataGrid
      *
      * @return void
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     /**
      * Prepare query builder.
@@ -27,6 +24,7 @@ class PhaseDataGrid extends DataGrid
         $projectId = basename(request()->url());
         $queryBuilder = DB::table('phases')
             ->leftJoin('projects', 'projects.id', '=', 'phases.project_id')
+            ->leftJoin('users as createdBy', 'phases.created_by', '=', 'createdBy.id')
             ->whereNull('phases.deleted_at')
             ->where('project_id', '=', $projectId);
 
@@ -39,6 +37,8 @@ class PhaseDataGrid extends DataGrid
             'phases.end_date',
             'phases.status',
             'phases.created_at',
+            'createdBy.name as createdBy_name',
+            'createdBy.image as createdBy_img',
         )->orderBy('created_at', 'DESC');
     }
 
@@ -70,7 +70,7 @@ class PhaseDataGrid extends DataGrid
             'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
-                return date('d/m/Y', strtotime($row->start_date));
+                return $row->start_date ? date('d/m/Y', strtotime($row->start_date)) : '';
             },
         ]);
 
@@ -81,10 +81,9 @@ class PhaseDataGrid extends DataGrid
             'sortable'   => false,
             'filterable' => true,
             'closure'    => function ($row) {
-                return date('d/m/Y', strtotime($row->end_date));
+                return $row->end_date ? date('d/m/Y', strtotime($row->end_date)) : '';
             },
         ]);
-
 
         $this->addColumn([
             'index'      => 'status',
@@ -95,6 +94,7 @@ class PhaseDataGrid extends DataGrid
             'closure'    => function ($row) {
                 $status = Phase::STATUS[$row->status];
                 $statusCssClass = $row->status == Phase::ACTIVE ? 'label-active' : 'label-inactive';
+
                 return <<<HTML
                         <span class="$statusCssClass"
                             >
@@ -114,6 +114,25 @@ class PhaseDataGrid extends DataGrid
                 return date('d/m/Y H:i:s', strtotime($row->created_at));
             },
         ]);
+
+//        $this->addColumn([
+//            'index'      => 'createdBy',
+//            'label'      => trans('admin::app.task.index.datagrid.created_by'),
+//            'type'       => 'string',
+//            'sortable'   => false,
+//            'filterable' => true,
+//        ]);
+
+        $this->addColumn([
+            'index'      => 'createdBy_img',
+            'label'      => trans('admin::app.task.index.datagrid.created_by'),
+            'type'       => 'string',
+            'sortable'   => false,
+            'filterable' => true,
+            'closure'    => function ($row) {
+                return $row->createdBy_img ? \Storage::url($row->createdBy_img) : '';
+            },
+        ]);
     }
 
     /**
@@ -122,29 +141,34 @@ class PhaseDataGrid extends DataGrid
     public function prepareActions(): void
     {
         $projectId = basename(request()->url());
-         if (bouncer()->hasPermission('project.view')) {
-             $this->addAction([
-                 'index'  => 'listTask',
-                 'icon'   => 'icon-list',
-                 'title'  => trans('admin::app.task.list'),
-                 'method' => 'GET',
-                 'url'    => fn ($row) => route('admin.tasks.index', ['project_id' => $projectId, 'phase_id' => $row->id]),
-             ]);
-             $this->addAction([
-                 'index'  => 'edit',
-                 'icon'   => 'icon-edit',
-                 'title'  => trans('admin::app.phase.edit.title'),
-                 'method' => 'GET',
-                 'url'    => fn ($row) => route('admin.phases.edit', $row->id),
-             ]);
-         }
+        if (bouncer()->hasPermission('project.view')) {
+            $this->addAction([
+                'index'  => 'listTask',
+                'icon'   => 'icon-list',
+                'title'  => trans('admin::app.task.list'),
+                'method' => 'GET',
+                'url'    => fn ($row) => route('admin.tasks.index', ['project_id' => $projectId, 'phase_id' => $row->id]),
+            ]);
+            $this->addAction([
+                'index'  => 'edit',
+                'icon'   => 'icon-edit',
+                'title'  => trans('admin::app.phase.edit.title'),
+                'method' => 'GET',
+                'url'    => fn ($row) => route('admin.phases.edit', $row->id),
+            ]);
+
+            $this->addAction([
+                'index'  => 'delete',
+                'icon'   => 'icon-delete',
+                'title'  => trans('admin::app.phase.delete.title'),
+                'method' => 'DELETE',
+                'url'    => fn ($row) => route('admin.phases.delete', $row->id),
+            ]);
+        }
     }
 
     /**
      * Prepare mass actions.
      */
-    public function prepareMassActions(): void
-    {
-        
-    }
+    public function prepareMassActions(): void {}
 }

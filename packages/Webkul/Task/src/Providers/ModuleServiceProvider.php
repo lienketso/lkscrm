@@ -8,5 +8,6 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
 {
     protected $models = [
         \Webkul\Task\Models\Task::class,
+        \Webkul\Task\Models\TaskComment::class
     ];
 }

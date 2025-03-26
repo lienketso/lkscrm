@@ -6,6 +6,7 @@ use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Webkul\DataGrid\DataGrid;
 use Webkul\TaskStatusSetting\Models\TaskStatusSetting;
+use Webkul\User\Models\User;
 
 class TaskDataGrid extends DataGrid
 {
@@ -26,6 +27,9 @@ class TaskDataGrid extends DataGrid
     {
         $projectId = request('project_id');
         $phaseId = request('phase_id');
+        $assigneeId = request('assignee_id');
+        $statusId = request('status_id');
+        $priorityId = request('priority_id');
         $query = DB::table('tasks')
             ->leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
             ->leftJoin('users as leaders', 'projects.leader_id', '=', 'leaders.id')
@@ -53,6 +57,15 @@ class TaskDataGrid extends DataGrid
             )
             ->whereNull('tasks.deleted_at')
             ->where(['project_id' => $projectId, 'phase_id' => $phaseId])
+            ->when($assigneeId, function (Builder $query, $assigneeId) {
+                $query->where('tasks.assignee_id', $assigneeId);
+            })
+            ->when($statusId, function (Builder $query, $statusId) {
+                $query->where('tasks.status_id', $statusId);
+            })
+            ->when($priorityId, function (Builder $query, $priorityId) {
+                $query->where('tasks.priority_id', $priorityId);
+            })
             ->orderBy('tasks.parent_id') // Sắp xếp theo cha trước
             ->orderBy('tasks.created_at', 'DESC');
 
@@ -98,6 +111,14 @@ class TaskDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
+            'index'      => 'userSupport',
+            'label'      => trans('admin::app.task.index.datagrid.support'),
+            'type'       => 'string',
+            'sortable'   => false,
+            'filterable' => true,
+        ]);
+
+        $this->addColumn([
             'index'      => 'start_date',
             'label'      => trans('admin::app.task.index.datagrid.start_date'),
             'type'       => 'string',
@@ -111,6 +132,14 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
+        ]);
+
+        $this->addColumn([
+            'index'      => 'time_remaining',
+            'label'      => trans('admin::app.task.index.datagrid.time_remaining'),
+            'type'       => 'string',
+            'sortable'   => false,
+            'filterable' => false,
         ]);
 
         $this->addColumn([
@@ -128,19 +157,27 @@ class TaskDataGrid extends DataGrid
     public function prepareActions(): void
     {
 //         if (bouncer()->hasPermission('task.view')) {
-//             $this->addAction([
-//                 'icon'   => 'icon-eye',
-//                 'title'  => trans('admin::app.project.view.title'),
-//                 'method' => 'GET',
-//                 'url'    => fn ($row) => route('admin.projects.view', $row->id),
-//             ]);
-             $this->addAction([
-                 'icon'   => 'icon-edit',
-                 'index'  => 'edit',
-                 'title'  => trans('admin::app.task.edit.title'),
-                 'method' => 'GET',
-                 'url'    => fn ($row) => route('admin.tasks.edit', $row->id),
-             ]);
+        $this->addAction([
+            'icon'   => 'icon-add',
+            'index'  => 'createSubTask',
+            'title'  => trans('admin::app.task.create.title'),
+            'method' => 'GET',
+            'url'    => fn ($row) => route('admin.tasks.store'),
+        ]);
+        $this->addAction([
+            'icon'   => 'icon-edit',
+            'index'  => 'edit',
+            'title'  => trans('admin::app.task.edit.title'),
+            'method' => 'GET',
+            'url'    => fn ($row) => route('admin.tasks.edit', $row->id),
+        ]);
+        $this->addAction([
+            'index'  => 'delete',
+            'icon'   => 'icon-delete',
+            'title'  => trans('admin::app.task.delete.title'),
+            'method' => 'DELETE',
+            'url'    => fn ($row) => route('admin.tasks.delete', $row->id),
+        ]);
 
 //         }
     }
@@ -178,16 +215,48 @@ class TaskDataGrid extends DataGrid
 
         // Nhóm các task cha
         foreach ($records as $task) {
-            $task->actions[] = [
-                'icon'   => 'icon-edit',
-                'index'  => 'edit',
-                'title'  => trans('admin::app.task.edit.title'),
-                'method' => 'GET',
-                'url'    => route('admin.tasks.edit', $task->id)
+            $task->actions = [
+                [
+                    'icon'   => 'icon-message',
+                    'index'  => 'comment',
+                    'title'  => trans('admin::app.task.comment.title'),
+                    'method' => 'GET',
+                    'url'    => route('admin.tasks.getCommentByTaskId', ['task_id' => $task->id]),
+                    'task_id' => $task->id,
+                    'project_id' => request('project_id')
+                ], [
+                    'icon'   => 'icon-edit',
+                    'index'  => 'edit',
+                    'title'  => trans('admin::app.task.edit.title'),
+                    'method' => 'GET',
+                    'url'    => route('admin.tasks.edit', $task->id)
+                ],[
+                    'index'  => 'delete',
+                    'icon'   => 'icon-delete',
+                    'title'  => trans('admin::app.task.delete.title'),
+                    'method' => 'DELETE',
+                    'url'    => route('admin.tasks.delete', $task->id),
+                ]
             ];
+
+            $task->userSupport = User::whereHas('taskSupport', function ($query) use ($task) {
+                return $query->where('tasks.id', $task->id);
+            })->get();
+            $task->time_remaining = !is_null($task->end_date) ? daysDifference($task->end_date) : null;
+            $task->is_done = ($task->status_id == TaskStatusSetting::DONE_STATUS);
             $task->start_date = !is_null($task->start_date) ? date('d/m/Y', strtotime($task->start_date)) : "";
             $task->end_date = !is_null($task->end_date) ? date('d/m/Y', strtotime($task->end_date)) : "";
+            $task->assignee_img = $task->assignee_img ? \Storage::url($task->assignee_img) : '';
+            $task->createdBy_img = $task->createdBy_img ? \Storage::url($task->createdBy_img) : '';
             if ($task->parent_id === null) {
+                array_push($task->actions, [
+                    'icon'   => 'icon-add',
+                    'index'  => 'createSubTask',
+                    'title'  => trans('admin::app.task.create.subTask'),
+                    'method' => 'POST',
+                    'url'    => route('admin.tasks.edit', $task->id),
+                    'parentId' => $task->id,
+                ]);
                 $task->sub_tasks = []; // Tạo mảng chứa subtask
                 $taskList[$task->id] = $task;
             }

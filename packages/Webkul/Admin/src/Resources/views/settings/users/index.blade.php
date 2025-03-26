@@ -338,32 +338,32 @@
                                 </x-admin::form.control-group>
                             </div>
 
-                            <div class="flex gap-4">
-                                <!-- Leader -->
-                                <x-admin::form.control-group class="flex-1">
-                                    <x-admin::form.control-group.label>
-                                        @lang('admin::app.settings.users.index.create.leader')
-                                    </x-admin::form.control-group.label>
+{{--                            <div class="flex gap-4">--}}
+{{--                                <!-- Leader -->--}}
+{{--                                <x-admin::form.control-group class="flex-1">--}}
+{{--                                    <x-admin::form.control-group.label>--}}
+{{--                                        @lang('admin::app.settings.users.index.create.leader')--}}
+{{--                                    </x-admin::form.control-group.label>--}}
 
-                                    <x-admin::form.control-group.control
-                                            type="select"
-                                            name="leader_id"
-                                            v-model="user.leader_id"
-                                            :label="trans('admin::app.settings.users.index.create.leader')"
-                                    >
-                                        <option value="">-- Chọn leader --</option>
-                                        <option
-                                                v-for="leader in leaders"
-                                                :key="leader.id"
-                                                :value="leader.id"
-                                        >
-                                            @{{ leader.name + ' - ' + leader.email }}
-                                        </option>
-                                    </x-admin::form.control-group.control>
+{{--                                    <x-admin::form.control-group.control--}}
+{{--                                            type="select"--}}
+{{--                                            name="leader_id"--}}
+{{--                                            v-model="user.leader_id"--}}
+{{--                                            :label="trans('admin::app.settings.users.index.create.leader')"--}}
+{{--                                    >--}}
+{{--                                        <option value="">-- Chọn leader --</option>--}}
+{{--                                        <option--}}
+{{--                                                v-for="leader in leaders"--}}
+{{--                                                :key="leader.id"--}}
+{{--                                                :value="leader.id"--}}
+{{--                                        >--}}
+{{--                                            @{{ leader.name + ' - ' + leader.email }}--}}
+{{--                                        </option>--}}
+{{--                                    </x-admin::form.control-group.control>--}}
 
-                                    <x-admin::form.control-group.error control-name="leader_id" />
-                                </x-admin::form.control-group>
-                            </div>
+{{--                                    <x-admin::form.control-group.error control-name="leader_id" />--}}
+{{--                                </x-admin::form.control-group>--}}
+{{--                            </div>--}}
 
                             {!! view_render_event('admin.settings.users.index.form.role_id.after') !!}
 

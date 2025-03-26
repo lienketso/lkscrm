@@ -10,6 +10,9 @@ use Webkul\Task\Contracts\Task as TaskContract;
 use Webkul\TaskCategorySetting\Models\TaskCategorySettingProxy;
 use Webkul\TaskPrioritySetting\Models\TaskPrioritySettingProxy;
 use Webkul\TaskStatusSetting\Models\TaskStatusSettingProxy;
+use Webkul\TaskSupport\Models\TaskSupport;
+use Webkul\TaskSupport\Models\TaskSupportProxy;
+use Webkul\User\Contracts\User;
 use Webkul\User\Models\UserProxy;
 
 class Task extends Model implements TaskContract
@@ -79,12 +82,12 @@ class Task extends Model implements TaskContract
 
     public function phase()
     {
-        return $this->hasOne(PhaseProxy::modelClass(), 'id', 'project_id');
+        return $this->belongsTo(PhaseProxy::modelClass(), 'project_id', 'id');
     }
 
     public function parentTask()
     {
-        return $this->hasOne(TaskProxy::modelClass(), 'id', 'parent_id');
+        return $this->belongsTo(TaskProxy::modelClass(), 'parent_id', 'id');
     }
 
     public function subTasks()
@@ -94,6 +97,29 @@ class Task extends Model implements TaskContract
 
     public function createdBy()
     {
-        return $this->hasOne(UserProxy::modelClass(), 'id', 'created_by');
+        return $this->belongsTo(UserProxy::modelClass(), 'created_by', 'id');
+    }
+
+    public function userSupport(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(UserProxy::modelClass(), 'task_supports', 'task_id', 'user_id')->whereNull('task_supports.deleted_at')->withTimestamps();
+    }
+
+    public function relationUserSupport(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TaskSupportProxy::modelClass(), 'task_id', 'id');
+    }
+
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TaskCommentProxy::modelClass(), 'task_id', 'id');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function (Task $task) {
+            $task->subTasks()->delete(); // xoá subtask của task cha
+            $task->relationUserSupport()->delete(); // xoá bảng quan hệ các người hỗ trợ của dự án
+        });
     }
 }

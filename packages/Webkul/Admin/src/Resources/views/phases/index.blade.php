@@ -23,19 +23,20 @@
         {!! view_render_event('admin.phase.index.header.left.after') !!}
 
         {!! view_render_event('admin.phase.index.header.right.before') !!}
-
-        <div class="flex items-center gap-x-2.5">
-            <!-- Create button add -->
+        @if(auth()->user()->canAddAndDeleteProjectDataById($project->id))
             <div class="flex items-center gap-x-2.5">
-                <button
-                        type="button"
-                        class="primary-button"
-                        @click="$refs.phase.openModal()"
-                >
-                    @lang('admin::app.phase.index.create-btn')
-                </button>
+                <!-- Create button add -->
+                <div class="flex items-center gap-x-2.5">
+                    <button
+                            type="button"
+                            class="primary-button"
+                            @click="$refs.phase.openModal()"
+                    >
+                        @lang('admin::app.phase.index.create-btn')
+                    </button>
+                </div>
             </div>
-        </div>
+        @endif
 
         {!! view_render_event('admin.phase.index.header.right.after') !!}
     </div>
@@ -86,6 +87,31 @@
                             <p>@{{ record.end_date }}</p>
                             <div v-html="record.status"></div>
                             <p>@{{ record.created_at }}</p>
+                            <p>
+                            <div class="flex items-center gap-1.5" v-if="record.createdBy_name">
+                                <div
+                                        class="border-3 inline-block h-9 w-9 overflow-hidden rounded-full border-gray-800 text-center align-middle"
+                                        v-if="record.createdBy_img"
+                                >
+                                    <img
+                                            class="h-6 w-6"
+                                            :src="record.createdBy_img"
+                                            alt="record.createdBy_name"
+                                    />
+                                </div>
+
+                                <div
+                                        class="profile-info-icon"
+                                        v-else-if="record.createdBy_name"
+                                >
+                                    <x-admin::multi-avatar v-bind:name="record.createdBy_name[0].toUpperCase()" v-bind:full_name="record.createdBy_name" />
+                                </div>
+
+                                <div v-if="record.createdBy_name" class="text-sm">
+                                    @{{ record.createdBy_name }}
+                                </div>
+                            </div>
+                            </p>
                             <div class="flex justify-end">
                                 <a :title="record.actions.find(action => action.index === 'listTask').title" :href="record.actions.find(action => action.index === 'listTask').url">
                                     <span class="icon-note cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"></span>
@@ -94,13 +120,13 @@
                                     <span class="icon-edit cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"></span>
                                 </a>
 
-{{--                                <a @click="performAction(record.actions.find(action => action.index === 'delete'))">--}}
-{{--                                    <span--}}
-{{--                                            :class="record.actions.find(action => action.index === 'delete')?.icon"--}}
-{{--                                            class="cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"--}}
-{{--                                    >--}}
-{{--                                    </span>--}}
-{{--                                </a>--}}
+                                <a @click="deletePhase(record.actions.find(action => action.index === 'delete'))">
+                                    <span
+                                            :class="record.actions.find(action => action.index === 'delete')?.icon"
+                                            class="cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"
+                                    >
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </template>
@@ -300,7 +326,6 @@
                 template: '#phase-template',
 
                 data() {
-                    {{--console.log(@json($project ?? []))--}}
                     return {
                         isProcessing: false,
 
@@ -381,8 +406,28 @@
                                 this.$refs.phaseUpdateAndCreateModal.toggle();
                             })
                             .catch(error => {
+                                this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message ?? 'Có lỗi xảy ra vui lòng thử lại sau.' })
                             });
                     },
+
+                  deletePhase(action) {
+                    this.$emitter.emit('open-confirm-modal', {
+                      message: 'Tất cả dũ liệu bao gồm Phase, Task sẽ bị xoá. Bạn có chắc chắn muốn thực hiện hành động này?',
+                      agree: () => {
+                        this.$axios.post(`${action.url}`, {
+                          _method: `${action.method}`,
+                        })
+                          .then(response => {
+                            this.$refs.datagrid.get();
+
+                            this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
+                          })
+                          .catch(error => {
+                            this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message ?? 'Có lỗi xảy ra vui lòng thử lại sau.' })
+                          });
+                      },
+                    });
+                  },
                 },
             })
         </script>
