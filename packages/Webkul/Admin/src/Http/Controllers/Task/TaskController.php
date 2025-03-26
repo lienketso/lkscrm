@@ -271,6 +271,7 @@ class TaskController extends Controller
                     'id' => $item->id,
                     'task_id' => $item->task?->id,
                     'user' => $item?->user,
+                    'user_img' => $item?->user?->image_url ? $item->user->image_url : '',
                     'content' => $item->content,
                     'created_at' => date('d-m-Y H:i', strtotime($item->created_at)),
                     'actions' => [

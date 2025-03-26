@@ -246,6 +246,8 @@ class TaskDataGrid extends DataGrid
             $task->is_done = ($task->status_id == TaskStatusSetting::DONE_STATUS);
             $task->start_date = !is_null($task->start_date) ? date('d/m/Y', strtotime($task->start_date)) : "";
             $task->end_date = !is_null($task->end_date) ? date('d/m/Y', strtotime($task->end_date)) : "";
+            $task->assignee_img = $task->assignee_img ? \Storage::url($task->assignee_img) : '';
+            $task->createdBy_img = $task->createdBy_img ? \Storage::url($task->createdBy_img) : '';
             if ($task->parent_id === null) {
                 array_push($task->actions, [
                     'icon'   => 'icon-add',

@@ -326,7 +326,6 @@
                 template: '#phase-template',
 
                 data() {
-                    {{--console.log(@json($project ?? []))--}}
                     return {
                         isProcessing: false,
 
@@ -344,7 +343,6 @@
 
                 computed: {
                     gridsCount() {
-                        console.log(this.$refs.datagrid.available)
                         let count = this.$refs.datagrid.available.columns.length
 
                         if (this.$refs.datagrid.available.actions.length) {

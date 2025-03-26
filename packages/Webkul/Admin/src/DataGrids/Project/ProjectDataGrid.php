@@ -71,11 +71,14 @@ class ProjectDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
-            'index'      => 'leader_name',
+            'index'      => 'leader_image',
             'label'      => trans('admin::app.project.index.datagrid.leader'),
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
+            'closure'    => function ($row) {
+                return $row->leader_image ? \Storage::url($row->leader_image) : '';
+            }
 //            'closure'    => function ($row) {
 //                if ($row->leader_image) {
 //                    $html = <<<HTML

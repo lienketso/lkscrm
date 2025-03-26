@@ -115,12 +115,23 @@ class PhaseDataGrid extends DataGrid
             },
         ]);
 
+//        $this->addColumn([
+//            'index'      => 'createdBy',
+//            'label'      => trans('admin::app.task.index.datagrid.created_by'),
+//            'type'       => 'string',
+//            'sortable'   => false,
+//            'filterable' => true,
+//        ]);
+
         $this->addColumn([
-            'index'      => 'createdBy',
+            'index'      => 'createdBy_img',
             'label'      => trans('admin::app.task.index.datagrid.created_by'),
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
+            'closure'    => function ($row) {
+                return $row->createdBy_img ? \Storage::url($row->createdBy_img) : '';
+            },
         ]);
     }
 

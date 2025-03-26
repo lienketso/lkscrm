@@ -22,17 +22,17 @@ if (!function_exists('daysDifference')) {
         if ($diffDays > 0) {
             return [
                 'css_class' => 'label-active',
-                'txt' => "Còn lại {$diffDays} ngày"
+                'txt' => "$diffDays ngày"
             ];
         } elseif ($diffDays < 0) {
             return [
                 'css_class' => 'label-inactive',
-                'txt' => "Đã quá " . abs($diffDays) . " ngày"
+                'txt' => "$diffDays ngày"
             ];
         } else {
             return [
                 'css_class' => 'label-warning',
-                'txt' => "Còn lại {$diffDays} ngày"
+                'txt' => "$diffDays ngày"
             ];
         }
     }
