@@ -25,7 +25,7 @@
                         <button
                                 type="button"
                                 class="primary-button"
-                                @click="$refs.task.openModalComment()"
+                                @click="$refs.task.openModal()"
                         >
                             @lang('admin::app.task.index.create-btn')
                         </button>
@@ -243,10 +243,11 @@
                                         <div
                                                 class="border-3 inline-block h-6 w-6 overflow-hidden rounded-full border-gray-800 text-center align-middle"
                                                 v-if="user.image"
+                                                :title="user.name"
                                         >
                                             <img
                                                     class="h-6 w-6"
-                                                    :src="user.image"
+                                                    :src="'/storage/' + user.image"
                                                     alt="user.name"
                                             />
                                         </div>
@@ -348,7 +349,7 @@
                                                 </div>
                                             </td>
                                             <td v-if="col == 'title'">
-                                                <p class="ml-4">@{{ record.title }}</p>
+                                                <p class="ml-4" :class="{ 'text-line-through': record.is_done == true }">@{{ record.title }}</p>
                                             </td>
                                             {{--                                                <td v-if="col == 'step'">--}}
                                             {{--                                                    <p class="ml-4">@{{ record.step }}</p>--}}
@@ -400,10 +401,11 @@
                                                             <div
                                                                     class="border-3 inline-block h-6 w-6 overflow-hidden rounded-full border-gray-800 text-center align-middle"
                                                                     v-if="user.image"
+                                                                    :title="user?.name"
                                                             >
                                                                 <img
                                                                         class="h-6 w-6"
-                                                                        :src="user.image"
+                                                                        :src="'/storage/' +user.image"
                                                                         alt="user.name"
                                                                 />
                                                             </div>
@@ -870,12 +872,13 @@
                                             <div class="flex items-center gap-1.5">
                                                 <div
                                                         class="border-3 inline-block h-6 w-6 overflow-hidden rounded-full border-gray-800 text-center align-middle"
-                                                        v-if="record.user.image"
+                                                        v-if="record.user_img"
+                                                        :title="record?.user?.name"
                                                 >
                                                     <img
                                                             class="h-6 w-6"
-                                                            :src="user.image"
-                                                            alt="record.user.image"
+                                                            :src="record.user_img"
+                                                            alt="record?.user?.name"
                                                     />
                                                 </div>
 

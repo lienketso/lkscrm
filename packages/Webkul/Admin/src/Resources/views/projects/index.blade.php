@@ -111,11 +111,12 @@
                                         <div
                                                 class="border-3 inline-block h-6 w-6 overflow-hidden rounded-full border-gray-800 text-center align-middle"
                                                 v-if="member.image"
+                                                :title="member.name"
                                         >
                                             <img
                                                     class="h-6 w-6"
-                                                    :src="member.image"
-                                                    alt="member.name"
+                                                    :src="'/storage/' + member.image"
+                                                    alt="member?.name"
                                             />
                                         </div>
 
