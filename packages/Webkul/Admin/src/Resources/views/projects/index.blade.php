@@ -78,7 +78,7 @@
                                 v-for="record in available.records"
                                 :key="record.id"
                                 class="grid items-center gap-2 border-b px-4 py-4 text-gray-600 transition-all hover:bg-gray-50 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-950"
-                                :style="`grid-template-columns: repeat(${gridsCount}, minmax(0, 1fr))`"
+                                :style="`grid-template-columns: ${gridColumns}`"
                         >
                             <a class="text-blue-600" :title="record.actions.find(action => action.index === 'listPhase').title" :href="record.actions.find(action => action.index === 'listPhase').url">@{{ record.title }}</a>
                             <p v-bind:title="record.description">@{{ record.description }}</p>
@@ -466,6 +466,22 @@
                 }
 
                 return count
+              },
+
+              gridColumns(){
+                let gridColumns = [];
+                this.$refs.datagrid.available.columns.forEach((column) => {
+                  gridColumns.push(column.custom_grid.length ? column.custom_grid : 'minmax(0, 1fr)');
+                });
+                if (this.$refs.datagrid.available.actions.length) {
+                    gridColumns.push('minmax(0, 1fr)');
+                }
+
+                if (this.$refs.datagrid.available.massActions.length) {
+                    gridColumns.push('minmax(0, 1fr)');
+                }
+                console.log(gridColumns.join(' '));
+                return gridColumns.join(' ');
               },
 
               selectedType () {
