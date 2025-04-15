@@ -68,6 +68,16 @@ class Column
     protected $columnName;
 
     /**
+     * Column's style custom.
+     */
+    protected string $customStyle = '';
+
+    /**
+     * Column's grid custom.
+     */
+    protected string $customGrid = '';
+
+    /**
      * Create a column instance.
      */
     public function __construct(array $column)
@@ -102,7 +112,10 @@ class Column
 
         $this->setClosure($column['closure'] ?? $this->closure);
 
-        $this->setColumnName($this->index);
+        $this->setCustomStyle($column['custom_style'] ?? $this->customStyle);
+
+        $this->setCustomGrid($column['custom_grid'] ?? $this->customGrid);
+
     }
 
     /**
@@ -289,7 +302,7 @@ class Column
      * Define the table's column name. Initially, it will match the index. However, after adding an alias,
      * the column name may change.
      */
-    public function setColumnName(mixed $columnName): void
+    public function setColumnName($columnName): void
     {
         $this->columnName = $columnName;
     }
@@ -300,6 +313,38 @@ class Column
     public function getColumnName(): mixed
     {
         return $this->columnName;
+    }
+
+    /**
+     * Set label.
+     */
+    public function setCustomStyle(string $customStyle): void
+    {
+        $this->customStyle = $customStyle;
+    }
+
+    /**
+     * Get label.
+     */
+    public function getCustomStyle(): string
+    {
+        return $this->customStyle;
+    }
+
+    /**
+     * Set grid custom.
+     */
+    public function setCustomGrid(string $customGrid): void
+    {
+        $this->customGrid = $customGrid;
+    }
+
+    /**
+     * Get grid custom.
+     */
+    public function getCustomGrid(): string
+    {
+        return $this->customGrid;
     }
 
     /**
@@ -318,6 +363,8 @@ class Column
             'allow_multiple_values' => $this->allowMultipleValues,
             'sortable'              => $this->sortable,
             'visibility'            => $this->visibility,
+            'custom_style'          => $this->customStyle,
+            'custom_grid'           => $this->customGrid,
         ];
     }
 

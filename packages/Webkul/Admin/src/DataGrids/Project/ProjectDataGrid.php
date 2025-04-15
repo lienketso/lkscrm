@@ -55,6 +55,7 @@ class ProjectDataGrid extends DataGrid
             'index'      => 'title',
             'label'      => trans('admin::app.project.index.datagrid.title'),
             'type'       => 'string',
+            'custom_grid' => '2fr',
             'sortable'   => false,
             'filterable' => true,
         ]);
@@ -65,6 +66,7 @@ class ProjectDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
+            'custom_grid' => '4fr',
             'closure'    => function ($row) {
                 return Str::limit($row->description,50);
             }
