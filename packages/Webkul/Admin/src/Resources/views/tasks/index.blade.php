@@ -177,7 +177,7 @@
                                 v-for="record in available.records"
                                 :key="record.id"
                                 class="grid items-center gap-2 border-b-10 px-4 py-4 text-gray-600 transition-all hover:bg-gray-50 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-950"
-                                :style="`grid-template-columns: repeat(${gridsCount}, minmax(0, 1fr))`"
+                                :style="`grid-template-columns: ${gridColumns}`"
                         >
                             <!-- Mass Actions, Title and Created By -->
                             <div class="flex select-none items-center gap-16">
@@ -1041,6 +1041,21 @@
                 }
 
                 return count
+              },
+
+              gridColumns(){
+                let gridColumns = [];
+                if (this.$refs.datagrid.available.massActions.length) {
+                    gridColumns.push('minmax(0, 1fr)');
+                }
+                this.$refs.datagrid.available.columns.forEach((column) => {
+                  gridColumns.push(column.custom_grid.length ? column.custom_grid : 'minmax(0, 1fr)');
+                });
+                if (this.$refs.datagrid.available.actions.length) {
+                    gridColumns.push('minmax(0, 1fr)');
+                }
+
+                return gridColumns.join(' ');
               },
 
               selectedType () {
