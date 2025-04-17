@@ -470,6 +470,9 @@
 
               gridColumns(){
                 let gridColumns = [];
+                if (this.$refs.datagrid.available.massActions.length) {
+                    gridColumns.push('minmax(0, 1fr)');
+                }
                 this.$refs.datagrid.available.columns.forEach((column) => {
                   gridColumns.push(column.custom_grid.length ? column.custom_grid : 'minmax(0, 1fr)');
                 });
@@ -477,9 +480,6 @@
                     gridColumns.push('minmax(0, 1fr)');
                 }
 
-                if (this.$refs.datagrid.available.massActions.length) {
-                    gridColumns.push('minmax(0, 1fr)');
-                }
                 console.log(gridColumns.join(' '));
                 return gridColumns.join(' ');
               },
