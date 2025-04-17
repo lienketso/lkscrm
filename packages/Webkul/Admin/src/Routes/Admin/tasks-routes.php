@@ -13,6 +13,7 @@ Route::controller(TaskController::class)->prefix('tasks')->group(function () {
     Route::put('update/{id}', 'update')->name('admin.tasks.update');
     Route::get('get-phase-by-project-input', 'getPhaseByProjectInput')->name('admin.tasks.getPhaseByProjectInput');
     Route::get('get-assign-by-project-input', 'getAssignByProjectInput')->name('admin.tasks.getAssignByProjectInput');
+    Route::get('get-assign-only-me', 'getAssignOnlyMeInput')->name('admin.tasks.getAssignOnlyMeInput');
     Route::get('get-user-support-input', 'getUserSupportInput')->name('admin.tasks.getUserSupportInput');
     Route::get('get-parent-task-by-project-input', 'getParentTaskByProjectInput')->name('admin.tasks.getParentTaskByProjectInput');
     Route::get('get-comment-by-task-id', 'getCommentByTaskId')->name('admin.tasks.getCommentByTaskId');

@@ -193,14 +193,4 @@ class ProjectController extends Controller
             ], 500);
         }
     }
-
-    public function indexMy()
-    {
-        if (request()->ajax()) {
-            return datagrid(MyProjectDataGrid::class)->process();
-        }
-        $leaders = $this->userRepo->getLeaderListSelectInput(null);
-        $groups = $this->groupRepo->all();
-        return view('admin::projects.my', compact('leaders', 'groups'));
-    }
 }

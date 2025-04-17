@@ -321,12 +321,12 @@ return [
     ],
 
     /**
-     * Dự án của tôi.
+     * Công việc của tôi.
      */
     [
-        'key'        => 'my_project',
-        'name'       => 'admin::app.project.title2',
-        'route'      => 'admin.my-projects.index',
+        'key'        => 'my_task',
+        'name'       => 'admin::app.task.title-my',
+        'route'      => 'admin.my-tasks.index',
         'sort'       => 10,
         'icon-class' => 'icon-perosnal',
     ],

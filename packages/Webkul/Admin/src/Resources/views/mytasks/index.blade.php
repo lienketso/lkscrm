@@ -1,6 +1,6 @@
 <x-admin::layouts>
     <x-slot:title>
-        @lang('admin::app.project.index.title'): {{$project->title}} - @lang('admin::app.phase.title'): {{$phase->title}} - @lang('admin::app.task.index.title')
+        @lang('admin::app.task.title-my')
     </x-slot:title>
 
     <div class="flex flex-col gap-4">
@@ -8,11 +8,11 @@
             <div class="flex flex-col gap-2">
                 <div class="flex cursor-pointer items-center">
                     <!-- Breadcrumbs -->
-                    <x-admin::breadcrumbs name="task" :entity="['project_id' => $project->id, 'phase_id' => $phase->id]"/>
+                   
                 </div>
 
                 <div class="text-xl font-bold dark:text-white">
-                    @lang('admin::app.project.index.title'): {{$project->title}} - @lang('admin::app.phase.title'): {{$phase->title}} - @lang('admin::app.task.index.list')
+                    @lang('admin::app.task.title-my')
                 </div>
             </div>
 
@@ -66,30 +66,7 @@
                                 @submit="handleSubmit($event, submitFilter)"
                                 ref="filterForm"
                         >
-                            <x-admin::form.control-group class="flex-1">
-                                <x-admin::form.control-group.label>
-                                    @lang('admin::app.task.index.datagrid.assignee')
-                                </x-admin::form.control-group.label>
-
-                                <x-admin::form.control-group.control
-                                        type="select"
-                                        name="assignee_id"
-                                        v-model="filter.assignee_id"
-                                        :label="trans('admin::app.task.index.datagrid.assignee')"
-                                        value="{{request('assignee_id', '')}}"
-                                >
-                                    <option value="">-- Chọn người thực hiện --</option>
-                                    <option
-                                            v-for="user in userByProject"
-                                            :key="user.id"
-                                            :value="user.id"
-                                    >
-                                        @{{ user.name }} - @{{ user.email }}
-                                    </option>
-                                </x-admin::form.control-group.control>
-
-                                <x-admin::form.control-group.error control-name="assignee_id"/>
-                            </x-admin::form.control-group>
+                            
 
                             <x-admin::form.control-group class="flex-1">
                                 <x-admin::form.control-group.label>
@@ -157,7 +134,7 @@
 
             <!-- Datagrid -->
             <x-admin::datagrid-custom
-                    :src="route('admin.tasks.index', ['project_id' => $project->id, 'phase_id' => $phase->id])"
+                    :src="route('admin.my-tasks.index', [])"
                     ref="datagrid"
             >
                 <template #body="{
@@ -197,6 +174,11 @@
                             </div>
 
                             <p :class="{ 'text-line-through': record.is_done == true }">@{{ record.title }}</p>
+
+                            <p class="">@{{ record.project_title }}</p>
+
+                            <p class="">@{{ record.phase_title }}</p>
+
 
                             <span
                                     :class="record.status_css_class"
@@ -354,6 +336,12 @@
                                             {{--                                                <td v-if="col == 'step'">--}}
                                             {{--                                                    <p class="ml-4">@{{ record.step }}</p>--}}
                                             {{--                                                </td>--}}
+                                            <td v-if="col == 'project_title'">
+                                                <p class="">@{{ record.project_title }}</p>
+                                            </td>
+                                            <td v-if="col == 'phase_title'">
+                                                <p class="">@{{ record.phase_title }}</p>
+                                            </td>
                                             <td v-if="col == 'status'">
                                                 <span
                                                         :class="record.status_css_class"
@@ -499,7 +487,7 @@
                         @submit="handleSubmit($event, updateOrCreate)"
                         ref="tasksForm"
                 >
-                    {!! view_render_event('admin.tasks.index.form_controls.before') !!}
+                    {!! view_render_event('admin.mytasks.index.form_controls.before') !!}
 
                     <x-admin::modal size="large" ref="taskUpdateAndCreateModal">
                         <!-- Modal Header -->
@@ -520,16 +508,7 @@
                                     name="id"
                                     v-model="task.id"
                             />
-                            <x-admin::form.control-group.control
-                                    type="hidden"
-                                    name="project_id"
-                                    v-model="project.id"
-                            />
-                            <x-admin::form.control-group.control
-                                    type="hidden"
-                                    name="phase_id"
-                                    v-model="phase.id"
-                            />
+                            
                             {!! view_render_event('admin.tasks.index.form.title.before') !!}
 
                             <!-- Name -->
@@ -582,13 +561,19 @@
                                             type="select"
                                             name="project_id"
                                             rules="required"
-                                            :value="$project->id"
+                                            v-model="task.project_id"
+                                            @change="handleProjectChange"
                                             :label="trans('admin::app.task.index.datagrid.project')"
-                                            disabled
+                                            
                                     >
-                                        <option value="{{$project->id}}">
-                                            {{$project->title}}
-                                        </option>
+                                    <option value="">-- Chọn dự án --</option>
+                                    <option
+                                            v-for="p in project"
+                                            :key="p.id"
+                                            :value="p.id"
+                                    >
+                                        @{{ p.title }}
+                                    </option>
                                     </x-admin::form.control-group.control>
 
                                     <x-admin::form.control-group.error control-name="project_id"/>
@@ -605,13 +590,19 @@
                                             type="select"
                                             name="phase_id"
                                             rules="required"
-                                            :value="$phase->id"
+                                            v-model="task.phase_id"
+                                            @change="handlePhaseChange"
                                             :label="trans('admin::app.task.index.datagrid.phase')"
-                                            disabled
+                                            
                                     >
-                                        <option value="{{$phase->id}}">
-                                            {{$phase->title}}
-                                        </option>
+                                    <option value="">-- Chọn giai đoạn --</option>
+                                    <option
+                                            v-for="p in phase"
+                                            :key="p.id"
+                                            :value="p.id"
+                                    >
+                                        @{{ p.title }}
+                                    </option>
                                     </x-admin::form.control-group.control>
 
                                     <x-admin::form.control-group.error control-name="phase_id"/>
@@ -852,7 +843,7 @@
                         @submit="handleSubmit($event, createdOrUpdateComment)"
                         ref="commentForm"
                 >
-                    {!! view_render_event('admin.tasks.index.form_controls.before') !!}
+                    {!! view_render_event('admin.mytasks.index.form_controls.before') !!}
 
                     <x-admin::modal.comment size="large" ref="taskCommentModal">
                         <!-- Modal Header -->
@@ -1013,6 +1004,8 @@
                 arrCol: [
                   'mask',
                   'title',
+                  'project_title',
+                  'phase_title',
                   'status',
                   'priority',
                   'assignee',
@@ -1046,7 +1039,7 @@
               gridColumns(){
                 let gridColumns = [];
                 if (this.$refs.datagrid.available.massActions.length) {
-                    gridColumns.push('minmax(0, 1fr)');
+                    gridColumns.push('minmax(0, .3fr)');
                 }
                 this.$refs.datagrid.available.columns.forEach((column) => {
                   gridColumns.push(column.custom_grid.length ? column.custom_grid : 'minmax(0, 1fr)');
@@ -1062,18 +1055,30 @@
                 return this.task.id ? 'edit' : 'create'
               },
             },
-
+            beforeMount() {
+                this.fetchProjectList()
+            },
             methods: {
-              fetchInputData () {
+                handleProjectChange () {
+                    this.fetchPhaseList()
+                },
+
+                handlePhaseChange () {
+                    this.fetchInputData()
+                    this.fetchUserSupport()
+                },
+
+                fetchInputData () {
                 // fetch assign input
-                this.$axios.get(`{{ route('admin.tasks.getAssignByProjectInput') }}?project_id={{$project->id}}`).then(response => {
+                this.$axios.get(`{{ route('admin.tasks.getAssignOnlyMeInput') }}?project_id=${this.task.project_id}`).then(response => {
                   this.users = response.data.data
+                  
                 }).catch(error => {
                   this.users = []
                 })
 
                 // fetch parent task input
-                this.$axios.get(`{{ route('admin.tasks.getParentTaskByProjectInput') }}?project_id={{$project->id}}&phase_id={{$phase->id}}`).then(response => {
+                this.$axios.get(`{{ route('admin.tasks.getParentTaskByProjectInput') }}?project_id=${this.task.project_id}&phase_id=${this.task.phase_id}`).then(response => {
                   this.parentTask = response.data.data
                 }).catch(error => {
                   this.parentTask = []
@@ -1081,7 +1086,7 @@
               },
 
               fetchUserSupport () {
-                this.$axios.get(`{{ route('admin.tasks.getUserSupportInput') }}?project_id={{$project->id}}&assignee_id=${this.task.assignee_id}`).then(response => {
+                this.$axios.get(`{{ route('admin.tasks.getUserSupportInput') }}?project_id=${this.task.project_id}&assignee_id=${this.task.assignee_id}`).then(response => {
                   this.userSupport = response.data.data
                 }).catch(error => {
                   this.userSupport = []
@@ -1095,6 +1100,33 @@
                   this.$emitter.emit('add-flash', { type: 'error', message: error.data.message ?? '' })
                 })
               },
+
+              fetchProjectList() {
+                
+                let url = `{{ route('admin.my-tasks.get-projects') }}`
+                this.$axios.get(url)
+                  .then(response => {
+                    this.project = response.data?.data
+                    
+                  })
+                  .catch(error => {
+                    this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message ?? 'Có lỗi xảy ra vui lòng thử lại sau.' })
+                  })
+              },
+
+              fetchPhaseList(){
+                
+                let url = `{{ route('admin.my-tasks.get-phase-by-project-id','') }}/${this.task.project_id}`
+                this.$axios.get(url)
+                  .then(response => {
+                    this.phase = response.data?.data
+                    
+                  })
+                  .catch(error => {
+                    this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message ?? 'Có lỗi xảy ra vui lòng thử lại sau.' })
+                  })
+              },
+
 
               openModalComment (action) {
                 this.fetchTaskComment(action.url)
@@ -1139,9 +1171,6 @@
 
               openModal () {
                 this.task = {}
-
-                this.fetchInputData()
-                this.fetchUserSupport()
                 this.canUpdateParentTask = true
                 this.$refs.taskUpdateAndCreateModal.toggle()
               },
@@ -1179,6 +1208,7 @@
                   .then(response => {
                     this.task = response.data.data
                     this.canUpdateParentTask = response.data.canUpdateParentTask
+                    this.fetchPhaseList()
                     this.fetchInputData()
                     this.fetchUserSupport()
                     this.selectedUserSp = response.data.selectedUserSp
@@ -1190,10 +1220,12 @@
 
               },
 
+              
               createSubTask (action) {
                 this.$axios.get(action.url)
                   .then(response => {
                     this.task.parent_id = response.data?.data?.id
+                    this.fetchPhaseList()
                     this.fetchInputData()
                     this.fetchUserSupport()
                     this.$refs.taskUpdateAndCreateModal.toggle()
@@ -1261,10 +1293,12 @@
             },
             methods: {
               submitFilter (params, { resetForm, setErrors }) {
-                let url = `{!! route('admin.tasks.index', ['project_id' => $project->id, 'phase_id' => $phase->id]) !!}`
+                let url = `{!! route('admin.my-tasks.index', []) !!}`
+                let spliter = `?`
                 Object.entries(params).forEach(([k, item]) => {
                   if (item !== undefined) {
-                    url += `&${k}=${item}`
+                    url += `${spliter}${k}=${item}`
+                    spliter = `&`
                   }
                 })
                 window.location.href = `${url}`
