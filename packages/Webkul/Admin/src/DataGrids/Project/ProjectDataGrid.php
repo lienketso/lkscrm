@@ -66,7 +66,7 @@ class ProjectDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
-            'custom_grid' => '4fr',
+            'custom_grid' => '3fr',
             'closure'    => function ($row) {
                 return Str::limit($row->description,50);
             }

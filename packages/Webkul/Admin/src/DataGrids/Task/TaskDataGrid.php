@@ -84,6 +84,7 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
+            'custom_grid' => '2fr',
         ]);
 
         $this->addColumn([
