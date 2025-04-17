@@ -5,6 +5,7 @@ namespace Webkul\Admin\Http\Controllers\Project;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Webkul\Admin\DataGrids\Project\MyProjectDataGrid;
 use Webkul\Admin\DataGrids\Project\ProjectDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Project\Models\Project;
@@ -191,5 +192,15 @@ class ProjectController extends Controller
                 'message' => trans('admin::app.project.destroy-failed'),
             ], 500);
         }
+    }
+
+    public function indexMy()
+    {
+        if (request()->ajax()) {
+            return datagrid(MyProjectDataGrid::class)->process();
+        }
+        $leaders = $this->userRepo->getLeaderListSelectInput(null);
+        $groups = $this->groupRepo->all();
+        return view('admin::projects.my', compact('leaders', 'groups'));
     }
 }

@@ -84,7 +84,7 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
-            'custom_grid' => '2fr',
+            'custom_grid' => '5fr',
         ]);
 
         $this->addColumn([
@@ -109,6 +109,7 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
+            'custom_grid' => '2fr',
         ]);
 
         $this->addColumn([
@@ -117,6 +118,7 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
+            'custom_grid' => '2fr',
         ]);
 
         $this->addColumn([
@@ -149,6 +151,7 @@ class TaskDataGrid extends DataGrid
             'type'       => 'string',
             'sortable'   => false,
             'filterable' => true,
+            'custom_grid' => '.7fr',
         ]);
     }
 

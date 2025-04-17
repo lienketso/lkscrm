@@ -2286,7 +2286,9 @@ return [
 
     'project' => [
         'title'       => 'Dự án',
+        'title2'     => 'Dự án của tôi',
         'list'        => 'Danh sách Dự án',
+        'list2'        => 'Danh sách Dự án của tôi',
         'phase_title' => 'Giai đoạn',
         'columns'     => [
             'id'          => 'Id',
@@ -2480,6 +2482,7 @@ return [
                 'assignee'          => 'Người thực hiện',
                 'support'           => 'Người hỗ trợ',
                 'project'           => 'Dự án',
+                'my_project'           => 'Dự án của tôi',
                 'phase'             => 'Giai đoạn',
                 'task'              => 'Task',
                 'sub_task'          => 'Subtask',

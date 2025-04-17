@@ -66,6 +66,11 @@ require 'zalos-routes.php';
 require 'project-routes.php';
 
 /**
+ * My Project.
+ */
+require 'my-project-routes.php';
+
+/**
  * Task.
  */
 require 'tasks-routes.php';

@@ -320,6 +320,17 @@ return [
         'icon-class' => 'icon-activity',
     ],
 
+    /**
+     * Dự án của tôi.
+     */
+    [
+        'key'        => 'my_project',
+        'name'       => 'admin::app.project.title2',
+        'route'      => 'admin.my-projects.index',
+        'sort'       => 10,
+        'icon-class' => 'icon-perosnal',
+    ],
+
 //    /**
 //     * Task.
 //     */
