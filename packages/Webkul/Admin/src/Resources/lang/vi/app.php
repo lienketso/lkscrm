@@ -42,6 +42,15 @@ return [
         'delete'          => 'Xóa',
         'export'          => 'Xuất',
         'mass-delete'     => 'Xóa hàng loạt',
+        'change-status'    => 'Thay đổi trạng thái',
+        'comment'         => 'Bình luận',
+        'zalo'            => 'Zalo',
+        'zalo-template'   => 'Tin nhắn mẫu',
+        'zalo-campaign'    => 'Chiến dịch',
+        'projects'        => 'Dự án',
+        'phases'          => 'Giai đoạn',
+        'tasks'           => 'Task',
+        'my-tasks'        => 'Task của tôi',
     ],
 
     'users' => [
@@ -2434,7 +2443,9 @@ return [
 
     'task' => [
         'title'       => 'Task',
+        'title-my'       => 'Task của tôi',
         'list'        => 'Danh sách Task',
+        'list-my'        => 'Danh sách Task của tôi',
         'phase_title' => 'Giai đoạn',
         'columns'     => [
             'id'          => 'Id',

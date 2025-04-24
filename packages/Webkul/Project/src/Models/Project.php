@@ -44,24 +44,14 @@ class Project extends Model implements ProjectContract
         self::GROUP_MEMBER_TYPE => 'Thành viên theo từng nhóm'
     ];
 
-    public function isAllMember(): bool
+    public function leader(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->member_type == self::ALL_MEMBER_TYPE;
+        return $this->belongsTo(UserProxy::modelClass(), 'id', 'leader_id');
     }
 
-    public function isGroupMember(): bool
+    public function group(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->member_type == self::ALL_MEMBER_TYPE;
-    }
-
-    public function leader(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(UserProxy::modelClass(), 'id', 'leader_id');
-    }
-
-    public function group(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(GroupProxy::modelClass(), 'id', 'group_id');
+        return $this->belongsTo(GroupProxy::modelClass(), 'id', 'group_id');
     }
 
     public function members(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -71,6 +61,23 @@ class Project extends Model implements ProjectContract
 
     public function projectMember(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(ProjectMemberProxy::modelClass(), 'user_id', 'id');
+        return $this->hasMany(ProjectMemberProxy::modelClass(), 'project_id', 'id');
+    }
+
+    public function phases(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PhaseProxy::modelClass(), 'project_id', 'id');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function (Project $project) { // before delete() method call this
+            $phases = $project->phases();
+            $phases->each(function ($item) {
+                $item->tasks()->delete(); // xoá task của phase thuộc project
+            });
+            $project->projectMember()->delete(); // xoá bảng quan hệ
+            $phases->delete(); // xoá các phase thuộc project
+        });
     }
 }

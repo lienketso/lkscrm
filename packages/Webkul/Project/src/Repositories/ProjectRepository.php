@@ -21,14 +21,14 @@ class ProjectRepository extends Repository
         return $this->getModel()->get(['id', 'title'])->toArray();
     }
 
-    public function hasProjectAccess($userId, $projectId): bool
+    public function getMyProjectListSelectInput()
     {
-        $rs = $this->getModel()->where('id', $projectId)->where(function ($subQ) use ($userId) {
-            $subQ->whereHas('members', function ($sq) use ($userId) {
-                $sq->where('user_id', $userId);
-            })->orWhere('leader_id', $userId);
-        })->first();
-        if ($rs) return true;
-        return false;
+        return $this->getModel()->where(function($query){
+            $query->where('leader_id', auth()->user()->id)
+                ->orWhereHas('members', function($query){
+                    $query->where('user_id', auth()->user()->id);
+                })
+                ;
+        })->get(['id', 'title'])->toArray();
     }
 }
