@@ -190,7 +190,7 @@
                 gridColumns(){
                 let gridColumns = [];
                 if (this.available.massActions.length) {
-                    gridColumns.push('minmax(0, 1fr)');
+                    gridColumns.push('minmax(0, .3fr)');
                 }
                 this.available.columns.filter((column) => column.visibility).forEach((column) => {
                   gridColumns.push(column.custom_grid.length ? column.custom_grid : 'minmax(0, 1fr)');

@@ -495,4 +495,215 @@ return [
         'route' => 'admin.configuration.index',
         'sort'  => 9,
     ],
+    [
+        'key'   => 'zalo',
+        'name'  => 'admin::app.acl.zalo',
+        'route' => 'admin.leads.index',
+        'sort'  => 10,
+    ], [
+        'key'   => 'zalo.template',
+        'name'  => 'admin::app.acl.zalo-template',
+        'route' => 'admin.zalo.template.index',
+        'sort'  => 1,
+    ], [
+        'key'   => 'zalo.template.create',
+        'name'  => 'admin::app.acl.create',
+        'route' => ['admin.zalo.template.create', 'admin.zalo.template.store'],
+        'sort'  => 1,
+    ], [
+        'key'   => 'zalo.template.view',
+        'name'  => 'admin::app.acl.view',
+        'route' => 'admin.zalo.template.view',
+        'sort'  => 2,
+    ], [
+        'key'   => 'zalo.template.edit',
+        'name'  => 'admin::app.acl.edit',
+        'route' => ['admin.zalo.template.edit', 'admin.zalo.template.update', 'admin.zalo.template.mass_update'],
+        'sort'  => 3,
+    ], [
+        'key'   => 'zalo.template.delete',
+        'name'  => 'admin::app.acl.delete',
+        'route' => ['admin.zalo.template.delete', 'admin.zalo.template.mass_delete'],
+        'sort'  => 4,
+    ], [
+        'key'   => 'zalo.campaign',
+        'name'  => 'admin::app.acl.zalo-campaign',
+        'route' => 'admin.campaign.index',
+        'sort'  => 2,
+    ], [
+        'key'   => 'zalo.campaign.create',
+        'name'  => 'admin::app.acl.create',
+        'route' => ['admin.campaign.create', 'admin.campaign.store'],
+        'sort'  => 1,
+    ], [
+        'key'   => 'zalo.campaign.view',
+        'name'  => 'admin::app.acl.view',
+        'route' => 'admin.campaign.view',
+        'sort'  => 2,
+    ], [
+        'key'   => 'zalo.campaign.edit',
+        'name'  => 'admin::app.acl.edit',
+        'route' => ['admin.campaign.edit', 'admin.campaign.update', 'admin.campaign.mass_update'],
+        'sort'  => 3,
+    ], [
+        'key'   => 'zalo.campaign.delete',
+        'name'  => 'admin::app.acl.delete',
+        'route' => ['admin.campaign.delete', 'admin.campaign.mass_delete'],
+        'sort'  => 4,
+    ], 
+    [
+        'key'   => 'project',
+        'name'  => 'admin::app.acl.projects',
+        'route' => 'admin.projects.index',
+        'sort'  => 12,
+    ], [
+        'key'   => 'project.create',
+        'name'  => 'admin::app.acl.create',
+        'route' => ['admin.projects.create', 'admin.projects.store'],
+        'sort'  => 1,
+    ], [
+        'key'   => 'project.view',
+        'name'  => 'admin::app.acl.view',
+        'route' => 'admin.projects.view',
+        'sort'  => 2,
+    ], [
+        'key'   => 'project.edit',
+        'name'  => 'admin::app.acl.edit',
+        'route' => ['admin.projects.edit', 'admin.projects.update', 'admin.projects.mass_update'],
+        'sort'  => 3,
+    ], [
+        'key'   => 'project.delete',
+        'name'  => 'admin::app.acl.delete',
+        'route' => ['admin.projects.delete', 'admin.projects.mass_delete'],
+        'sort'  => 4,
+    ], 
+    [
+        'key'   => 'phase',
+        'name'  => 'admin::app.acl.phases',
+        'route' => 'admin.phases.index',
+        'sort'  => 13,
+    ], [
+        'key'   => 'phase.create',
+        'name'  => 'admin::app.acl.create',
+        'route' => ['admin.phases.create', 'admin.phases.store'],
+        'sort'  => 1,
+    ], [
+        'key'   => 'phase.view',
+        'name'  => 'admin::app.acl.view',
+        'route' => 'admin.phases.view',
+        'sort'  => 2,
+    ], [
+        'key'   => 'phase.edit',
+        'name'  => 'admin::app.acl.edit',
+        'route' => ['admin.phases.edit', 'admin.phases.update', 'admin.phases.mass_update'],
+        'sort'  => 3,
+    ], [
+        'key'   => 'phase.delete',
+        'name'  => 'admin::app.acl.delete',
+        'route' => ['admin.phases.delete', 'admin.phases.mass_delete'],
+        'sort'  => 4,
+    ], 
+    [
+        'key'   => 'task',
+        'name'  => 'admin::app.acl.tasks',
+        'route' => 'admin.tasks.index',
+        'sort'  => 14,
+    ], [
+        'key'   => 'task.create',
+        'name'  => 'admin::app.acl.create',
+        'route' => ['admin.tasks.create', 'admin.tasks.store'],
+        'sort'  => 1,
+    ], [
+        'key'   => 'task.view',
+        'name'  => 'admin::app.acl.view',
+        'route' => 'admin.tasks.view',
+        'sort'  => 2,
+    ], [
+        'key'   => 'task.edit',
+        'name'  => 'admin::app.acl.edit',
+        'route' => ['admin.tasks.edit', 'admin.tasks.update', 'admin.tasks.mass_update'],
+        'sort'  => 3,
+    ], [
+        'key'   => 'task.delete',
+        'name'  => 'admin::app.acl.delete',
+        'route' => ['admin.tasks.delete', 'admin.tasks.mass_delete'],
+        'sort'  => 4,
+    ], [
+        'key'   => 'task.change-status',
+        'name'  => 'admin::app.acl.change-status',
+        'route' => ['admin.tasks.changeTaskStatus'],
+        'sort'  => 5,
+    ], [
+        'key'   => 'task.comment',
+        'name'  => 'admin::app.acl.comment',
+        'route' => ['admin.tasks.getCommentByTaskId'],
+        'sort'  => 6,
+    ], [
+        'key'   => 'task.comment.create',
+        'name'  => 'admin::app.acl.create',
+        'route' => ['admin.tasks.storeComment'],
+        'sort'  => 1,
+    ], [
+        'key'   => 'task.comment.edit',
+        'name'  => 'admin::app.acl.edit',
+        'route' => ['admin.tasks.editComment', 'admin.tasks.updateComment'],
+        'sort'  => 2,
+    ], [
+        'key'   => 'task.comment.delete',
+        'name'  => 'admin::app.acl.delete',
+        'route' => ['admin.tasks.deleteComment'],
+        'sort'  => 3,
+    ],
+    [
+        'key'   => 'my_task',
+        'name'  => 'admin::app.acl.my-tasks',
+        'route' => 'admin.my-tasks.index',
+        'sort'  => 15,
+    ], [
+        'key'   => 'my_task.create',
+        'name'  => 'admin::app.acl.create',
+        'route' => ['admin.my-tasks.create', 'admin.my-tasks.store'],
+        'sort'  => 1,
+    ], [
+        'key'   => 'my_task.view',
+        'name'  => 'admin::app.acl.view',
+        'route' => 'admin.my-tasks.view',
+        'sort'  => 2,
+    ], [
+        'key'   => 'my_task.edit',
+        'name'  => 'admin::app.acl.edit',
+        'route' => ['admin.my-tasks.edit', 'admin.my-tasks.update', 'admin.my-tasks.mass_update'],
+        'sort'  => 3,
+    ], [
+        'key'   => 'my_task.delete',
+        'name'  => 'admin::app.acl.delete',
+        'route' => ['admin.my-tasks.delete', 'admin.my-tasks.mass_delete'],
+        'sort'  => 4,
+    ], [
+        'key'   => 'my_task.change-status',
+        'name'  => 'admin::app.acl.change-status',
+        'route' => ['admin.my-tasks.changeTaskStatus'],
+        'sort'  => 5,
+    ], 
+    [
+        'key'   => 'my_task.comment',
+        'name'  => 'admin::app.acl.comment',
+        'route' => ['admin.my-tasks.getCommentByTaskId'],
+        'sort'  => 6,
+    ], [
+        'key'   => 'my_task.comment.create',
+        'name'  => 'admin::app.acl.create',
+        'route' => ['admin.my-tasks.storeComment'],
+        'sort'  => 1,
+    ], [
+        'key'   => 'my_task.comment.edit',
+        'name'  => 'admin::app.acl.edit',
+        'route' => ['admin.my-tasks.editComment', 'admin.my-tasks.updateComment'],
+        'sort'  => 2,
+    ], [
+        'key'   => 'my_task.comment.delete',
+        'name'  => 'admin::app.acl.delete',
+        'route' => ['admin.my-tasks.deleteComment'],
+        'sort'  => 3,
+    ],
 ];

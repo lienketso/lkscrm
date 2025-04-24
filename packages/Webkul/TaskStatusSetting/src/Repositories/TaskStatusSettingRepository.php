@@ -20,4 +20,9 @@ class TaskStatusSettingRepository extends Repository
     {
         return $this->getModel()->get(['id', 'title'])->toArray();
     }
+
+    public function getMyTaskStatusSettingInput()
+    {
+        return $this->getModel()->get(['id', 'title'])->whereIn('id', [1, 2])->toArray();
+    }
 }

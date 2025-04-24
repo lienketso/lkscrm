@@ -5,6 +5,7 @@ namespace Webkul\Admin\Http\Controllers\Task;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Webkul\Admin\DataGrids\Task\MyTaskDataGrid;
 use Webkul\Admin\DataGrids\Task\TaskDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Project\Repositories\PhaseRepository;
@@ -28,9 +29,7 @@ class TaskController extends Controller
         protected PhaseRepository               $phaseRepo,
         protected TaskRepository                $taskRepo,
         protected TaskCommentRepository         $taskCommentRepo,
-    )
-    {
-    }
+    ) {}
 
     public function index(Request $request)
     {
@@ -221,6 +220,21 @@ class TaskController extends Controller
         }
     }
 
+    public function getAssignOnlyMeInput(Request $request)
+    {
+        try {
+            $users = $this->userRepo->getAssignOnlyMe();
+
+            return new JsonResponse([
+                'data' => $users,
+            ], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'message' => trans('admin::app.an_error_occurred'),
+            ], 500);
+        }
+    }
+
     public function getParentTaskByProjectInput(Request $request)
     {
         try {
@@ -281,7 +295,8 @@ class TaskController extends Controller
                             'title'  => trans('admin::app.task.comment.edit'),
                             'method' => 'GET',
                             'url'    => route('admin.tasks.editComment', $item->id)
-                        ],[
+                        ],
+                        [
                             'index'  => 'delete',
                             'icon'   => 'icon-delete',
                             'title'  => trans('admin::app.task.comment.delete'),
@@ -465,6 +480,61 @@ class TaskController extends Controller
         } catch (\Exception $e) {
             return new JsonResponse([
                 'message' => trans('admin::app.task.comment.destroy-failed'),
+            ], 500);
+        }
+    }
+
+    public function indexMy()
+    {
+        // if (!$request->get('project_id') || !$request->get('phase_id')) {
+        //     return redirect(route('admin.projects.index'));
+        // }
+        if (request()->ajax()) {
+            return datagrid(MyTaskDataGrid::class)->process();
+        }
+
+        // $project = $this->projectRepo->find($request->get('project_id'));
+        // if (!auth()->user()->canProjectAccess($project->id)) {
+        //     session()->flash('error', trans('admin::app.project.forbidden'));
+
+        //     return redirect()->route('admin.projects.index');
+        // }
+        // $phase = $this->phaseRepo->findOneWhere(['project_id' => $request->get('project_id'), 'id' => $request->get('phase_id')]);
+        // if (!$project || !$phase) {
+        //     return redirect(route('admin.projects.index'));
+        // }
+        // $userByProject = $this->userRepo->getUserSupport($project->id);
+        $taskPriority = $this->prioritySettingRepo->getTaskPrioritySettingInput();
+        $taskStatus = $this->taskStatusSettingRepo->getTaskStatusSettingInput();
+        $myTaskStatus = $this->taskStatusSettingRepo->getMyTaskStatusSettingInput();
+        $taskCategory = $this->taskCategorySettingRepo->getTaskCategorySettingInput();
+
+        // return view('admin::tasks.index', compact('project', 'phase', 'taskPriority', 'taskStatus', 'taskCategory', 'userByProject'));
+        return view('admin::mytasks.index', compact('taskPriority', 'taskStatus', 'myTaskStatus', 'taskCategory'));
+    }
+
+    public function getMyProjects() {
+        try {
+            $model = $this->projectRepo->getMyProjectListSelectInput();
+            return new JsonResponse([
+                'data' => $model
+            ], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'message' => "Lấy danh sách dự án thất bại",
+            ], 500);
+        }
+    }
+
+    public function getPhaseByProjectId($id) {
+        try {
+            $model = $this->phaseRepo->getPhaseByProjectInput($id);
+            return new JsonResponse([
+                'data' => $model
+            ], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'message' => "Lấy danh sách giai đoạn theo mã dự án = {$id} thất bại",
             ], 500);
         }
     }

@@ -320,6 +320,17 @@ return [
         'icon-class' => 'icon-activity',
     ],
 
+    /**
+     * Công việc của tôi.
+     */
+    [
+        'key'        => 'my_task',
+        'name'       => 'admin::app.task.title-my',
+        'route'      => 'admin.my-tasks.index',
+        'sort'       => 10,
+        'icon-class' => 'icon-perosnal',
+    ],
+
 //    /**
 //     * Task.
 //     */
