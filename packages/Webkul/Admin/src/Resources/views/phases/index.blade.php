@@ -23,7 +23,7 @@
         {!! view_render_event('admin.phase.index.header.left.after') !!}
 
         {!! view_render_event('admin.phase.index.header.right.before') !!}
-        @if(auth()->user()->canAddAndDeleteProjectDataById($project->id))
+        @if (bouncer()->hasPermission('phase.create'))
             <div class="flex items-center gap-x-2.5">
                 <!-- Create button add -->
                 <div class="flex items-center gap-x-2.5">

@@ -61,7 +61,7 @@ class UserRepository extends Repository
             return [];
         }
 
-        return $this->getModel()->when($groupId, function ($sQ) use ($groupId){
+        return $this->getModel()->when($groupId, function ($sQ) use ($groupId) {
             $sQ->whereHas('groups', function ($subQ) use ($groupId) {
                 return $subQ->where('id', $groupId);
             });
@@ -79,7 +79,18 @@ class UserRepository extends Repository
         $leader = $this->getModel()->whereHas('leaderProject', function ($subQ) use ($projectId) {
             return $subQ->where('id', $projectId);
         })->get(['id', 'name', 'email'])->toArray();
-        return array_merge($member,$leader);
+        return array_merge($member, $leader);
+    }
+
+    public function getAssignOnlyMe()
+    {
+        return [
+            [
+                'id' => auth()->user()->id,
+                'name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+            ]
+        ];
     }
 
     public function getAssignByProject($projectId, $excludeId = null)
@@ -95,6 +106,6 @@ class UserRepository extends Repository
         })->when($excludeId, function ($sQuery, $excludeId) {
             return $sQuery->whereNot('id', $excludeId);
         })->where('status', User::ACTIVE)->get(['id', 'name', 'email'])->toArray();
-        return array_merge($member,$leader);
+        return array_merge($member, $leader);
     }
 }
