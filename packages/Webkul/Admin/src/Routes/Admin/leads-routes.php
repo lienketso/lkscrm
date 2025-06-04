@@ -8,6 +8,8 @@ use Webkul\Admin\Http\Controllers\Lead\QuoteController;
 use Webkul\Admin\Http\Controllers\Lead\TagController;
 
 Route::controller(LeadController::class)->prefix('leads')->group(function () {
+    Route::post('import', 'import')->name('admin.leads.import');
+    
     Route::get('', 'index')->name('admin.leads.index');
     
     Route::get('create', 'create')->name('admin.leads.create');

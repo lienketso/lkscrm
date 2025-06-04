@@ -28,6 +28,11 @@ use Webkul\Lead\Repositories\StageRepository;
 use Webkul\Lead\Repositories\TypeRepository;
 use Webkul\Tag\Repositories\TagRepository;
 use Webkul\User\Repositories\UserRepository;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Imports\LeadsImport;
+
 
 class LeadController extends Controller
 {
@@ -49,6 +54,42 @@ class LeadController extends Controller
         request()->request->add(['entity_type' => 'leads']);
         request()->request->add(['is_customer' => '0']);
         request()->query->add(['is_customer' => '0']);
+    }
+
+    //import leads 
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+        
+        try {
+
+            DB::beginTransaction();
+            if (!$request->hasFile('file')) {
+                throw new \Exception('No file uploaded');
+            }
+            $file = $request->file('file');
+            $path = $file->getPathname();
+
+            if (!file_exists($path)) {
+                return back()->with('error', 'File không tồn tại hoặc đã bị xóa!');
+            }
+            if (!$file->isValid()) {
+                throw new \Exception('Invalid file upload');
+            }
+            Excel::import(new LeadsImport,$file);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('error', trans('admin::app.leads.import.error', [
+                'message' => $e->getMessage()
+            ]));
+        }
+
+        return redirect()->back();
     }
 
     /**
