@@ -72,7 +72,7 @@
                     <h2>Import Leads</h2>
                     <form id="import-leads-form" :action="importUrl" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="file" name="file" accept=".xls,.xlsx" required>
+                        <input type="file" name="file_excel" accept=".xls,.xlsx" required>
                         <button type="submit" class="primary-button">Upload</button>
                     </form>
                 </div>

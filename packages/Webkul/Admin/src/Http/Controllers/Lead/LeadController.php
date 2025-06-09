@@ -56,40 +56,27 @@ class LeadController extends Controller
         request()->query->add(['is_customer' => '0']);
     }
 
-    //import leads 
+    //import leads
 
     public function import(Request $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:xls,xlsx'
-        ]);
-        
-        try {
+        $file = $request->file('file_excel');
 
-            DB::beginTransaction();
-            if (!$request->hasFile('file')) {
-                throw new \Exception('No file uploaded');
-            }
-            $file = $request->file('file');
-            $path = $file->getPathname();
-
-            if (!file_exists($path)) {
-                return back()->with('error', 'File không tồn tại hoặc đã bị xóa!');
-            }
-            if (!$file->isValid()) {
-                throw new \Exception('Invalid file upload');
-            }
-            Excel::import(new LeadsImport,$file);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            session()->flash('error', trans('admin::app.leads.import.error', [
-                'message' => $e->getMessage()
-            ]));
+        if (!$file || !$file->isValid()) {
+            return back()->with('error', 'File không hợp lệ!');
         }
 
-        return redirect()->back();
+        try {
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $destination = storage_path('app/temp');
+            $file->move($destination, $filename); // ✅ Ghi file không cần realPath
+            $fullPath = $destination . '/' . $filename;
+            Excel::import(new LeadsImport, $fullPath);
+            session()->flash('success', 'Import thành công');
+            return back()->with('success', 'Import thành công!');
+        } catch (\Exception $e) {
+            dd('Import lỗi: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -197,7 +184,7 @@ class LeadController extends Controller
         $data = $request->all();
 
         $data['status'] = 1;
-        
+
         $data['is_customer'] = 0;
 
         // if (request()->input('lead_pipeline_stage_id')) {

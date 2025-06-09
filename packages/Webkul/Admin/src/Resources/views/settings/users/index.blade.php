@@ -18,7 +18,7 @@
 
             <div class="flex items-center gap-x-2.5">
                 {!! view_render_event('admin.settings.users.index.create_button.before') !!}
-                
+
                 <!-- Create button for User -->
                 @if (bouncer()->hasPermission('settings.user.users.create'))
                     <div class="flex items-center gap-x-2.5">
@@ -48,7 +48,7 @@
             id="users-settings-template"
         >
             {!! view_render_event('admin.settings.users.index.datagrid.before') !!}
-        
+
             <!-- Datagrid -->
             <x-admin::datagrid
                 :src="route('admin.settings.users.index')"
@@ -65,7 +65,7 @@
                     <template v-if="isLoading">
                         <x-admin::shimmer.datagrid.table.body />
                     </template>
-        
+
                     <template v-else>
                         <div
                             v-for="record in available.records"
@@ -88,10 +88,10 @@
                                     :for="`mass_action_select_record_${record.id}`"
                                 ></label>
                             </div>
-                            
+
                             <!-- Users Id -->
-                            <p>@{{ record.id }}</p>
-        
+                            <p>@{{ record.id }} </p>
+
                             <!-- Users Name -->
                             <p>
                                 <div class="flex items-center gap-2.5">
@@ -130,7 +130,7 @@
                             >
                                 @{{ record.status == 1 ? '@lang('admin::app.settings.users.index.active')' : '@lang('admin::app.settings.users.index.inactive')' }}
                             </span>
-                        
+
                             <!-- Users Creation Date -->
                             <p>@{{ record.created_at }}</p>
 
@@ -143,7 +143,7 @@
                                     >
                                     </span>
                                 </a>
-    
+
                                 <a @click="performAction(record.actions.find(action => action.index === 'delete'))">
                                     <span
                                         :class="record.actions.find(action => action.index === 'delete')?.icon"
@@ -156,15 +156,15 @@
                     </template>
                 </template>
             </x-admin::datagrid>
-            
+
             {!! view_render_event('admin.users.index.datagrid.after') !!}
-            
+
             <x-admin::form
                 v-slot="{ meta, values, errors, handleSubmit }"
                 as="div"
                 ref="modalForm"
             >
-                <form 
+                <form
                     @submit="handleSubmit($event, updateOrCreate)"
                     ref="userForm"
                 >
@@ -174,10 +174,10 @@
                         <!-- Modal Header -->
                         <x-slot:header>
                             <p class="text-lg font-bold text-gray-800 dark:text-white">
-                                @{{ 
+                                @{{
                                     selectedType == 'create'
                                     ? "@lang('admin::app.settings.users.index.create.title')"
-                                    : "@lang('admin::app.settings.users.index.edit.title')" 
+                                    : "@lang('admin::app.settings.users.index.edit.title')"
                                 }}
                             </p>
                         </x-slot>
@@ -280,7 +280,7 @@
                             {!! view_render_event('admin.settings.users.index.form.password.after') !!}
 
                             {!! view_render_event('admin.settings.users.index.form.role_id.before') !!}
-                            
+
                             <div class="flex gap-4">
                                 <!-- Role -->
                                 <x-admin::form.control-group class="flex-1">
@@ -299,11 +299,11 @@
                                             v-for="role in roles"
                                             :key="role.id"
                                             :value="role.id"
-                                        > 
-                                            @{{ role.name }} 
+                                        >
+                                            @{{ role.name }}
                                         </option>
                                     </x-admin::form.control-group.control>
-                                
+
                                     <x-admin::form.control-group.error control-name="role_id" />
                                 </x-admin::form.control-group>
 
@@ -324,7 +324,7 @@
                                         <option  value="global" selected>
                                             @lang('admin::app.settings.users.index.create.global')
                                         </option>
-                                        
+
                                         <option value="group">
                                             @lang('admin::app.settings.users.index.create.group')
                                         </option>
@@ -416,7 +416,7 @@
                                     name="status"
                                     :value="0"
                                 />
-                        
+
                                 <label class="relative inline-flex cursor-pointer items-center">
                                     <input
                                         type="checkbox"
@@ -430,7 +430,7 @@
                                     <div class="peer h-5 w-9 cursor-pointer rounded-full bg-gray-200 after:absolute after:top-0.5 after:h-4 after:w-4 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-blue-300 dark:bg-gray-800 dark:after:border-white dark:after:bg-white dark:peer-checked:bg-gray-950 after:ltr:left-0.5 peer-checked:after:ltr:translate-x-full after:rtl:right-0.5 peer-checked:after:rtl:-translate-x-full"></div>
                                 </label>
                             </x-admin::form.control-group>
-                                
+
                             {!! view_render_event('admin.settings.users.index.form.status.after') !!}
                         </x-slot>
 
@@ -481,15 +481,15 @@
                 computed: {
                     gridsCount() {
                         let count = this.$refs.datagrid.available.columns.length;
-        
+
                         if (this.$refs.datagrid.available.actions.length) {
                             ++count;
                         }
-        
+
                         if (this.$refs.datagrid.available.massActions.length) {
                             ++count;
                         }
-        
+
                         return count;
                     },
 
@@ -497,7 +497,7 @@
                         return this.user.id ? 'edit' : 'create';
                     },
                 },
-        
+
                 methods: {
                     fetchLeaders(excludeId) {
                         this.$axios.get(`{{ route('admin.settings.users.getLeaderInput') }}/?exclude_id=${excludeId ?? ''}`)
@@ -514,7 +514,7 @@
                         this.fetchLeaders('');
                         this.$refs.userUpdateAndCreateModal.toggle();
                     },
-                    
+
                     updateOrCreate(params, {resetForm, setErrors}) {
                         const userForm = new FormData(this.$refs.userForm);
 
@@ -540,10 +540,10 @@
                             }
                         });
                     },
-                    
+
                     editModal(url) {
                         this.$axios.get(url)
-                            .then(response => {                                
+                            .then(response => {
                                 this.user = response.data.data;
 
                                 this.user.groups = this.user.groups.map(group => group.id);
