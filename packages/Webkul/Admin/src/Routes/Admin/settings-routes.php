@@ -170,6 +170,9 @@ Route::prefix('settings')->group(function () {
         Route::get('get-member-by-leader', 'getMemberByLeader')->name('admin.settings.users.getMemberByLeader');
 
         Route::get('get-leader-input', 'getLeaderInput')->name('admin.settings.users.getLeaderInput');
+
+        Route::get('assign-leads/{id}', 'assignLeads')->name('admin.settings.users.assign_leads');
+        Route::post('assign-leads/{id}', 'processAssignLeads')->name('admin.settings.users.process_assign_leads');
     });
 
     /**

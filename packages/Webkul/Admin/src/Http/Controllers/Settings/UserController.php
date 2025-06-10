@@ -18,6 +18,7 @@ use Webkul\Admin\Notifications\User\Create as UserCreatedNotification;
 use Webkul\User\Repositories\GroupRepository;
 use Webkul\User\Repositories\RoleRepository;
 use Webkul\User\Repositories\UserRepository;
+use Webkul\Lead\Repositories\LeadRepository;
 
 class UserController extends Controller
 {
@@ -29,7 +30,8 @@ class UserController extends Controller
     public function __construct(
         protected UserRepository $userRepository,
         protected GroupRepository $groupRepository,
-        protected RoleRepository $roleRepository
+        protected RoleRepository $roleRepository,
+        protected LeadRepository $leadRepository
     ) {}
 
     /**
@@ -285,5 +287,54 @@ class UserController extends Controller
                 'message' => trans('admin::app.an_error_occurred'),
             ], 500);
         }
+    }
+
+    /**
+     * Show the form for assigning leads to user.
+     */
+    public function assignLeads($id)
+    {
+        $user = $this->userRepository->findOrFail($id);
+        
+        // Get count of unassigned leads
+        $unassignedLeadsCount = $this->leadRepository->getModel()
+            ->whereNull('user_id')
+            ->count();
+
+        return view('admin::settings.users.assign-leads', compact('user', 'unassignedLeadsCount'));
+    }
+
+    /**
+     * Process assigning leads to user.
+     */
+    public function processAssignLeads(Request $request, $id)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1'
+        ]);
+
+        $user = $this->userRepository->findOrFail($id);
+        
+        // Get unassigned leads
+        $leads = $this->leadRepository->getModel()
+            ->whereNull('user_id')
+            ->take($request->quantity)
+            ->get();
+
+        if ($leads->isEmpty()) {
+            return redirect()
+                ->route('admin.settings.users.index')
+                ->with('error', 'Không có leads nào để phân phối');
+        }
+
+        // Assign leads to user
+        foreach ($leads as $lead) {
+            $lead->user_id = $user->id;
+            $lead->save();
+        }
+
+        return redirect()
+            ->route('admin.settings.users.index')
+            ->with('success', 'Đã phân phối ' . $leads->count() . ' leads cho user ' . $user->name);
     }
 }

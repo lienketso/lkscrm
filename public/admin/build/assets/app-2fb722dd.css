@@ -4928,3 +4928,22 @@ input, textarea, select {
 .text-line-through {
     text-decoration:line-through;
 }
+.title-modal-import{
+    padding-bottom: 20px;
+    font-weight: bold;
+}
+.title-modal-import a{
+    color: #0D8DD5;
+    font-weight: 400;
+}
+#import-leads-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#import-leads-form input[type='file']{
+    padding: 5px;
+    border: 1px solid #dedede;
+    border-radius: 8px;
+    margin-right: 10px;
+}

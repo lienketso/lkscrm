@@ -116,6 +116,14 @@ class UserDataGrid extends DataGrid
                 'url'    => fn ($row) => route('admin.settings.users.delete', $row->id),
             ]);
         }
+
+        $this->addAction([
+            'index'  => 'assign_leads',
+            'icon'   => 'icon-user',
+            'title'  => 'Chia data',
+            'method' => 'GET',
+            'url'    => fn ($row) => route('admin.settings.users.assign_leads', $row->id),
+        ]);
     }
 
     /**

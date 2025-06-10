@@ -151,6 +151,14 @@
                                     >
                                     </span>
                                 </a>
+
+                                <a title="Chia lead data" :href="record.actions.find(action => action.index === 'assign_leads')?.url">
+                                    <span
+                                        :class="record.actions.find(action => action.index === 'assign_leads')?.icon"
+                                        class="cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800 max-sm:place-self-center"
+                                    >
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </template>
@@ -507,6 +515,10 @@
                             .catch(error => {
                                 return [];
                             });
+                    },
+
+                    assignLeads(url) {
+                        window.location.href = url;
                     },
 
                     openModal() {
