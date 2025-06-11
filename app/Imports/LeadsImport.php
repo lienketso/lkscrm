@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Webkul\Contact\Models\Person;
 use Webkul\Contact\Repositories\PersonRepository;
 use Webkul\Lead\Models\Lead;
+use Webkul\Lead\Models\Pipeline;
 use Webkul\Lead\Repositories\LeadRepository;
 
 class LeadsImport implements ToModel, WithHeadingRow
@@ -33,6 +34,7 @@ class LeadsImport implements ToModel, WithHeadingRow
             // Tìm Person theo email
             $person = Person::where('emails', 'like', '%"value":"' . $email . '"%')->first();
 
+
             if (!$person) {
                 $person = Person::create([
                     'name' => $name,
@@ -44,7 +46,13 @@ class LeadsImport implements ToModel, WithHeadingRow
                     ]
                 ]);
             }
+            if (isset($leadPipelineId) && $leadPipelineId) {
+                $pipeline = Pipeline::where('id',$leadPipelineId)->first();
+            } else {
+                $pipeline = Pipeline::where('is_default',1)->first();
+            }
 
+            $stage = $pipeline->stages()->first();
             // Kiểm tra lead đã tồn tại
             $existingLead = Lead::where([
                 ['title', '=', $title],
@@ -58,6 +66,7 @@ class LeadsImport implements ToModel, WithHeadingRow
                     'lead_pipeline_id' => $leadPipelineId,
                     'lead_source_id' => $leadSourceId,
                     'lead_type_id' => $leadTypeId,
+                    'lead_pipeline_stage_id'=>$stage->id,
                     'is_customer'=>0,
                     'status'=>1,
                 ]);
