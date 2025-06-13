@@ -1163,7 +1163,7 @@ return [
                     'global'           => 'Toàn cầu',
                     'group'            => 'Nhóm',
                     'individual'       => 'Cá nhân',
-                    'name'             => 'Tên',
+                    'name'             => 'Tên tài khoản',
                     'password'         => 'Mật khẩu',
                     'permission'       => 'Quyền',
                     'role'             => 'Vai trò',
@@ -2551,6 +2551,25 @@ return [
             'forbidden'         => 'Bạn chỉ có thể chỉnh sửa hoặc xoá nhận xét của chính mình.',
             'forbidden_create'  => 'Bạn không có quyền nhận xét với task này.',
         ]
+    ],
+
+    'custom-setting'=>[
+      'users'=>[
+          'index-user-title'=>'Danh sách người dùng',
+          'name'=>'Tên tài khoản',
+          'password'=>'Mật khẩu',
+          'confirm-password'=>'Nhập lại mật khẩu',
+          'role'=>'Vai trò',
+          'view-permission'=>'Quyền xem',
+          'group'=>'Nhóm',
+          'global'=>'Toàn hệ thống',
+          'individual'=>'Cá nhân',
+          'status'=>'Trạng thái',
+          'save-user'=>'Lưu người dùng',
+          'edit-user'=>'Sửa người dùng',
+          'create-user'=>'Thêm người dùng',
+          'created'=>'Ngày tạo',
+      ]
     ],
 
 ];

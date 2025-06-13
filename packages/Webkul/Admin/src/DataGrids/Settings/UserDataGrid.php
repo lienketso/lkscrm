@@ -49,7 +49,7 @@ class UserDataGrid extends DataGrid
 
         $this->addColumn([
             'index'      => 'name',
-            'label'      => trans('admin::app.settings.users.index.datagrid.name'),
+            'label'      => trans('admin::app.custom-setting.users.name'),
             'type'       => 'string',
             'sortable'   => true,
             'searchable' => true,
@@ -73,7 +73,7 @@ class UserDataGrid extends DataGrid
 
         $this->addColumn([
             'index'      => 'status',
-            'label'      => trans('admin::app.settings.users.index.datagrid.status'),
+            'label'      => trans('admin::app.custom-setting.users.status'),
             'type'       => 'boolean',
             'filterable' => true,
             'sortable'   => true,
@@ -82,7 +82,7 @@ class UserDataGrid extends DataGrid
 
         $this->addColumn([
             'index'           => 'created_at',
-            'label'           => trans('admin::app.settings.users.index.datagrid.created-at'),
+            'label'           => trans('admin::app.custom-setting.users.created'),
             'type'            => 'date',
             'searchable'      => true,
             'filterable'      => true,

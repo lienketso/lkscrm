@@ -2024,4 +2024,24 @@ return [
     'errors' => [
         '401' => 'You are not authorized to access this page',
     ],
+
+    'custom-setting'=>[
+        'users'=>[
+            'index-user-title'=>'Users',
+            'name'=>'Name',
+            'password'=>'Password',
+            'confirm-password'=>'Confirm password',
+            'role'=>'Role',
+            'view-permission'=>'View Permission',
+            'group'=>'Group',
+            'global'=>'Global',
+            'individual'=>'Individual',
+            'status'=>'Status',
+            'save-user'=>'Save user',
+            'edit-user'=>'Edit user',
+            'create-user'=>'Create user',
+            'created'=>'Created At',
+        ]
+    ],
+
 ];

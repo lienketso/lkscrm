@@ -12,7 +12,7 @@
                 </div>
 
                 <div class="text-xl font-bold dark:text-white">
-                    @lang('admin::app.settings.users.index.title')
+                    @lang('admin::app.custom-setting.users.index-user-title')
                 </div>
             </div>
 
@@ -27,7 +27,7 @@
                             class="primary-button"
                             @click="$refs.userSettings.openModal()"
                         >
-                            @lang('admin::app.settings.users.index.create-btn')
+                            @lang('admin::app.custom-setting.users.create-user')
                         </button>
                     </div>
                 @endif
@@ -184,8 +184,8 @@
                             <p class="text-lg font-bold text-gray-800 dark:text-white">
                                 @{{
                                     selectedType == 'create'
-                                    ? "@lang('admin::app.settings.users.index.create.title')"
-                                    : "@lang('admin::app.settings.users.index.edit.title')"
+                                    ? "@lang('admin::app.custom-setting.users.create-user')"
+                                    : "@lang('admin::app.custom-setting.users.edit-user')"
                                 }}
                             </p>
                         </x-slot>
@@ -203,7 +203,7 @@
                             <!-- Name -->
                             <x-admin::form.control-group>
                                 <x-admin::form.control-group.label class="required">
-                                    @lang('admin::app.settings.users.index.create.name')
+                                    @lang('admin::app.custom-setting.users.name')
                                 </x-admin::form.control-group.label>
 
                                 <x-admin::form.control-group.control
@@ -213,7 +213,7 @@
                                     rules="required"
                                     v-model="user.name"
                                     :label="trans('admin::app.settings.users.index.create.name')"
-                                    :placeholder="trans('admin::app.settings.users.index.create.name')"
+                                    :placeholder="trans('admin::app.custom-setting.users.name')"
                                 />
 
                                 <x-admin::form.control-group.error control-name="name" />
@@ -250,7 +250,7 @@
                                 <!-- Password -->
                                 <x-admin::form.control-group class="flex-1">
                                     <x-admin::form.control-group.label class="required">
-                                        @lang('admin::app.settings.users.index.create.password')
+                                        @lang('admin::app.custom-setting.users.password')
                                     </x-admin::form.control-group.label>
 
                                     <x-admin::form.control-group.control
@@ -269,7 +269,7 @@
                                 <!-- Confirm Password -->
                                 <x-admin::form.control-group class="flex-1">
                                     <x-admin::form.control-group.label>
-                                        @lang('admin::app.settings.users.index.create.confirm-password')
+                                        @lang('admin::app.custom-setting.users.confirm-password')
                                     </x-admin::form.control-group.label>
 
                                     <x-admin::form.control-group.control
@@ -293,7 +293,7 @@
                                 <!-- Role -->
                                 <x-admin::form.control-group class="flex-1">
                                     <x-admin::form.control-group.label class="required">
-                                        @lang('admin::app.settings.users.index.create.role')
+                                        @lang('admin::app.custom-setting.users.role')
                                     </x-admin::form.control-group.label>
 
                                     <x-admin::form.control-group.control
@@ -318,7 +318,7 @@
                                 <!-- Permission -->
                                 <x-admin::form.control-group class="flex-1">
                                     <x-admin::form.control-group.label class="required">
-                                        @lang('admin::app.settings.users.index.create.view-permission')
+                                        @lang('admin::app.custom-setting.users.view-permission')
                                     </x-admin::form.control-group.label>
 
                                     <x-admin::form.control-group.control
@@ -330,15 +330,15 @@
                                     >
                                         <!-- Default Option -->
                                         <option  value="global" selected>
-                                            @lang('admin::app.settings.users.index.create.global')
+                                            @lang('admin::app.custom-setting.users.global')
                                         </option>
 
                                         <option value="group">
-                                            @lang('admin::app.settings.users.index.create.group')
+                                            @lang('admin::app.custom-setting.users.group')
                                         </option>
 
                                         <option value="individual">
-                                            @lang('admin::app.settings.users.index.create.individual')
+                                            @lang('admin::app.custom-setting.users.individual')
                                         </option>
                                     </x-admin::form.control-group.control>
 
@@ -346,32 +346,32 @@
                                 </x-admin::form.control-group>
                             </div>
 
-{{--                            <div class="flex gap-4">--}}
-{{--                                <!-- Leader -->--}}
-{{--                                <x-admin::form.control-group class="flex-1">--}}
-{{--                                    <x-admin::form.control-group.label>--}}
-{{--                                        @lang('admin::app.settings.users.index.create.leader')--}}
-{{--                                    </x-admin::form.control-group.label>--}}
+                            <div class="flex gap-4">
+                                <!-- Leader -->
+                                <x-admin::form.control-group class="flex-1">
+                                    <x-admin::form.control-group.label>
+                                        @lang('admin::app.settings.users.index.create.leader')
+                                    </x-admin::form.control-group.label>
 
-{{--                                    <x-admin::form.control-group.control--}}
-{{--                                            type="select"--}}
-{{--                                            name="leader_id"--}}
-{{--                                            v-model="user.leader_id"--}}
-{{--                                            :label="trans('admin::app.settings.users.index.create.leader')"--}}
-{{--                                    >--}}
-{{--                                        <option value="">-- Chọn leader --</option>--}}
-{{--                                        <option--}}
-{{--                                                v-for="leader in leaders"--}}
-{{--                                                :key="leader.id"--}}
-{{--                                                :value="leader.id"--}}
-{{--                                        >--}}
-{{--                                            @{{ leader.name + ' - ' + leader.email }}--}}
-{{--                                        </option>--}}
-{{--                                    </x-admin::form.control-group.control>--}}
+                                    <x-admin::form.control-group.control
+                                            type="select"
+                                            name="leader_id"
+                                            v-model="user.leader_id"
+                                            :label="trans('admin::app.settings.users.index.create.leader')"
+                                    >
+                                        <option value="">-- Chọn leader --</option>
+                                        <option
+                                                v-for="leader in leaders"
+                                                :key="leader.id"
+                                                :value="leader.id"
+                                        >
+                                            @{{ leader.name + ' - ' + leader.email }}
+                                        </option>
+                                    </x-admin::form.control-group.control>
 
-{{--                                    <x-admin::form.control-group.error control-name="leader_id" />--}}
-{{--                                </x-admin::form.control-group>--}}
-{{--                            </div>--}}
+                                    <x-admin::form.control-group.error control-name="leader_id" />
+                                </x-admin::form.control-group>
+                            </div>
 
                             {!! view_render_event('admin.settings.users.index.form.role_id.after') !!}
 
@@ -380,7 +380,7 @@
                             <!-- Group -->
                             <x-admin::form.control-group>
                                 <x-admin::form.control-group.label class="required">
-                                    @lang('admin::app.settings.users.index.create.group')
+                                    @lang('admin::app.custom-setting.users.group')
                                 </x-admin::form.control-group.label>
 
                                 <v-field
@@ -416,7 +416,7 @@
                             <!-- Status -->
                             <x-admin::form.control-group>
                                 <x-admin::form.control-group.label>
-                                    @lang('admin::app.settings.users.index.create.status')
+                                    @lang('admin::app.custom-setting.users.status')
                                 </x-admin::form.control-group.label>
 
                                 <input
@@ -450,7 +450,7 @@
                             <x-admin::button
                                 button-type="submit"
                                 class="primary-button justify-center"
-                                :title="trans('admin::app.settings.users.index.create.save-btn')"
+                                :title="trans('admin::app.custom-setting.users.save-user')"
                                 ::loading="isProcessing"
                                 ::disabled="isProcessing"
                             />
