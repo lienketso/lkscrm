@@ -498,7 +498,7 @@ return [
     [
         'key'   => 'zalo',
         'name'  => 'admin::app.acl.zalo',
-        'route' => 'admin.leads.index',
+        'route' => 'admin.zalo.index',
         'sort'  => 10,
     ], [
         'key'   => 'zalo.template',
