@@ -42,7 +42,7 @@ class GroupDataGrid extends DataGrid
         $this->addColumn([
             'index'      => 'name',
             'type'       => 'string',
-            'label'      => trans('admin::app.settings.groups.index.datagrid.name'),
+            'label'      => trans('admin::app.custom-setting.groups.name'),
             'searchable' => true,
             'filterable' => true,
             'sortable'   => true,
@@ -50,7 +50,7 @@ class GroupDataGrid extends DataGrid
 
         $this->addColumn([
             'index'    => 'description',
-            'label'    => trans('admin::app.settings.groups.index.datagrid.description'),
+            'label'    => trans('admin::app.custom-setting.groups.description'),
             'type'     => 'string',
             'sortable' => false,
         ]);

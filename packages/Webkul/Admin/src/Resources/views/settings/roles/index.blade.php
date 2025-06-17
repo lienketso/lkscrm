@@ -1,7 +1,7 @@
 <x-admin::layouts>
     <!-- Page Title -->
     <x-slot:title>
-        @lang('admin::app.settings.roles.index.title')
+        @lang('admin::app.custom-setting.role.index-role-title')
     </x-slot>
 
     <div class="flex flex-col gap-4">
@@ -18,7 +18,7 @@
 
                 <div class="text-xl font-bold dark:text-white">
                     <!-- title -->
-                    @lang('admin::app.settings.roles.index.title')
+                    @lang('admin::app.custom-setting.role.index-role-title')
                 </div>
             </div>
 
@@ -32,7 +32,7 @@
                             href="{{ route('admin.settings.roles.create') }}"
                             class="primary-button"
                         >
-                            @lang('admin::app.settings.roles.index.create-btn')
+                            @lang('admin::app.custom-setting.role.index-role-btn')
                         </a>
                     @endif
 

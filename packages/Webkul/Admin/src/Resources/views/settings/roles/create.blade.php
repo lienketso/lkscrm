@@ -1,7 +1,7 @@
 <x-admin::layouts>
     <!-- Page Title -->
     <x-slot:title>
-        @lang('admin::app.settings.roles.create.title')
+        @lang('admin::app.custom-setting.role.create-role-btn')
     </x-slot>
 
     {!! view_render_event('admin.settings.roles.create.form.before') !!}
@@ -21,7 +21,7 @@
                     </div>
 
                     <div class="text-xl font-bold dark:text-white">
-                        @lang('admin::app.settings.roles.create.title')
+                        @lang('admin::app.custom-setting.role.create-role-btn')
                     </div>
                 </div>
 
@@ -35,7 +35,7 @@
                                 type="submit"
                                 class="primary-button"
                             >
-                                @lang('admin::app.settings.roles.create.save-btn')
+                                @lang('admin::app.custom-setting.role.save-btn')
                             </button>
                         @endif
 
@@ -80,7 +80,7 @@
                         <x-slot:header>
                             <div class="flex items-center justify-between">
                                 <p class="p-2.5 text-base font-semibold text-gray-800 dark:text-white">
-                                    @lang('admin::app.settings.roles.create.general')
+                                    @lang('admin::app.custom-setting.role.general')
                                 </p>
                             </div>
                         </x-slot>
@@ -91,7 +91,7 @@
                             <!-- Name -->
                             <x-admin::form.control-group>
                                 <x-admin::form.control-group.label class="required">
-                                    @lang('admin::app.settings.roles.create.name')
+                                    @lang('admin::app.custom-setting.role.name')
                                 </x-admin::form.control-group.label>
 
                                 <x-admin::form.control-group.control
@@ -114,7 +114,7 @@
                             <!-- Description -->
                             <x-admin::form.control-group class="!mb-0">
                                 <x-admin::form.control-group.label class="required">
-                                    @lang('admin::app.settings.roles.create.description')
+                                    @lang('admin::app.custom-setting.role.description')
                                 </x-admin::form.control-group.label>
 
                                 <x-admin::form.control-group.control
@@ -157,7 +157,7 @@
                 <!-- Permission Type -->
                 <x-admin::form.control-group class="!mb-0">
                     <x-admin::form.control-group.label class="required">
-                        @lang('admin::app.settings.roles.create.permissions')
+                        @lang('admin::app.custom-setting.role.permissions')
                     </x-admin::form.control-group.label>
 
                     <x-admin::form.control-group.control
@@ -170,11 +170,11 @@
                         v-model="permission_type"
                     >
                         <option value="custom">
-                            @lang('admin::app.settings.roles.create.custom')
+                            @lang('admin::app.custom-setting.role.custom')
                         </option>
 
                         <option value="all">
-                            @lang('admin::app.settings.roles.create.all')
+                            @lang('admin::app.custom-setting.role.all')
                         </option>
                     </x-admin::form.control-group.control>
 

@@ -1,7 +1,7 @@
 <x-admin::layouts>
     <!-- Page Title -->
     <x-slot:title>
-        @lang('admin::app.settings.roles.edit.title')
+        @lang('admin::app.custom-setting.role.edit')
     </x-slot>
 
     {!! view_render_event('admin.settings.roles.edit.form.before', ['role' => $role]) !!}
@@ -17,7 +17,7 @@
                         {!! view_render_event('admin.settings.roles.edit.breadcrumbs.before', ['role' => $role]) !!}
 
                         <!-- Breadcrumbs -->
-                        <x-admin::breadcrumbs 
+                        <x-admin::breadcrumbs
                             name="settings.roles.edit"
                             :entity="$role"
                         />
@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="text-xl font-bold dark:text-white">
-                        @lang('admin::app.settings.roles.edit.title')
+                        @lang('admin::app.custom-setting.role.edit')
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@
                                 type="submit"
                                 class="primary-button"
                             >
-                                @lang('admin::app.settings.roles.edit.save-btn')
+                                @lang('admin::app.custom-setting.role.save-btn')
                             </button>
                         @endif
 
@@ -59,7 +59,7 @@
                 <div class="flex flex-1 flex-col gap-2 max-xl:flex-auto">
                     <div class="box-shadow rounded-lg border border-gray-200 bg-white p-4 dark:bg-gray-900 dark:border-gray-800">
                         <p class="mb-4 text-base font-semibold text-gray-800 dark:text-white">
-                            @lang('admin::app.settings.roles.edit.access-control')
+                            @lang('admin::app.custom-setting.role.access-control')
                         </p>
 
                         <!-- Edit Role for  -->
@@ -89,7 +89,7 @@
                         <x-slot:header>
                             <div class="flex items-center justify-between">
                                 <p class="p-2.5 text-base font-semibold text-gray-800 dark:text-white">
-                                    @lang('admin::app.settings.roles.edit.general')
+                                    @lang('admin::app.custom-setting.role.general')
                                 </p>
                             </div>
                         </x-slot>
@@ -100,7 +100,7 @@
                             <!-- Name -->
                             <x-admin::form.control-group>
                                 <x-admin::form.control-group.label class="required">
-                                    @lang('admin::app.settings.roles.edit.name')
+                                    @lang('admin::app.custom-setting.role.name')
                                 </x-admin::form.control-group.label>
 
                                 <x-admin::form.control-group.control
@@ -123,7 +123,7 @@
                             <!-- Description -->
                             <x-admin::form.control-group class="!mb-0">
                                 <x-admin::form.control-group.label class="required">
-                                    @lang('admin::app.settings.roles.edit.description')
+                                    @lang('admin::app.custom-setting.role.description')
                                 </x-admin::form.control-group.label>
 
                                 <x-admin::form.control-group.control
@@ -164,7 +164,7 @@
                 <!-- Permission Type -->
                 <x-admin::form.control-group>
                     <x-admin::form.control-group.label class="required">
-                        @lang('admin::app.settings.roles.edit.permissions')
+                        @lang('admin::app.custom-setting.role.permissions')
                     </x-admin::form.control-group.label>
 
                     <x-admin::form.control-group.control
@@ -176,11 +176,11 @@
                         :placeholder="trans('admin::app.settings.roles.edit.permissions')"
                     >
                         <option value="custom">
-                            @lang('admin::app.settings.roles.edit.custom')
+                            @lang('admin::app.custom-setting.role.custom')
                         </option>
 
                         <option value="all">
-                            @lang('admin::app.settings.roles.edit.all')
+                            @lang('admin::app.custom-setting.role.all')
                         </option>
                     </x-admin::form.control-group.control>
 
@@ -188,7 +188,7 @@
                 </x-admin::form.control-group>
 
                 {!! view_render_event('admin.settings.roles.edit.form.permission_type.after', ['role' => $role]) !!}
-                
+
                 <!-- Tree structure -->
                 <div v-if="permission_type == 'custom'">
                     {!! view_render_event('admin.settings.roles.edit.form.tree_view.before', ['role' => $role]) !!}

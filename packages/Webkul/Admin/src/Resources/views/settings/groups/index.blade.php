@@ -1,7 +1,7 @@
 <x-admin::layouts>
     <!-- Page Title -->
     <x-slot:title>
-        @lang('admin::app.settings.groups.index.title')
+        @lang('admin::app.custom-setting.groups.index-group-title')
     </x-slot>
 
     <div class="flex flex-col gap-4">
@@ -18,11 +18,11 @@
                 </div>
 
                 <div class="text-xl font-bold dark:text-gray-300">
-                    @lang('admin::app.settings.groups.index.title')
+                    @lang('admin::app.custom-setting.groups.index-group-title')
                 </div>
             </div>
 
-            <div class="flex items-center gap-x-2.5">                
+            <div class="flex items-center gap-x-2.5">
                 <!-- Create button for Group -->
                 <div class="flex items-center gap-x-2.5">
                     {!! view_render_event('admin.settings.groups.index.breadcrumbs.after') !!}
@@ -33,7 +33,7 @@
                             class="primary-button"
                             @click="$refs.groupSettings.openModal()"
                         >
-                            @lang('admin::app.settings.groups.index.create-btn')
+                            @lang('admin::app.custom-setting.groups.create-group-btn')
                         </button>
                     @endif
 
@@ -41,7 +41,7 @@
                 </div>
             </div>
         </div>
-        
+
         <v-group-settings ref="groupSettings">
             <!-- DataGrid Shimmer -->
             <x-admin::shimmer.datagrid />
@@ -54,7 +54,7 @@
             id="group-settings-template"
         >
             {!! view_render_event('admin.settings.groups.index.datagrid.before') !!}
-        
+
             <!-- DataGrid -->
             <x-admin::datagrid
                 :src="route('admin.settings.groups.index')"
@@ -71,7 +71,7 @@
                     <template v-if="isLoading">
                         <x-admin::shimmer.datagrid.table.body />
                     </template>
-        
+
                     <template v-else>
                         <div
                             v-for="record in available.records"
@@ -80,13 +80,13 @@
                         >
                             <!-- Group ID -->
                             <p>@{{ record.id }}</p>
-        
+
                             <!-- Group Name -->
                             <p>@{{ record.name }}</p>
-        
+
                             <!-- Group Description -->
                             <p>@{{ record.description }}</p>
-        
+
                             <!-- Actions -->
                             <div class="flex justify-end">
                                 <a @click="selectedGroup=true; editModal(record.actions.find(action => action.index === 'edit')?.url)">
@@ -96,7 +96,7 @@
                                     >
                                     </span>
                                 </a>
-    
+
                                 <a @click="performAction(record.actions.find(action => action.index === 'delete'))">
                                     <span
                                         :class="record.actions.find(action => action.index === 'delete')?.icon"
@@ -128,10 +128,10 @@
                         <!-- Modal Header -->
                         <x-slot:header>
                             <p class="text-lg font-bold text-gray-800 dark:text-white">
-                                @{{ 
+                                @{{
                                     selectedGroup
-                                    ? "@lang('admin::app.settings.groups.index.edit.title')" 
-                                    : "@lang('admin::app.settings.groups.index.create.title')"
+                                    ? "@lang('admin::app.custom-setting.groups.edit-group')"
+                                    : "@lang('admin::app.custom-setting.groups.create-group-btn')"
                                 }}
                             </p>
                         </x-slot>
@@ -150,7 +150,7 @@
                             <!-- Name -->
                             <x-admin::form.control-group>
                                 <x-admin::form.control-group.label class="required">
-                                    @lang('admin::app.settings.groups.index.create.name')
+                                    @lang('admin::app.custom-setting.groups.name')
                                 </x-admin::form.control-group.label>
 
                                 <x-admin::form.control-group.control
@@ -172,7 +172,7 @@
                             <!-- Description -->
                             <x-admin::form.control-group>
                                 <x-admin::form.control-group.label class="required">
-                                    @lang('admin::app.settings.groups.index.create.description')
+                                    @lang('admin::app.custom-setting.groups.description')
                                 </x-admin::form.control-group.label>
 
                                 <x-admin::form.control-group.control
@@ -198,7 +198,7 @@
                             <x-admin::button
                                 button-type="submit"
                                 class="primary-button justify-center"
-                                :title="trans('admin::app.settings.groups.index.create.save-btn')"
+                                :title="trans('admin::app.custom-setting.groups.save-group-btn')"
                                 ::loading="isProcessing"
                                 ::disabled="isProcessing"
                             />
@@ -217,13 +217,13 @@
         <script type="module">
             app.component('v-group-settings', {
                 template: '#group-settings-template',
-        
+
                 data() {
                     return {
                         isProcessing: false,
                     };
                 },
-        
+
                 computed: {
                     gridsCount() {
                         let count = this.$refs.datagrid.available.columns.length;
@@ -244,7 +244,7 @@
                     openModal() {
                         this.$refs.groupUpdateAndCreateModal.toggle();
                     },
-                    
+
                     updateOrCreate(params, {resetForm, setErrors}) {
                         this.isProcessing = true;
 
@@ -278,7 +278,7 @@
                         this.$axios.get(url)
                             .then(response => {
                                 this.$refs.modalForm.setValues(response.data.data);
-                                
+
                                 this.$refs.groupUpdateAndCreateModal.toggle();
                             })
                             .catch(error => {});

@@ -42,7 +42,7 @@ class PipelineDataGrid extends DataGrid
 
         $this->addColumn([
             'index'      => 'name',
-            'label'      => trans('admin::app.settings.pipelines.index.datagrid.name'),
+            'label'      => trans('admin::app.custom-setting.pipelines.name'),
             'type'       => 'string',
             'searchable' => true,
             'filterable' => true,
@@ -51,14 +51,14 @@ class PipelineDataGrid extends DataGrid
 
         $this->addColumn([
             'index'    => 'rotten_days',
-            'label'    => trans('admin::app.settings.pipelines.index.datagrid.rotten-days'),
+            'label'    => trans('admin::app.custom-setting.pipelines.rotten-days'),
             'type'     => 'string',
             'sortable' => true,
         ]);
 
         $this->addColumn([
             'index'    => 'type',
-            'label'    => trans('admin::app.settings.pipelines.index.datagrid.type'),
+            'label'    => trans('admin::app.custom-setting.pipelines.type'),
             'type'     => 'string',
             'sortable' => false,
             'closure'    => fn ($value) => $value->type ? Pipeline::ARR_TYPE[$value->type] : '',
@@ -66,7 +66,7 @@ class PipelineDataGrid extends DataGrid
 
         $this->addColumn([
             'index'      => 'is_default',
-            'label'      => trans('admin::app.settings.pipelines.index.datagrid.is-default'),
+            'label'      => trans('admin::app.custom-setting.pipelines.is-default'),
             'type'       => 'boolean',
             'searchable' => true,
             'filterable' => true,

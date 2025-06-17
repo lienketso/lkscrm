@@ -1,7 +1,7 @@
 <x-admin::layouts>
     <!-- Page Title -->
     <x-slot:title>
-        @lang('admin::app.settings.pipelines.edit.title')
+        @lang('admin::app.custom-setting.pipelines.edit-pipeline')
     </x-slot>
 
     {!! view_render_event('admin.settings.pipelines.edit.form.before', ['pipeline' => $pipeline]) !!}
@@ -18,7 +18,7 @@
                         {!! view_render_event('admin.settings.pipelines.edit.breadcrumbs.before', ['pipeline' => $pipeline]) !!}
 
                         <!-- Breadcrumbs -->
-                        <x-admin::breadcrumbs 
+                        <x-admin::breadcrumbs
                             name="settings.pipelines.edit"
                             :entity="$pipeline"
                         />
@@ -28,7 +28,7 @@
 
                     <!-- Title -->
                     <div class="text-xl font-bold dark:text-white">
-                        @lang('admin::app.settings.pipelines.edit.title')
+                        @lang('admin::app.custom-setting.pipelines.edit-pipeline')
                     </div>
                 </div>
 
@@ -41,7 +41,7 @@
                             type="submit"
                             class="primary-button"
                         >
-                            @lang('admin::app.settings.pipelines.edit.save-btn')
+                            @lang('admin::app.custom-setting.pipelines.save-btn')
                         </button>
 
                         {!! view_render_event('admin.settings.pipelines.edit.save_button.after', ['pipeline' => $pipeline]) !!}
@@ -55,7 +55,7 @@
                 <!-- Pipeline Name -->
                 <x-admin::form.control-group>
                     <x-admin::form.control-group.label class="required">
-                        @lang('admin::app.settings.pipelines.edit.name')
+                        @lang('admin::app.custom-setting.pipelines.name')
                     </x-admin::form.control-group.label>
 
                     <x-admin::form.control-group.control
@@ -77,7 +77,7 @@
 
                 <x-admin::form.control-group>
                     <x-admin::form.control-group.label class="required">
-                        @lang('admin::app.settings.pipelines.create.type')
+                        @lang('admin::app.custom-setting.pipelines.type')
                     </x-admin::form.control-group.label>
 
                     <x-admin::form.control-group.control
@@ -98,11 +98,11 @@
                 {!! view_render_event('admin.settings.pipelines.create.form.type.after') !!}
 
                 {!! view_render_event('admin.settings.pipelines.edit.form.rotten_days.before', ['pipeline' => $pipeline]) !!}
-                
+
                 <!-- Pipeline Rotten Days -->
                 <x-admin::form.control-group>
                     <x-admin::form.control-group.label class="required">
-                        @lang('admin::app.settings.pipelines.edit.rotten-days')
+                        @lang('admin::app.custom-setting.pipelines.rotten-days')
                     </x-admin::form.control-group.label>
 
                     <x-admin::form.control-group.control
@@ -125,7 +125,7 @@
                 <!-- Pipeline Default Switcher -->
                 <x-admin::form.control-group class="mt-4 flex items-center gap-4">
                     <x-admin::form.control-group.label class="!required mb-0">
-                        @lang('admin::app.settings.pipelines.edit.mark-as-default')
+                        @lang('admin::app.custom-setting.pipelines.mark-as-default')
                     </x-admin::form.control-group.label>
 
                     <x-admin::form.control-group.control
@@ -181,16 +181,16 @@
                                     <!-- Stage Title and Action -->
                                     <div class="flex items-center justify-between">
                                         <span class="py-1 font-medium dark:text-gray-300">
-                                            @{{ element.name ? element.name : 'New Added' }} 
+                                            @{{ element.name ? element.name : 'New Added' }}
                                         </span>
 
                                         <i
-                                            v-if="canDrag(element)" 
+                                            v-if="canDrag(element)"
                                             class="icon-move cursor-grab rounded-md p-1 text-2xl transition-all hover:bg-gray-100 dark:hover:bg-gray-950"
                                         >
                                         </i>
                                     </div>
-                                    
+
                                     <!-- Crads input fiels -->
                                     <div>
                                         <!-- Hidden Inputs -->
@@ -212,9 +212,9 @@
 
                                         <x-admin::form.control-group>
                                             <x-admin::form.control-group.label class="required">
-                                                @lang('admin::app.settings.pipelines.edit.name')
+                                                @lang('admin::app.custom-setting.pipelines.stage-name')
                                             </x-admin::form.control-group.label>
-                                            
+
                                             <x-admin::form.control-group.control
                                                 type="text"
                                                 ::name="'stages[' + element.id + '][name]'"
@@ -234,7 +234,7 @@
                                         <!-- Probabilty -->
                                         <x-admin::form.control-group>
                                             <x-admin::form.control-group.label class="required">
-                                                @lang('admin::app.settings.pipelines.edit.probability')
+                                                @lang('admin::app.custom-setting.pipelines.probability')
                                             </x-admin::form.control-group.label>
 
                                             <x-admin::form.control-group.control
@@ -251,18 +251,18 @@
                                         {!! view_render_event('admin.settings.pipelines.edit.form.stages.probability.after', ['pipeline' => $pipeline]) !!}
                                     </div>
                                 </div>
-                                
+
                                 {!! view_render_event('admin.settings.pipelines.edit.form.stages.remove_button.before', ['pipeline' => $pipeline]) !!}
 
                                 <!-- Remove Stage -->
                                 <div
-                                    class="flex cursor-pointer items-center gap-2 border-t border-gray-200 p-2 text-red-600 dark:border-gray-800" 
-                                    @click="remove(element)" 
+                                    class="flex cursor-pointer items-center gap-2 border-t border-gray-200 p-2 text-red-600 dark:border-gray-800"
+                                    @click="remove(element)"
                                     v-if="canDrag(element)"
                                 >
                                     <i class="icon-delete text-2xl"></i>
-                                    
-                                    @lang('admin::app.settings.pipelines.edit.delete-stage')
+
+                                    @lang('admin::app.custom-setting.pipelines.delete-stage')
                                 </div>
 
                                 {!! view_render_event('admin.settings.pipelines.edit.form.stages.remove_button.after', ['pipeline' => $pipeline]) !!}
@@ -277,11 +277,11 @@
                         <div class="grid justify-center justify-items-center gap-3.5 text-center">
                             <div class="flex flex-col items-center gap-2">
                                 <p class="text-xl font-semibold dark:text-gray-300">
-                                    @lang('admin::app.settings.pipelines.edit.add-new-stages')
+                                    @lang('admin::app.custom-setting.pipelines.add-new-stages')
                                 </p>
 
                                 <p class="text-gray-400">
-                                    @lang('admin::app.settings.pipelines.edit.add-stage-info')
+                                    @lang('admin::app.custom-setting.pipelines.add-new-stage-for-your-pipeline')
                                 </p>
                             </div>
 
@@ -293,7 +293,7 @@
                                 @click="addStage"
                                 type="button"
                             >
-                                @lang('admin::app.settings.pipelines.edit.stage-btn')
+                                @lang('admin::app.custom-setting.pipelines.stage-btn')
                             </button>
 
                             {!! view_render_event('admin.settings.pipelines.edit.form.stages.create_button.after', ['pipeline' => $pipeline]) !!}
@@ -314,7 +314,7 @@
                         stageCount: 1,
                     };
                 },
-                
+
                 computed: {
                     getValidation() {
                         return {
@@ -408,7 +408,7 @@
 
                     handleDragging(event) {
                         const draggedElement = event.draggedContext.element;
-                        
+
                         const relatedElement = event.relatedContext.element;
 
                         return this.canDrag(draggedElement) && this.canDrag(relatedElement);

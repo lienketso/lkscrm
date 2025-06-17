@@ -42,7 +42,7 @@ class RoleDataGrid extends DataGrid
 
         $this->addColumn([
             'index'      => 'name',
-            'label'      => trans('admin::app.settings.roles.index.datagrid.name'),
+            'label'      => trans('admin::app.custom-setting.role.name'),
             'type'       => 'string',
             'filterable' => true,
             'sortable'   => true,
@@ -50,25 +50,25 @@ class RoleDataGrid extends DataGrid
 
         $this->addColumn([
             'index'    => 'description',
-            'label'    => trans('admin::app.settings.roles.index.datagrid.description'),
+            'label'    => trans('admin::app.custom-setting.role.description'),
             'type'     => 'string',
             'sortable' => false,
         ]);
 
         $this->addColumn([
             'index'              => 'permission_type',
-            'label'              => trans('admin::app.settings.roles.index.datagrid.permission-type'),
+            'label'              => trans('admin::app.custom-setting.role.permission-type'),
             'type'               => 'string',
             'searchable'         => true,
             'filterable'         => true,
             'filterable_type'    => 'dropdown',
             'filterable_options' => [
                 [
-                    'label' => trans('admin::app.settings.roles.index.datagrid.custom'),
+                    'label' => trans('admin::app.custom-setting.role.custom'),
                     'value' => 'custom',
                 ],
                 [
-                    'label' => trans('admin::app.settings.roles.index.datagrid.all'),
+                    'label' => trans('admin::app.custom-setting.role.all'),
                     'value' => 'all',
                 ],
             ],

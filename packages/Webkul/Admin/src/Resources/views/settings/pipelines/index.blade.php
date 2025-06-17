@@ -1,7 +1,7 @@
 <x-admin::layouts>
     <!-- Page Title -->
     <x-slot:title>
-        @lang('admin::app.settings.pipelines.index.title')
+        @lang('admin::app.custom-setting.pipelines.pipeline-index-title')
     </x-slot>
 
     <div class="flex flex-col gap-4">
@@ -18,21 +18,21 @@
 
                 <div class="text-xl font-bold dark:text-white">
                     <!-- Title -->
-                    @lang('admin::app.settings.pipelines.index.title')
+                    @lang('admin::app.custom-setting.pipelines.pipeline-index-title')
                 </div>
             </div>
 
             <div class="flex items-center gap-x-2.5">
                 <div class="flex items-center gap-x-2.5">
                     {!! view_render_event('admin.settings.pipelines.index.create_button.before') !!}
-                    
+
                     @if (bouncer()->hasPermission('settings.lead.pipelines.create'))
                         <!-- Create button Pipelines -->
                         <a
                             href="{{ route('admin.settings.pipelines.create') }}"
                             class="primary-button"
                         >
-                            @lang('admin::app.settings.pipelines.index.create-btn')
+                            @lang('admin::app.custom-setting.pipelines.create-pipeline')
                         </a>
                     @endif
 
@@ -48,7 +48,7 @@
             <!-- DataGrid Shimmer -->
             <x-admin::shimmer.datagrid />
         </x-admin::datagrid>
-        
+
         {!! view_render_event('admin.settings.pipelines.index.datagrid.after') !!}
     </div>
 </x-admin::layouts>
