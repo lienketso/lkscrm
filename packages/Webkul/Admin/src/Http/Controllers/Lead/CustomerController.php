@@ -117,9 +117,10 @@ class CustomerController extends Controller
 
             $stage->lead_value = (clone $query)->sum('lead_value');
 
-            $data[$stage->id] = (new StageResource($stage))->jsonSerialize();
+            // $data[$stage->id] = (new StageResource($stage))->jsonSerialize();
+            $stageData = (new StageResource($stage))->jsonSerialize();
 
-            $data[$stage->id]['leads'] = [
+            $stageData['leads'] = [
                 'data' => LeadResource::collection($paginator = $query->with([
                     'tags',
                     'type',
@@ -142,6 +143,9 @@ class CustomerController extends Controller
                     'total'        => $paginator->total(),
                 ],
             ];
+
+            $data[] = $stageData;
+
         }
 
         return response()->json($data);

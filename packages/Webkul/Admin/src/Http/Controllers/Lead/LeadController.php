@@ -93,7 +93,6 @@ class LeadController extends Controller
         } else {
             $pipeline = $this->pipelineRepository->getDefaultPipeline(Pipeline::LEAD_TYPE);
         }
-
         return view('admin::leads.index', [
             'pipeline' => $pipeline,
             'columns'  => $this->getKanbanColumns(),
@@ -116,6 +115,7 @@ class LeadController extends Controller
         } else {
             $stages = $pipeline->stages;
         }
+        
         $data = [];
         foreach ($stages as $stage) {
             /**
@@ -136,9 +136,9 @@ class LeadController extends Controller
 
             $stage->lead_value = (clone $query)->sum('lead_value');
 
-            $data[$stage->id] = (new StageResource($stage))->jsonSerialize();
+            $stageData = (new StageResource($stage))->jsonSerialize();
 
-            $data[$stage->id]['leads'] = [
+            $stageData['leads'] = [
                 'data' => LeadResource::collection($paginator = $query->with([
                     'tags',
                     'type',
@@ -161,6 +161,8 @@ class LeadController extends Controller
                     'total'        => $paginator->total(),
                 ],
             ];
+
+            $data[] = $stageData;
         }
 
         return response()->json($data);
