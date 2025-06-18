@@ -11,7 +11,12 @@ Homestead.json
 .phpunit.result.cache
 
 /public/build
+/public/storage
 /storage/pail
+/storage/app/*
+/storage/framework/*
+/storage/logs/*
+/bootstrap/cache/*
 .env.backup
 .env.production
 .phpactor.json
