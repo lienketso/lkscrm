@@ -135,10 +135,36 @@ class LeadController extends Controller
             }
 
             $stage->lead_value = (clone $query)->sum('lead_value');
+            $data[$stage->id] = (new StageResource($stage))->jsonSerialize();
 
-            $stageData = (new StageResource($stage))->jsonSerialize();
+            // $stageData = (new StageResource($stage))->jsonSerialize();
 
-            $stageData['leads'] = [
+            // $stageData['leads'] = [
+            //     'data' => LeadResource::collection($paginator = $query->with([
+            //         'tags',
+            //         'type',
+            //         'source',
+            //         'user',
+            //         'person',
+            //         'person.organization',
+            //         'pipeline',
+            //         'pipeline.stages',
+            //         'stage',
+            //         'attribute_values',
+            //     ])->paginate(10)),
+
+            //     'meta' => [
+            //         'current_page' => $paginator->currentPage(),
+            //         'from'         => $paginator->firstItem(),
+            //         'last_page'    => $paginator->lastPage(),
+            //         'per_page'     => $paginator->perPage(),
+            //         'to'           => $paginator->lastItem(),
+            //         'total'        => $paginator->total(),
+            //     ],
+            // ];
+
+            // $data[] = $stageData;
+            $data[$stage->id]['leads'] = [
                 'data' => LeadResource::collection($paginator = $query->with([
                     'tags',
                     'type',
@@ -161,8 +187,6 @@ class LeadController extends Controller
                     'total'        => $paginator->total(),
                 ],
             ];
-
-            $data[] = $stageData;
         }
 
         return response()->json($data);

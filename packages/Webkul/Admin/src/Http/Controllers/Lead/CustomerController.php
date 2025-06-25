@@ -92,10 +92,10 @@ class CustomerController extends Controller
             $pipeline = $this->pipelineRepository->getDefaultPipeline();
         }
 
+        $stages = $pipeline->stages()->orderBy('sort_order')->get();
+
         if ($stageId = request()->query('pipeline_stage_id')) {
-            $stages = $pipeline->stages->where('id', request()->query('pipeline_stage_id'));
-        } else {
-            $stages = $pipeline->stages;
+            $stages = $stages->where('id', $stageId);
         }
         $data = [];
         foreach ($stages as $stage) {
@@ -117,10 +117,33 @@ class CustomerController extends Controller
 
             $stage->lead_value = (clone $query)->sum('lead_value');
 
-            // $data[$stage->id] = (new StageResource($stage))->jsonSerialize();
-            $stageData = (new StageResource($stage))->jsonSerialize();
+            $data[$stage->id] = (new StageResource($stage))->jsonSerialize();
+            // $stageData = (new StageResource($stage))->jsonSerialize();
 
-            $stageData['leads'] = [
+            // $stageData['leads'] = [
+            //     'data' => LeadResource::collection($paginator = $query->with([
+            //         'tags',
+            //         'type',
+            //         'source',
+            //         'user',
+            //         'person',
+            //         'person.organization',
+            //         'pipeline',
+            //         'pipeline.stages',
+            //         'stage',
+            //         'attribute_values',
+            //     ])->paginate(10)),
+
+            //     'meta' => [
+            //         'current_page' => $paginator->currentPage(),
+            //         'from'         => $paginator->firstItem(),
+            //         'last_page'    => $paginator->lastPage(),
+            //         'per_page'     => $paginator->perPage(),
+            //         'to'           => $paginator->lastItem(),
+            //         'total'        => $paginator->total(),
+            //     ],
+            // ];
+            $data[$stage->id]['leads'] = [
                 'data' => LeadResource::collection($paginator = $query->with([
                     'tags',
                     'type',
@@ -144,7 +167,6 @@ class CustomerController extends Controller
                 ],
             ];
 
-            $data[] = $stageData;
 
         }
 
@@ -175,31 +197,19 @@ class CustomerController extends Controller
 
             $data['is_customer'] = 1;
 
-            // if (request()->input('lead_pipeline_stage_id')) {
-            //     $stage = $this->stageRepository->findOrFail($data['lead_pipeline_stage_id']);
-
-            //     $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
-            // } else {
-            //     $pipeline = $this->pipelineRepository->getDefaultPipeline();
-
-            //     $stage = $pipeline->stages()->first();
-
-            //     $data['lead_pipeline_id'] = $pipeline->id;
-
-            //     $data['lead_pipeline_stage_id'] = $stage->id;
-            // }
-
-            if (isset($data['lead_pipeline_id']) && $data['lead_pipeline_id']) {
-                $pipeline = $this->pipelineRepository->findOrFail($data['lead_pipeline_id']);
+            if (isset($data['lead_pipeline_stage_id']) && $data['lead_pipeline_stage_id']) {
+                $stage = $this->stageRepository->findOrFail($data['lead_pipeline_stage_id']);
+                $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
             } else {
-                $pipeline = $this->pipelineRepository->getDefaultPipeline();
+                if (isset($data['lead_pipeline_id']) && $data['lead_pipeline_id']) {
+                    $pipeline = $this->pipelineRepository->findOrFail($data['lead_pipeline_id']);
+                } else {
+                    $pipeline = $this->pipelineRepository->getDefaultPipeline();
+                }
+                $stage = $pipeline->stages()->orderBy('sort_order')->first();
+                $data['lead_pipeline_id'] = $pipeline->id;
+                $data['lead_pipeline_stage_id'] = $stage->id;
             }
-
-            $stage = $pipeline->stages()->first();
-
-            $data['lead_pipeline_id'] = $pipeline->id;
-
-            $data['lead_pipeline_stage_id'] = $stage->id;
 
             if (in_array($stage->code, ['won', 'lost'])) {
                 $data['closed_at'] = Carbon::now();
@@ -260,31 +270,19 @@ class CustomerController extends Controller
 
         $data = $request->all();
 
-        // if (isset($data['lead_pipeline_stage_id'])) {
-        //     $stage = $this->stageRepository->findOrFail($data['lead_pipeline_stage_id']);
-
-        //     $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
-        // } else {
-        //     $pipeline = $this->pipelineRepository->getDefaultPipeline();
-
-        //     $stage = $pipeline->stages()->first();
-
-        //     $data['lead_pipeline_id'] = $pipeline->id;
-
-        //     $data['lead_pipeline_stage_id'] = $stage->id;
-        // }
-
-        if (isset($data['lead_pipeline_id']) && $data['lead_pipeline_id']) {
-            $pipeline = $this->pipelineRepository->findOrFail($data['lead_pipeline_id']);
+        if (isset($data['lead_pipeline_stage_id']) && $data['lead_pipeline_stage_id']) {
+            $stage = $this->stageRepository->findOrFail($data['lead_pipeline_stage_id']);
+            $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
         } else {
-            $pipeline = $this->pipelineRepository->getDefaultPipeline();
+            if (isset($data['lead_pipeline_id']) && $data['lead_pipeline_id']) {
+                $pipeline = $this->pipelineRepository->findOrFail($data['lead_pipeline_id']);
+            } else {
+                $pipeline = $this->pipelineRepository->getDefaultPipeline();
+            }
+            $stage = $pipeline->stages()->orderBy('sort_order')->first();
+            $data['lead_pipeline_id'] = $pipeline->id;
+            $data['lead_pipeline_stage_id'] = $stage->id;
         }
-
-        $stage = $pipeline->stages()->first();
-
-        $data['lead_pipeline_id'] = $pipeline->id;
-
-        $data['lead_pipeline_stage_id'] = $stage->id;
 
         $data['person']['organization_id'] = empty($data['person']['organization_id']) ? null : $data['person']['organization_id'];
 
