@@ -3,6 +3,7 @@
 namespace Webkul\Admin\Http\Controllers;
 
 use Webkul\Admin\Helpers\Dashboard;
+use Webkul\User\Repositories\UserRepository;
 
 class DashboardController extends Controller
 {
@@ -27,7 +28,7 @@ class DashboardController extends Controller
      *
      * @return void
      */
-    public function __construct(protected Dashboard $dashboardHelper) {}
+    public function __construct(protected Dashboard $dashboardHelper, protected UserRepository $userRepository) {}
 
     /**
      * Display a listing of the resource.
@@ -36,9 +37,11 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $users = $this->userRepository->getModel()->where('status', 1)->get(['id', 'name']);
         return view('admin::dashboard.index')->with([
             'startDate' => $this->dashboardHelper->getStartDate(),
             'endDate'   => $this->dashboardHelper->getEndDate(),
+            'users'     => $users,
         ]);
     }
 

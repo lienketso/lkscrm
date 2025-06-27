@@ -88,7 +88,7 @@
 
             data() {
                 return {
-                    emails: this.value || [{'value': '', 'label': 'work'}],
+                    emails: this.value || [{'value': 'guest_' + Date.now() + '@gmail.com', 'label': 'work'}],
                 };
             },
 
@@ -98,7 +98,7 @@
                         JSON.stringify(newValue)
                         !== JSON.stringify(oldValue)
                     ) {
-                        this.emails = newValue || [{'value': '', 'label': 'work'}];
+                        this.emails = newValue || [{'value': 'guest_' + Date.now() + '@gmail.com', 'label': 'work'}];
                     }
                 },
             },

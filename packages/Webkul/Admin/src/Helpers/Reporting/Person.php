@@ -38,10 +38,21 @@ class Person extends AbstractReporting
      */
     public function getTotalPersons($startDate, $endDate): int
     {
-        return $this->personRepository
+        $query = $this->personRepository
             ->resetModel()
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->count();
+            ->whereBetween('created_at', [$startDate, $endDate]);
+
+        $userId = request('user_id');
+        if ($userId) {
+            $query->where('user_id', $userId);
+        } else {
+            $user = auth()->guard('user')->user();
+            if ($user && $user->role && $user->role->permission_type !== 'all') {
+                $query->where('user_id', $user->id);
+            }
+        }
+
+        return $query->count();
     }
 
     /**

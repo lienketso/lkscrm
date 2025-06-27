@@ -38,7 +38,7 @@
 
         <!-- Person Email -->
         <x-admin::form.control-group>
-            <x-admin::form.control-group.label class="required">
+            <x-admin::form.control-group.label>
                 @lang('admin::app.leads.common.contact.email')
             </x-admin::form.control-group.label>
 
@@ -46,7 +46,7 @@
             
             <v-email-component
                 :attribute="{'code': 'person[emails]', 'name': 'Email'}"
-                validations="required"
+                validations=""
                 :value="person.emails"
             ></v-email-component>
 
@@ -126,6 +126,7 @@
                 addPerson (person) {
                     this.person = person;
                 },
+                
             }
         });
     </script>

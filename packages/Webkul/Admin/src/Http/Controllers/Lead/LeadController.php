@@ -32,6 +32,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Imports\LeadsImport;
+use Webkul\Attribute\Repositories\AttributeValueRepository;
 
 
 class LeadController extends Controller
@@ -209,6 +210,11 @@ class LeadController extends Controller
 
         $data = $request->all();
 
+        // Xử lý loại bỏ dấu phẩy cho lead_value nếu có
+        if (isset($data['lead_value'])) {
+            $data['lead_value'] = str_replace(',', '', $data['lead_value']);
+        }
+
         $data['status'] = 1;
 
         $data['is_customer'] = 0;
@@ -246,6 +252,24 @@ class LeadController extends Controller
         $data['person']['organization_id'] = empty($data['person']['organization_id']) ? null : $data['person']['organization_id'];
 
         $lead = $this->leadRepository->create($data);
+
+        // Nếu person.emails rỗng thì update lại qua AttributeValueRepository
+        if (
+            isset($lead->person) &&
+            (empty($lead->person->emails) || empty($lead->person->emails[0]['value']))
+        ) {
+
+            app(\Webkul\Attribute\Repositories\AttributeValueRepository::class)->save([
+                'entity_type' => 'persons',
+                'entity_id'   => $lead->person->id,
+                'emails'      => [
+                    [
+                        'value' => $lead->id . '@gmail.com',
+                        'label' => 'work'
+                    ]
+                ]
+            ]);
+        }
 
         Event::dispatch('lead.create.after', $lead);
 
@@ -288,6 +312,10 @@ class LeadController extends Controller
             Event::dispatch('lead.update.before', $id);
 
             $data = $request->all();
+            // Xử lý loại bỏ dấu phẩy cho lead_value nếu có
+            if (isset($data['lead_value'])) {
+                $data['lead_value'] = str_replace(',', '', $data['lead_value']);
+            }
             // if (isset($data['lead_pipeline_stage_id'])) {
             //     $stage = $this->stageRepository->findOrFail($data['lead_pipeline_stage_id']);
 
@@ -317,6 +345,23 @@ class LeadController extends Controller
             $data['person']['organization_id'] = empty($data['person']['organization_id']) ? null : $data['person']['organization_id'];
 
             $lead = $this->leadRepository->update($data, $id);
+
+            // Nếu person.emails rỗng thì update lại qua AttributeValueRepository
+            if (
+                isset($lead->person) &&
+                (empty($lead->person->emails) || empty($lead->person->emails[0]['value']))
+            ) {
+                app(\Webkul\Attribute\Repositories\AttributeValueRepository::class)->save([
+                    'entity_type' => 'persons',
+                    'entity_id'   => $lead->person->id,
+                    'emails'      => [
+                        [
+                            'value' => $lead->id . '@gmail.com',
+                            'label' => 'work'
+                        ]
+                    ]
+                ]);
+            }
 
             Event::dispatch('lead.update.after', $lead);
 

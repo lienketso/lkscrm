@@ -261,6 +261,45 @@
                 },
             });
         </script>
+
+        <script>
+        function formatVND(value) {
+            value = value.replace(/[^0-9]/g, '');
+            return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function unformatVND(value) {
+            return value.replace(/,/g, '');
+        }
+
+        function attachLeadValueFormat() {
+            const input = document.querySelector('input[name="lead_value"]');
+            if (input && !input.dataset.vndFormatAttached) {
+                input.dataset.vndFormatAttached = "1";
+                input.addEventListener('keyup', function (e) {
+                    const start = input.selectionStart;
+                    const end = input.selectionEnd;
+                    input.value = formatVND(input.value);
+                    input.setSelectionRange(start, end);
+                });
+                // Xóa dấu phẩy khi submit form
+                input.form && input.form.addEventListener('submit', function() {
+                    input.value = unformatVND(input.value);
+                });
+            }
+        }
+
+        // Theo dõi DOM thay đổi để gắn lại sự kiện khi input xuất hiện
+        const observer = new MutationObserver(function() {
+            attachLeadValueFormat();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Gắn lần đầu
+        document.addEventListener('DOMContentLoaded', function () {
+            attachLeadValueFormat();
+        });
+        </script>
     @endPushOnce
 
     @pushOnce('styles')

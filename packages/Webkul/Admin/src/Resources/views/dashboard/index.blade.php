@@ -100,6 +100,20 @@
             {!! view_render_event('admin.dashboard.index.date_filters.before') !!}
 
             <div class="flex gap-1.5">
+                @php
+                    $currentUser = auth()->guard('user')->user();
+                @endphp
+                @if ($currentUser && ($currentUser->role && $currentUser->role->permission_type === 'all' || is_null($currentUser->leader_id)))
+                <select
+                    class="flex min-h-[39px] w-[180px] rounded-md border px-3 py-2 text-sm text-gray-600 transition-all hover:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400"
+                    v-model="filters.user_id"
+                >
+                    <option value="">Tất cả người dùng</option>
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                </select>
+                @endif
                 <x-admin::flat-picker.date class="!w-[140px]" ::allow-input="false">
                     <input
                         class="flex min-h-[39px] w-full rounded-md border px-3 py-2 text-sm text-gray-600 transition-all hover:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400"
@@ -115,6 +129,7 @@
                         placeholder="@lang('admin::app.dashboard.index.end-date')"
                     />
                 </x-admin::flat-picker.date>
+                <button class="btn btn-primary" @click="$emit('reporting-filter-updated', filters)">Lọc</button>
             </div>
 
             {!! view_render_event('admin.dashboard.index.date_filters.after') !!}
@@ -128,9 +143,8 @@
                     return {
                         filters: {
                             channel: '',
-
+                            user_id: '',
                             start: "{{ $startDate->format('Y-m-d') }}",
-
                             end: "{{ $endDate->format('Y-m-d') }}",
                         }
                     }

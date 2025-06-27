@@ -95,10 +95,21 @@ class Lead extends AbstractReporting
      */
     public function getTotalLeads($startDate, $endDate): int
     {
-        return $this->leadRepository
+        $query = $this->leadRepository
             ->resetModel()
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->count();
+            ->whereBetween('created_at', [$startDate, $endDate]);
+
+        $userId = request('user_id');
+        if ($userId) {
+            $query->where('user_id', $userId);
+        } else {
+            $user = auth()->guard('user')->user();
+            if ($user && $user->role && $user->role->permission_type !== 'all') {
+                $query->where('user_id', $user->id);
+            }
+        }
+
+        return $query->count();
     }
 
     /**
@@ -151,10 +162,21 @@ class Lead extends AbstractReporting
      */
     public function getTotalLeadValue($startDate, $endDate): float
     {
-        return $this->leadRepository
+        $query = $this->leadRepository
             ->resetModel()
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->sum('lead_value');
+            ->whereBetween('created_at', [$startDate, $endDate]);
+
+        $userId = request('user_id');
+        if ($userId) {
+            $query->where('user_id', $userId);
+        } else {
+            $user = auth()->guard('user')->user();
+            if ($user && $user->role && $user->role->permission_type !== 'all') {
+                $query->where('user_id', $user->id);
+            }
+        }
+
+        return $query->sum('lead_value');
     }
 
     /**
@@ -178,10 +200,21 @@ class Lead extends AbstractReporting
      */
     public function getAverageLeadValue($startDate, $endDate): float
     {
-        return $this->leadRepository
+        $query = $this->leadRepository
             ->resetModel()
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->avg('lead_value') ?? 0;
+            ->whereBetween('created_at', [$startDate, $endDate]);
+
+        $userId = request('user_id');
+        if ($userId) {
+            $query->where('user_id', $userId);
+        } else {
+            $user = auth()->guard('user')->user();
+            if ($user && $user->role && $user->role->permission_type !== 'all') {
+                $query->where('user_id', $user->id);
+            }
+        }
+
+        return $query->avg('lead_value') ?? 0;
     }
 
     /**
@@ -206,11 +239,22 @@ class Lead extends AbstractReporting
      */
     public function getTotalWonLeadValue($startDate, $endDate): ?float
     {
-        return $this->leadRepository
+        $query = $this->leadRepository
             ->resetModel()
             ->whereIn('lead_pipeline_stage_id', $this->wonStageIds)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->avg('lead_value');
+            ->whereBetween('created_at', [$startDate, $endDate]);
+
+        $userId = request('user_id');
+        if ($userId) {
+            $query->where('user_id', $userId);
+        } else {
+            $user = auth()->guard('user')->user();
+            if ($user && $user->role && $user->role->permission_type !== 'all') {
+                $query->where('user_id', $user->id);
+            }
+        }
+
+        return $query->avg('lead_value');
     }
 
     /**
@@ -235,11 +279,22 @@ class Lead extends AbstractReporting
      */
     public function getTotalLostLeadValue($startDate, $endDate): ?float
     {
-        return $this->leadRepository
+        $query = $this->leadRepository
             ->resetModel()
             ->whereIn('lead_pipeline_stage_id', $this->lostStageIds)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->avg('lead_value');
+            ->whereBetween('created_at', [$startDate, $endDate]);
+
+        $userId = request('user_id');
+        if ($userId) {
+            $query->where('user_id', $userId);
+        } else {
+            $user = auth()->guard('user')->user();
+            if ($user && $user->role && $user->role->permission_type !== 'all') {
+                $query->where('user_id', $user->id);
+            }
+        }
+
+        return $query->avg('lead_value');
     }
 
     /**
@@ -247,7 +302,7 @@ class Lead extends AbstractReporting
      */
     public function getTotalWonLeadValueBySources()
     {
-        return $this->leadRepository
+        $query = $this->leadRepository
             ->resetModel()
             ->select(
                 'lead_sources.name',
@@ -255,9 +310,19 @@ class Lead extends AbstractReporting
             )
             ->leftJoin('lead_sources', 'leads.lead_source_id', '=', 'lead_sources.id')
             ->whereIn('lead_pipeline_stage_id', $this->wonStageIds)
-            ->whereBetween('leads.created_at', [$this->startDate, $this->endDate])
-            ->groupBy('lead_source_id')
-            ->get();
+            ->whereBetween('leads.created_at', [$this->startDate, $this->endDate]);
+
+        $userId = request('user_id');
+        if ($userId) {
+            $query->where('leads.user_id', $userId);
+        } else {
+            $user = auth()->guard('user')->user();
+            if ($user && $user->role && $user->role->permission_type !== 'all') {
+                $query->where('leads.user_id', $user->id);
+            }
+        }
+
+        return $query->groupBy('lead_source_id')->get();
     }
 
     /**
@@ -265,7 +330,7 @@ class Lead extends AbstractReporting
      */
     public function getTotalWonLeadValueByTypes()
     {
-        return $this->leadRepository
+        $query = $this->leadRepository
             ->resetModel()
             ->select(
                 'lead_types.name',
@@ -273,9 +338,19 @@ class Lead extends AbstractReporting
             )
             ->leftJoin('lead_types', 'leads.lead_type_id', '=', 'lead_types.id')
             ->whereIn('lead_pipeline_stage_id', $this->wonStageIds)
-            ->whereBetween('leads.created_at', [$this->startDate, $this->endDate])
-            ->groupBy('lead_type_id')
-            ->get();
+            ->whereBetween('leads.created_at', [$this->startDate, $this->endDate]);
+
+        $userId = request('user_id');
+        if ($userId) {
+            $query->where('leads.user_id', $userId);
+        } else {
+            $user = auth()->guard('user')->user();
+            if ($user && $user->role && $user->role->permission_type !== 'all') {
+                $query->where('leads.user_id', $user->id);
+            }
+        }
+
+        return $query->groupBy('lead_type_id')->get();
     }
 
     /**
@@ -283,7 +358,7 @@ class Lead extends AbstractReporting
      */
     public function getOpenLeadsByStates()
     {
-        return $this->leadRepository
+        $query = $this->leadRepository
             ->resetModel()
             ->select(
                 'lead_pipeline_stages.name',
@@ -292,10 +367,19 @@ class Lead extends AbstractReporting
             ->leftJoin('lead_pipeline_stages', 'leads.lead_pipeline_stage_id', '=', 'lead_pipeline_stages.id')
             ->whereNotIn('lead_pipeline_stage_id', $this->wonStageIds)
             ->whereNotIn('lead_pipeline_stage_id', $this->lostStageIds)
-            ->whereBetween('leads.created_at', [$this->startDate, $this->endDate])
-            ->groupBy('lead_pipeline_stage_id')
-            ->orderByDesc('total')
-            ->get();
+            ->whereBetween('leads.created_at', [$this->startDate, $this->endDate]);
+
+        $userId = request('user_id');
+        if ($userId) {
+            $query->where('leads.user_id', $userId);
+        } else {
+            $user = auth()->guard('user')->user();
+            if ($user && $user->role && $user->role->permission_type !== 'all') {
+                $query->where('leads.user_id', $user->id);
+            }
+        }
+
+        return $query->groupBy('lead_pipeline_stage_id')->orderByDesc('total')->get();
     }
 
     /**

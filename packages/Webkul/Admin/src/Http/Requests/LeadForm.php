@@ -102,7 +102,9 @@ class LeadForm extends FormRequest
                     }
 
                     if ($attribute->type == 'price') {
-                        array_push($validations[$attribute->code], new Decimal);
+                        if ($attribute->code !== 'lead_value') {
+                            array_push($validations[$attribute->code], new Decimal);
+                        }
                     }
                 }
 

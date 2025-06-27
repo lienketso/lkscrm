@@ -148,7 +148,7 @@ return [
                     'location'      => 'Địa điểm',
                     'call'          => 'Cuộc gọi',
                     'meeting'       => 'Cuộc họp',
-                    'lunch'         => 'Bữa trưa',
+                    'lunch'         => 'Mời khách hàng đi tour CLB',
                     'save-btn'      => 'Lưu hoạt động',
 
                     'participants' => [
@@ -170,7 +170,7 @@ return [
                 'planned'      => 'Đã lên kế hoạch',
                 'calls'        => 'Cuộc gọi',
                 'meetings'     => 'Cuộc họp',
-                'lunches'      => 'Bữa trưa',
+                'lunches'      => 'Mời khách hàng đi tour CLB',
                 'files'        => 'Tập tin',
                 'quotes'       => 'Báo giá',
                 'notes'        => 'Ghi chú',
@@ -214,8 +214,8 @@ return [
                     ],
 
                     'lunches' => [
-                        'title'       => 'Không tìm thấy bữa trưa nào',
-                        'description' => 'Không tìm thấy bữa trưa nào cho mục này. Bạn có thể thêm bữa trưa bằng cách nhấp vào nút ở bảng điều khiển bên trái.',
+                        'title'       => 'Không tìm thấy Mời khách hàng đi tour CLB trưa nào',
+                        'description' => 'Không tìm thấy Mời khách hàng đi tour CLB trưa nào cho mục này. Bạn có thể thêm Mời khách hàng đi tour CLB bằng cách nhấp vào nút ở bảng điều khiển bên trái.',
                     ],
 
                     'files' => [
@@ -564,7 +564,7 @@ return [
                         'all'          => 'Tất cả',
                         'calls'        => 'Cuộc gọi',
                         'meetings'     => 'Cuộc họp',
-                        'lunches'      => 'Bữa trưa',
+                        'lunches'      => 'Mời khách hàng đi tour CLB',
                         'files'        => 'Tệp tin',
                         'quotes'       => 'Báo giá',
                         'notes'        => 'Ghi chú',
@@ -617,7 +617,7 @@ return [
                             'location'      => 'Địa điểm',
                             'call'          => 'Cuộc gọi',
                             'meeting'       => 'Cuộc họp',
-                            'lunch'         => 'Bữa trưa',
+                            'lunch'         => 'Mời khách hàng đi tour CLB',
                             'save-btn'      => 'Lưu hoạt động',
                         ],
                     ],
@@ -1525,7 +1525,7 @@ return [
                     'update'        => 'Cập nhật',
                     'call'          => 'Cuộc gọi',
                     'meeting'       => 'Cuộc họp',
-                    'lunch'         => 'Bữa trưa',
+                    'lunch'         => 'Mời khách hàng đi tour CLB',
                 ],
             ],
 
@@ -1536,7 +1536,7 @@ return [
                 'type'            => 'Loại hoạt động',
                 'call'            => 'Cuộc gọi',
                 'meeting'         => 'Cuộc họp',
-                'lunch'           => 'Bữa trưa',
+                'lunch'           => 'Mời khách hàng đi tour CLB',
                 'schedule_to'     => 'Lên lịch đến',
                 'schedule_from'   => 'Lên lịch từ',
                 'location'        => 'Địa điểm',
