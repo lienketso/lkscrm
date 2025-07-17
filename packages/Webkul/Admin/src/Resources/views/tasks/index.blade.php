@@ -1193,6 +1193,7 @@
               createSubTask (action) {
                 this.$axios.get(action.url)
                   .then(response => {
+                    this.task = {}
                     this.task.parent_id = response.data?.data?.id
                     this.fetchInputData()
                     this.fetchUserSupport()
