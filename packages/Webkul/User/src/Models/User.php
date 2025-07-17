@@ -125,6 +125,15 @@ class User extends Authenticatable implements UserContract
         return in_array($permission, $this->role->permissions);
     }
 
+    public function hasAllPermission()
+    {
+        if ($this->role && $this->role->permission_type == 'all') {
+            return true;
+        }
+
+        return false;
+    }
+
     public function leader(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(UserProxy::modelClass(), 'leader_id', 'id');
@@ -172,7 +181,7 @@ class User extends Authenticatable implements UserContract
         $createdProject = $this->createdProject()->where('id', $projectId)->exists(); // tạo dự án
         $memberProject = $this->projects()->where('projects.id', $projectId)->exists(); // thành viên của dự án
 
-        return $leaderProject || $createdProject || $memberProject;
+        return $leaderProject || $createdProject || $memberProject || $this->hasAllPermission();
     }
 
     /*
@@ -183,7 +192,7 @@ class User extends Authenticatable implements UserContract
         $leaderProject = $this->leaderProject()->where('id', $projectId)->exists(); // leader dự án
         $createdProject = $this->createdProject()->where('id', $projectId)->exists(); // tạo dự án
 
-        return $leaderProject || $createdProject;
+        return $leaderProject || $createdProject || $this->hasAllPermission();
     }
 
     /*
@@ -195,7 +204,7 @@ class User extends Authenticatable implements UserContract
         $createdProject = $this->createdProject()->where('id', $projectId)->exists(); // tạo dự án
         $createdPhase = $this->createdPhase()->where('id', $phaseId)->exists(); // tạo phase
 
-        return $leaderProject || $createdProject || $createdPhase;
+        return $leaderProject || $createdProject || $createdPhase || $this->hasAllPermission();
     }
 
     /*
@@ -208,6 +217,6 @@ class User extends Authenticatable implements UserContract
         $createdTask = $this->createdTask()->where('id', $taskId)->exists(); // tạo task
         $assigneeTask = $this->assigneeTask()->where('id', $taskId)->exists(); // được giao task
         $taskSupport = $this->taskSupport()->where('tasks.id', $taskId)->exists(); // hỗ trợ task
-        return $leaderProject || $createdProject || $createdTask || $assigneeTask || $taskSupport;
+        return $leaderProject || $createdProject || $createdTask || $assigneeTask || $taskSupport || $this->hasAllPermission();
     }
 }
