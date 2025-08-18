@@ -94,6 +94,9 @@ class LeadController extends Controller
             $pipeline = $this->pipelineRepository->getDefaultPipeline(Pipeline::LEAD_TYPE);
         }
 
+        // Ensure stages are sorted by sort_order
+        $pipeline->setRelation('stages', $pipeline->stages->sortBy('sort_order'));
+
         return view('admin::leads.index', [
             'pipeline' => $pipeline,
             'columns'  => $this->getKanbanColumns(),
@@ -114,7 +117,7 @@ class LeadController extends Controller
         if ($stageId = request()->query('pipeline_stage_id')) {
             $stages = $pipeline->stages->where('id', request()->query('pipeline_stage_id'));
         } else {
-            $stages = $pipeline->stages;
+            $stages = $pipeline->stages->sortBy('sort_order');
         }
         $data = [];
         foreach ($stages as $stage) {
@@ -283,6 +286,13 @@ class LeadController extends Controller
             }
 
             $stage = $pipeline->stages()->first();
+
+            $piplineType = $pipeline->type;
+            if($piplineType == 1){
+                $data['is_customer'] = 1;
+            }else{
+                $data['is_customer'] = 0;
+            }
 
             $data['lead_pipeline_id'] = $pipeline->id;
 

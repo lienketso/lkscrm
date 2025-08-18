@@ -9,7 +9,6 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Event;
 use Illuminate\View\View;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Webkul\Admin\DataGrids\Lead\LeadDataGrid;
 use Webkul\Admin\DataGrids\Customer\CustomerDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Admin\Http\Requests\LeadForm;
@@ -75,6 +74,9 @@ class CustomerController extends Controller
             $pipeline = $this->pipelineRepository->getDefaultPipeline();
         }
 
+        // Ensure stages are sorted by sort_order
+        $pipeline->setRelation('stages', $pipeline->stages->sortBy('sort_order'));
+
         return view('admin::customers.index', [
             'pipeline' => $pipeline,
             'columns'  => $this->getKanbanColumns(),
@@ -95,7 +97,7 @@ class CustomerController extends Controller
         if ($stageId = request()->query('pipeline_stage_id')) {
             $stages = $pipeline->stages->where('id', request()->query('pipeline_stage_id'));
         } else {
-            $stages = $pipeline->stages;
+            $stages = $pipeline->stages->sortBy('sort_order');
         }
         $data = [];
         foreach ($stages as $stage) {

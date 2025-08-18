@@ -28,16 +28,17 @@
                     <!-- Stage Cards -->
                     <div
                         class="flex min-w-[275px] max-w-[275px] flex-col gap-1 rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900"
-                        v-for="(stage, index) in stageLeads"
+                        v-for="(stage, index) in stages"
+                        :key="stage.id"
                     >
-                        {!! view_render_event('admin.customers.index.kanban.content.stage.header.before') !!}
-
                         <!-- Stage Header -->
                         <div class="flex flex-col px-2 py-3">
+                            {!! view_render_event('admin.customers.index.kanban.content.stage.header.before') !!}
+
                             <!-- Stage Title and Action -->
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-medium dark:text-white">
-                                    @{{ stage.name }} (@{{ stage.leads.meta.total }})
+                                    @{{ stage.name }} (@{{ stageLeads[stage.id]?.leads?.meta?.total || 0 }})
                                 </span>
 
                                 @if (bouncer()->hasPermission('leads.create'))
@@ -53,31 +54,31 @@
                             <!-- Stage Total Leads and Amount -->
                             <div class="flex items-center justify-between gap-2">
                                 <span class="text-xs font-medium dark:text-white">
-                                    @{{ $admin.formatPrice(stage.lead_value) }}
+                                    @{{ $admin.formatPrice(stageLeads[stage.id]?.lead_value || 0) }}
                                 </span>
 
                                 <!-- Progress Bar -->
                                 <div class="h-1 w-36 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
                                     <div
                                         class="h-1 bg-green-500"
-                                        :style="{ width: (stage.lead_value / totalStagesAmount) * 100 + '%' }"
+                                        :style="{ width: ((stageLeads[stage.id]?.lead_value || 0) / totalStagesAmount) * 100 + '%' }"
                                     ></div>
                                 </div>
                             </div>
+
+                            {!! view_render_event('admin.customers.index.kanban.content.stage.header.after') !!}
                         </div>
 
-                        {!! view_render_event('admin.customers.index.kanban.content.stage.header.after') !!}
-                       
                         {!! view_render_event('admin.customers.index.kanban.content.stage.body.before') !!}
 
                         <!-- Draggable Stage Lead Cards -->
                         <draggable
                             class="flex h-[calc(100vh-317px)] flex-col gap-2 overflow-y-auto p-2"
-                            :class="{ 'justify-center': stage.leads.data.length === 0 }"
+                            :class="{ 'justify-center': stageLeads[stage.id]?.leads?.data?.length === 0 }"
                             ghost-class="draggable-ghost"
                             handle=".lead-item"
                             v-bind="{animation: 200}"
-                            :list="stage.leads.data"
+                            :list="stageLeads[stage.id]?.leads?.data"
                             item-key="id"
                             group="leads"
                             @scroll="handleScroll(stage, $event)"
@@ -86,7 +87,7 @@
                             <template #header>
                                 <div 
                                     class="flex flex-col items-center justify-center"
-                                    v-if="! stage.leads.data.length"
+                                    v-if="! stageLeads[stage.id]?.leads?.data?.length"
                                 >
                                     <img
                                         class="dark:mix-blend-exclusion dark:invert"
@@ -239,7 +240,7 @@
                         }
                     },
 
-                    stages: @json($pipeline->stages->toArray()),
+                    stages: @json($pipeline->stages->sortBy('sort_order')->values()->toArray()),
 
                     stageLeads: {},
 
@@ -260,8 +261,10 @@
                 totalStagesAmount() {
                     let totalAmount = 0;
 
-                    for (let [key, stage] of Object.entries(this.stageLeads)) {
-                        totalAmount += parseFloat(stage.lead_value);
+                    for (let stage of this.stages) {
+                        if (this.stageLeads[stage.id]) {
+                            totalAmount += parseFloat(this.stageLeads[stage.id].lead_value || 0);
+                        }
                     }
 
                     return totalAmount;
